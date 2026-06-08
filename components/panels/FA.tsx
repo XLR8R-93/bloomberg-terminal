@@ -1,6 +1,7 @@
 'use client'
 import { useQuery } from '@tanstack/react-query'
 import { useTerminalStore } from '@/lib/store'
+import { usePaneTicker } from '@/lib/pane-context'
 import { useState } from 'react'
 
 type Statement = 'income' | 'balance' | 'cash'
@@ -94,7 +95,8 @@ function TabBtn({ id, label, active, onClick }: { id: string; label: string; act
 }
 
 export function FA() {
-  const { activeTicker } = useTerminalStore()
+  const { activeTicker: _globalTicker } = useTerminalStore()
+  const activeTicker = usePaneTicker(_globalTicker)
   const [statement, setStatement] = useState<Statement>('income')
   const [period, setPeriod] = useState<Period>('annual')
 
@@ -145,7 +147,7 @@ export function FA() {
         {(error || data?.error) && !isLoading && (
           <div style={{ padding: 8, color: '#ff3b3b', fontSize: 11 }}>
             Financial data unavailable
-            <div style={{ color: '#555', marginTop: 4, fontSize: 10 }}>{data?.error}</div>
+            <div style={{ color: '#e8e8e8', marginTop: 4, fontSize: 10 }}>{data?.error}</div>
           </div>
         )}
         {!isLoading && !error && dataSlice.length > 0 && (

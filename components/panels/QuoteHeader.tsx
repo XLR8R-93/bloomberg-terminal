@@ -179,7 +179,7 @@ export function QuoteHeader() {
           )}
         </>
       ) : (
-        <span style={{ color: '#555', fontSize: 11 }}>No quote — set FINNHUB_API_KEY in .env.local</span>
+        <span style={{ color: '#e8e8e8', fontSize: 11 }}>No quote — set FINNHUB_API_KEY in .env.local</span>
       )}
     </div>
   )

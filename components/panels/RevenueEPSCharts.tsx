@@ -163,7 +163,7 @@ function MetricTable({ bars }: { bars: AnnualBar[] }) {
               const isBold = label === 'Revenue' || label === 'Net Income'
               return (
                 <tr key={label}>
-                  <td style={{ color: '#555', padding: '1px 6px 1px 0', whiteSpace: 'nowrap', fontWeight: isBold ? 'bold' : 'normal', borderBottom: '1px solid #0d0d0d' }}>
+                  <td style={{ color: '#e8e8e8', padding: '1px 6px 1px 0', whiteSpace: 'nowrap', fontWeight: isBold ? 'bold' : 'normal', borderBottom: '1px solid #0d0d0d' }}>
                     {label}
                   </td>
                   {displayed.map((b, i) => {
@@ -172,7 +172,7 @@ function MetricTable({ bars }: { bars: AnnualBar[] }) {
                     const yoy = fmtPct(v, prev)
                     return (
                       <td key={b.date} style={{ textAlign: 'right', padding: '1px 6px', borderBottom: '1px solid #0d0d0d', whiteSpace: 'nowrap' }}>
-                        <span style={{ color: '#cccccc', fontVariantNumeric: 'tabular-nums', fontWeight: isBold ? 'bold' : 'normal' }}>
+                        <span style={{ color: '#e8e8e8', fontVariantNumeric: 'tabular-nums', fontWeight: isBold ? 'bold' : 'normal' }}>
                           {v != null ? fmt(v) : '—'}
                         </span>
                         {yoy != null && (
@@ -213,7 +213,7 @@ export function RevenueEPSCharts() {
   }
 
   if (error || !bars || !Array.isArray(bars) || bars.length === 0) {
-    return <div style={{ color: '#555', fontSize: 11 }}>Historical data unavailable for {activeTicker}</div>
+    return <div style={{ color: '#e8e8e8', fontSize: 11 }}>Historical data unavailable for {activeTicker}</div>
   }
 
   const fmtRevLabel = (v: number) => `$${(v / 1e9).toFixed(0)}B`

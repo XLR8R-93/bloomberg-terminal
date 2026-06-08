@@ -1,7 +1,15 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
-export type PanelView = 'DES' | 'GIP' | 'FA' | 'KS' | 'CN' | 'EE' | 'EST' | 'RV' | 'WL' | 'TOP' | 'TV' | 'WB' | 'GLCO' | 'PORT' | 'HELP'
+export type PanelView = 'DES' | 'GIP' | 'FA' | 'KS' | 'CN' | 'EE' | 'EST' | 'RV' | 'WL' | 'TOP' | 'TV' | 'WB' | 'GLCO' | 'PORT' | 'SCRN' | 'OPT' | 'ECON' | 'MACRO' | 'ECAL' | 'INS' | 'MMAP' | 'CORR' | 'HELP'
+
+export type LayoutMode = '1x1' | '2h' | '2v' | '2x2'
+
+export interface Pane {
+  id:     string
+  ticker: string
+  view:   PanelView
+}
 
 export interface Position {
   id: string
@@ -55,6 +63,11 @@ interface TerminalState {
   historyIndex: number
   commandInput: string
 
+  // Multi-pane layout
+  layoutMode:     LayoutMode
+  panes:          Pane[]
+  focusedPaneId:  string
+
   setActiveTicker: (ticker: string) => void
   setActiveView: (view: PanelView) => void
   setMenuOpen: (open: boolean) => void
@@ -69,10 +82,14 @@ interface TerminalState {
   setHistoryIndex: (i: number) => void
   setCommandInput: (s: string) => void
 
+  setLayoutMode: (mode: LayoutMode) => void
+  focusPane: (id: string) => void
+
   positions: Position[]
   addPosition: (p: Omit<Position, 'id' | 'addedAt'>) => void
   updatePosition: (id: string, p: Partial<Omit<Position, 'id' | 'addedAt'>>) => void
   removePosition: (id: string) => void
+  loadPortfolio: (positions: Position[], watchlist?: string[]) => void
 
   alerts: PriceAlert[]
   addAlert: (a: Omit<PriceAlert, 'id' | 'createdAt'>) => void
@@ -80,6 +97,13 @@ interface TerminalState {
 }
 
 const DEFAULT_TAB: TerminalTab = { id: 'default', ticker: 'AAPL', view: 'GIP', label: 'GIP AAPL Equity' }
+
+const DEFAULT_PANES: Pane[] = [
+  { id: 'p1', ticker: 'AAPL',  view: 'GIP' },
+  { id: 'p2', ticker: 'MSFT',  view: 'GIP' },
+  { id: 'p3', ticker: 'AAPL',  view: 'DES' },
+  { id: 'p4', ticker: 'AAPL',  view: 'FA'  },
+]
 
 export const useTerminalStore = create<TerminalState>()(
   persist(
@@ -94,12 +118,19 @@ export const useTerminalStore = create<TerminalState>()(
       historyIndex: -1,
       commandInput: '',
 
+      layoutMode:    '1x1',
+      panes:         DEFAULT_PANES,
+      focusedPaneId: 'p1',
+
       setActiveTicker: (ticker) => {
         const t = ticker.toUpperCase()
         set((s) => ({
           activeTicker: t,
           tabs: s.tabs.map((tab) =>
             tab.id === s.activeTabId ? { ...tab, ticker: t, label: makeLabel(t, tab.view) } : tab
+          ),
+          panes: s.panes.map((p) =>
+            p.id === s.focusedPaneId ? { ...p, ticker: t } : p
           ),
         }))
       },
@@ -109,6 +140,9 @@ export const useTerminalStore = create<TerminalState>()(
           activeView: view,
           tabs: s.tabs.map((tab) =>
             tab.id === s.activeTabId ? { ...tab, view, label: makeLabel(tab.ticker, view) } : tab
+          ),
+          panes: s.panes.map((p) =>
+            p.id === s.focusedPaneId ? { ...p, view } : p
           ),
         })),
 
@@ -121,6 +155,9 @@ export const useTerminalStore = create<TerminalState>()(
           activeView: view,
           tabs: s.tabs.map((tab) =>
             tab.id === s.activeTabId ? { ...tab, ticker: t, view, label: makeLabel(t, view) } : tab
+          ),
+          panes: s.panes.map((p) =>
+            p.id === s.focusedPaneId ? { ...p, ticker: t, view } : p
           ),
         }))
       },
@@ -172,10 +209,75 @@ export const useTerminalStore = create<TerminalState>()(
       updatePosition: (id, p) => set((s) => ({ positions: s.positions.map((pos) => pos.id === id ? { ...pos, ...p } : pos) })),
       removePosition: (id) => set((s) => ({ positions: s.positions.filter((pos) => pos.id !== id) })),
 
+      loadPortfolio: (positions, watchlist) =>
+        set((s) => ({
+          positions,
+          ...(watchlist ? { watchlist } : {}),
+        })),
+
       alerts: [],
       addAlert: (a) => set((s) => ({ alerts: [...s.alerts, { ...a, id: makeId(), createdAt: Date.now() }] })),
       removeAlert: (id) => set((s) => ({ alerts: s.alerts.filter(a => a.id !== id) })),
+
+      setLayoutMode: (mode) =>
+        set((s) => {
+          // Determine how many panes the new layout needs
+          const count = mode === '2h' || mode === '2v' ? 2 : mode === '2x2' ? 4 : 1
+          // Grow panes array if needed (clone existing, add defaults for new slots)
+          const panes = Array.from({ length: count }, (_, i) =>
+            s.panes[i] ?? { id: `p${i + 1}`, ticker: s.activeTicker, view: 'GIP' as PanelView }
+          )
+          return { layoutMode: mode, panes, focusedPaneId: panes[0].id }
+        }),
+
+      focusPane: (id) =>
+        set((s) => {
+          const pane = s.panes.find(p => p.id === id)
+          if (!pane) return {}
+          return {
+            focusedPaneId: id,
+            activeTicker:  pane.ticker,
+            activeView:    pane.view,
+          }
+        }),
     }),
-    { name: 'bbg-terminal', skipHydration: true }
+    {
+      name: 'bbg-terminal',
+      skipHydration: true,
+
+      // ── Only persist user-owned data ────────────────────────────────────────
+      // Explicitly listing fields means adding new store fields never touches
+      // what's saved — so schema changes can't accidentally wipe holdings.
+      partialize: (state) => ({
+        positions:      state.positions,
+        alerts:         state.alerts,
+        watchlist:      state.watchlist,
+        tabs:           state.tabs,
+        activeTicker:   state.activeTicker,
+        activeView:     state.activeView,
+        activeTabId:    state.activeTabId,
+        layoutMode:     state.layoutMode,
+        panes:          state.panes,
+        commandHistory: state.commandHistory,
+      }),
+
+      // ── Versioned migration ─────────────────────────────────────────────────
+      // Bumping version triggers migrate(). The function always rescues
+      // positions / alerts / watchlist from whatever shape was stored before,
+      // so a schema bump never silently empties the portfolio.
+      version: 3,
+      migrate: (stored: unknown, fromVersion: number) => {
+        const s = (stored ?? {}) as Record<string, unknown>
+        // Unconditionally forward the three critical user-data arrays.
+        // Everything else can fall back to initial state safely.
+        return {
+          ...(s as object),
+          positions: Array.isArray(s.positions) ? s.positions : [],
+          alerts:    Array.isArray(s.alerts)    ? s.alerts    : [],
+          watchlist: Array.isArray(s.watchlist) ? s.watchlist
+            : ['AAPL', 'MSFT', 'NVDA', 'TSLA', 'GOOGL', 'AMZN', 'META'],
+        }
+      },
+    }
   )
 )

@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useTerminalStore } from '@/lib/store'
+import { usePaneTicker } from '@/lib/pane-context'
 import type { EstimatesData, EstimateRow, PriceTarget } from '@/app/api/estimates/route'
 
 type Period = 'currentQuarter' | 'nextQuarter' | 'currentYear' | 'nextYear'
@@ -67,12 +68,12 @@ function EstimateTable({ rows, label }: { rows: EstimateRow[]; label: string }) 
             <th style={{ color: '#ffa028', fontSize: 10, textAlign: 'left', padding: '3px 6px 3px 0', fontWeight: 'normal', textTransform: 'uppercase', letterSpacing: '0.06em', width: '22%' }}>
               Metric
             </th>
-            <th style={{ color: '#555', fontSize: 10, textAlign: 'right', padding: '3px 6px', fontWeight: 'normal' }}>Consensus</th>
-            <th style={{ color: '#555', fontSize: 10, textAlign: 'right', padding: '3px 6px', fontWeight: 'normal' }}>Low</th>
-            <th style={{ color: '#555', fontSize: 10, textAlign: 'center', padding: '3px 6px', fontWeight: 'normal', width: 96 }}>Distribution</th>
-            <th style={{ color: '#555', fontSize: 10, textAlign: 'right', padding: '3px 6px', fontWeight: 'normal' }}>High</th>
-            <th style={{ color: '#555', fontSize: 10, textAlign: 'right', padding: '3px 6px', fontWeight: 'normal' }}>Analysts</th>
-            <th style={{ color: '#555', fontSize: 10, textAlign: 'right', padding: '3px 6px', fontWeight: 'normal' }}>YoY Gr%</th>
+            <th style={{ color: '#e8e8e8', fontSize: 10, textAlign: 'right', padding: '3px 6px', fontWeight: 'normal' }}>Consensus</th>
+            <th style={{ color: '#e8e8e8', fontSize: 10, textAlign: 'right', padding: '3px 6px', fontWeight: 'normal' }}>Low</th>
+            <th style={{ color: '#e8e8e8', fontSize: 10, textAlign: 'center', padding: '3px 6px', fontWeight: 'normal', width: 96 }}>Distribution</th>
+            <th style={{ color: '#e8e8e8', fontSize: 10, textAlign: 'right', padding: '3px 6px', fontWeight: 'normal' }}>High</th>
+            <th style={{ color: '#e8e8e8', fontSize: 10, textAlign: 'right', padding: '3px 6px', fontWeight: 'normal' }}>Analysts</th>
+            <th style={{ color: '#e8e8e8', fontSize: 10, textAlign: 'right', padding: '3px 6px', fontWeight: 'normal' }}>YoY Gr%</th>
           </tr>
         </thead>
         <tbody>
@@ -81,13 +82,13 @@ function EstimateTable({ rows, label }: { rows: EstimateRow[]; label: string }) 
             const growthColor = row.growth == null ? '#555' : row.growth >= 0 ? '#33ff66' : '#ff3b3b'
             return (
               <tr key={i} style={{ borderBottom: '1px solid #0d0d0d' }}>
-                <td style={{ color: '#cccccc', fontSize: 11, padding: '4px 6px 4px 0', fontWeight: 'bold' }}>
+                <td style={{ color: '#e8e8e8', fontSize: 11, padding: '4px 6px 4px 0', fontWeight: 'bold' }}>
                   {row.metric}
                 </td>
                 <td style={{ color: '#ffa028', fontSize: 11, textAlign: 'right', padding: '4px 6px', fontVariantNumeric: 'tabular-nums' }}>
                   {fmtNum(row.consensus, rev)}
                 </td>
-                <td style={{ color: '#555', fontSize: 10, textAlign: 'right', padding: '4px 6px', fontVariantNumeric: 'tabular-nums' }}>
+                <td style={{ color: '#e8e8e8', fontSize: 10, textAlign: 'right', padding: '4px 6px', fontVariantNumeric: 'tabular-nums' }}>
                   {fmtNum(row.low, rev)}
                 </td>
                 <td style={{ padding: '4px 6px', textAlign: 'center' }}>
@@ -95,10 +96,10 @@ function EstimateTable({ rows, label }: { rows: EstimateRow[]; label: string }) 
                     <DistBar low={row.low} consensus={row.consensus} high={row.high} />
                   </div>
                 </td>
-                <td style={{ color: '#555', fontSize: 10, textAlign: 'right', padding: '4px 6px', fontVariantNumeric: 'tabular-nums' }}>
+                <td style={{ color: '#e8e8e8', fontSize: 10, textAlign: 'right', padding: '4px 6px', fontVariantNumeric: 'tabular-nums' }}>
                   {fmtNum(row.high, rev)}
                 </td>
-                <td style={{ color: '#666', fontSize: 10, textAlign: 'right', padding: '4px 6px' }}>
+                <td style={{ color: '#e8e8e8', fontSize: 10, textAlign: 'right', padding: '4px 6px' }}>
                   {row.count ?? '—'}
                 </td>
                 <td style={{ color: growthColor, fontSize: 10, textAlign: 'right', padding: '4px 6px', fontVariantNumeric: 'tabular-nums' }}>
@@ -194,7 +195,8 @@ function PriceTargetRow({ pt, currentPrice }: { pt: PriceTarget; currentPrice?: 
 }
 
 export function EST() {
-  const { activeTicker } = useTerminalStore()
+  const { activeTicker: _globalTicker } = useTerminalStore()
+  const activeTicker = usePaneTicker(_globalTicker)
   const [period, setPeriod] = useState<Period>('currentYear')
 
   const { data, isLoading, error } = useQuery<EstimatesData>({

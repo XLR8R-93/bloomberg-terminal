@@ -1,6 +1,7 @@
 'use client'
 import { useQuery } from '@tanstack/react-query'
 import { useTerminalStore } from '@/lib/store'
+import { usePaneTicker } from '@/lib/pane-context'
 
 interface MetricsResponse { metric: Record<string, number | null> }
 
@@ -23,7 +24,7 @@ function MetricRow({ label, value, highlight }: { label: string; value: string; 
   const color = highlight === 'pos' ? 'var(--green)' : highlight === 'neg' ? 'var(--red)' : 'var(--text)'
   return (
     <tr>
-      <td style={{ color: '#555', fontSize: 11, padding: '1px 6px 1px 0', whiteSpace: 'nowrap' }}>{label}</td>
+      <td style={{ color: '#e8e8e8', fontSize: 11, padding: '1px 6px 1px 0', whiteSpace: 'nowrap' }}>{label}</td>
       <td style={{ color, fontSize: 11, textAlign: 'right', fontVariantNumeric: 'tabular-nums', paddingLeft: 8 }}>{value}</td>
     </tr>
   )
@@ -43,7 +44,8 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 }
 
 export function KS() {
-  const { activeTicker } = useTerminalStore()
+  const { activeTicker: _globalTicker } = useTerminalStore()
+  const activeTicker = usePaneTicker(_globalTicker)
 
   const { data, isLoading, error } = useQuery<MetricsResponse>({
     queryKey: ['metrics', activeTicker],
@@ -129,15 +131,15 @@ export function KS() {
           {/* RIGHT COLUMN */}
           <div>
             <Section title="Profitability">
-              <MetricRow label="Gross Margin (TTM)"  value={fmtPct(m['grossMarginTTM'])}      highlight="pos" />
-              <MetricRow label="Gross Margin (Ann)"  value={fmtPct(m['grossMarginAnnual'])}   highlight="pos" />
-              <MetricRow label="Oper. Margin (TTM)"  value={fmtPct(m['operatingMarginTTM'])}  highlight="pos" />
-              <MetricRow label="Net Margin (TTM)"    value={fmtPct(m['netProfitMarginTTM'])}  highlight="pos" />
-              <MetricRow label="Net Margin (Ann)"    value={fmtPct(m['netProfitMarginAnnual'])} highlight="pos" />
-              <MetricRow label="ROE"                 value={fmtPct(m['roeRfy'])}              highlight="pos" />
-              <MetricRow label="ROE (TTM)"           value={fmtPct(m['roeTTM'])}              highlight="pos" />
-              <MetricRow label="ROA"                 value={fmtPct(m['roaRfy'])}              highlight="pos" />
-              <MetricRow label="ROIC"                value={fmtPct(m['roiAnnual'])}           highlight="pos" />
+              <MetricRow label="Gross Margin (TTM)"  value={fmtPct(m['grossMarginTTM'])}        highlight={colSign(m['grossMarginTTM'])} />
+              <MetricRow label="Gross Margin (Ann)"  value={fmtPct(m['grossMarginAnnual'])}    highlight={colSign(m['grossMarginAnnual'])} />
+              <MetricRow label="Oper. Margin (TTM)"  value={fmtPct(m['operatingMarginTTM'])}   highlight={colSign(m['operatingMarginTTM'])} />
+              <MetricRow label="Net Margin (TTM)"    value={fmtPct(m['netProfitMarginTTM'])}   highlight={colSign(m['netProfitMarginTTM'])} />
+              <MetricRow label="Net Margin (Ann)"    value={fmtPct(m['netProfitMarginAnnual'])} highlight={colSign(m['netProfitMarginAnnual'])} />
+              <MetricRow label="ROE"                 value={fmtPct(m['roeRfy'])}               highlight={colSign(m['roeRfy'])} />
+              <MetricRow label="ROE (TTM)"           value={fmtPct(m['roeTTM'])}               highlight={colSign(m['roeTTM'])} />
+              <MetricRow label="ROA"                 value={fmtPct(m['roaRfy'])}               highlight={colSign(m['roaRfy'])} />
+              <MetricRow label="ROIC"                value={fmtPct(m['roiAnnual'])}            highlight={colSign(m['roiAnnual'])} />
             </Section>
 
             <Section title="Liquidity / Leverage">

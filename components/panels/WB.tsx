@@ -2,7 +2,7 @@
 import { useQuery } from '@tanstack/react-query'
 import type { BondsData, CurvePoint, SovereignRow } from '@/app/api/bonds/route'
 
-// ── Yield Curve SVG ───────────────────────────────────────────────
+// â"€â"€ Yield Curve SVG â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
 function YieldCurve({ points }: { points: CurvePoint[] }) {
   const valid = points.filter((p) => p.yield != null)
   if (valid.length < 2) return <div style={{ color: '#333', fontSize: 11, padding: 20 }}>Curve data unavailable</div>
@@ -104,7 +104,7 @@ function YieldCurve({ points }: { points: CurvePoint[] }) {
   )
 }
 
-// ── Curve stats strip ─────────────────────────────────────────────
+// â"€â"€ Curve stats strip â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
 function CurveStats({ points }: { points: CurvePoint[] }) {
   const highlight = ['3M', '2Y', '5Y', '10Y', '30Y']
   const shown = points.filter((p) => highlight.includes(p.label))
@@ -126,7 +126,7 @@ function CurveStats({ points }: { points: CurvePoint[] }) {
   )
 }
 
-// ── Sovereign table ───────────────────────────────────────────────
+// â"€â"€ Sovereign table â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
 function fmt(v: number | null, dec = 2): string {
   if (v == null) return '—'
   return v.toFixed(dec)
@@ -149,7 +149,7 @@ function SovereignTable({ rows }: { rows: SovereignRow[] }) {
           <tr style={{ borderBottom: '1px solid #1f1f1f' }}>
             {['Country', '2Y', '5Y', '10Y', '30Y', '10Y Chg'].map((h) => (
               <th key={h} style={{
-                color: '#555', fontSize: 9, fontWeight: 'normal', textAlign: h === 'Country' ? 'left' : 'right',
+                color: '#e8e8e8', fontSize: 9, fontWeight: 'normal', textAlign: h === 'Country' ? 'left' : 'right',
                 padding: '3px 8px', letterSpacing: '0.05em', textTransform: 'uppercase',
               }}>{h}</th>
             ))}
@@ -158,13 +158,13 @@ function SovereignTable({ rows }: { rows: SovereignRow[] }) {
         <tbody>
           {rows.map((row) => (
             <tr key={row.code} style={{ borderBottom: '1px solid #0a0a0a' }}>
-              <td style={{ padding: '5px 8px', color: '#cccccc', fontSize: 11, whiteSpace: 'nowrap' }}>
+              <td style={{ padding: '5px 8px', color: '#e8e8e8', fontSize: 11, whiteSpace: 'nowrap' }}>
                 <span style={{ marginRight: 6 }}>{row.flag}</span>{row.country}
               </td>
-              <td style={{ padding: '5px 8px', color: '#888', textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>{fmt(row.y2)}</td>
-              <td style={{ padding: '5px 8px', color: '#888', textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>{fmt(row.y5)}</td>
+              <td style={{ padding: '5px 8px', color: '#d8d8d8', textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>{fmt(row.y2)}</td>
+              <td style={{ padding: '5px 8px', color: '#d8d8d8', textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>{fmt(row.y5)}</td>
               <td style={{ padding: '5px 8px', color: '#ffa028', textAlign: 'right', fontWeight: 'bold', fontVariantNumeric: 'tabular-nums' }}>{fmt(row.y10)}</td>
-              <td style={{ padding: '5px 8px', color: '#888', textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>{fmt(row.y30)}</td>
+              <td style={{ padding: '5px 8px', color: '#d8d8d8', textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>{fmt(row.y30)}</td>
               <td style={{ padding: '5px 8px', textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>
                 <Chg v={row.chg10} />
               </td>
@@ -176,7 +176,7 @@ function SovereignTable({ rows }: { rows: SovereignRow[] }) {
   )
 }
 
-// ── Main panel ────────────────────────────────────────────────────
+// â"€â"€ Main panel â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
 export function WB() {
   const { data, isLoading, error } = useQuery<BondsData>({
     queryKey: ['bonds'],

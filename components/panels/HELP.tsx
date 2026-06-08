@@ -12,8 +12,8 @@ export function HELP() {
       </div>
       <div style={{ flex: 1, overflowY: 'auto', padding: 12 }}>
         <div style={{ color: '#ffa028', fontSize: 13, marginBottom: 8 }}>Bloomberg Terminal Command Reference</div>
-        <div style={{ color: '#666', fontSize: 11, marginBottom: 16 }}>
-          Syntax: <span style={{ color: '#ccc' }}>{'<TICKER> <FUNCTION>'}</span> · e.g.{' '}
+        <div style={{ color: '#e8e8e8', fontSize: 11, marginBottom: 16 }}>
+          Syntax: <span style={{ color: '#e8e8e8' }}>{'<TICKER> <FUNCTION>'}</span> · e.g.{' '}
           <span style={{ color: '#4d9fff' }}>AAPL DES</span>{' '}·{' '}
           <span style={{ color: '#4d9fff' }}>TSLA GIP</span>{' '}·{' '}
           <span style={{ color: '#4d9fff' }}>NVDA FA</span>
@@ -30,7 +30,7 @@ export function HELP() {
             {FUNCTION_HELP.map(({ code, desc }) => (
               <tr key={code} style={{ cursor: 'pointer' }} onClick={() => setActiveView(code as Parameters<typeof setActiveView>[0])}>
                 <td style={{ color: '#4d9fff', padding: '3px 0', fontSize: 12, fontWeight: 'bold' }}>{code}</td>
-                <td style={{ color: '#aaa', padding: '3px 0', fontSize: 11 }}>{desc}</td>
+                <td style={{ color: '#e8e8e8', padding: '3px 0', fontSize: 11 }}>{desc}</td>
               </tr>
             ))}
           </tbody>
@@ -47,13 +47,13 @@ export function HELP() {
             ].map(([key, desc]) => (
               <tr key={key}>
                 <td style={{ color: '#ffa028', fontSize: 11, padding: '2px 0', width: 80 }}>{key}</td>
-                <td style={{ color: '#888', fontSize: 11, padding: '2px 0' }}>{desc}</td>
+                <td style={{ color: '#d8d8d8', fontSize: 11, padding: '2px 0' }}>{desc}</td>
               </tr>
             ))}
           </tbody>
         </table>
 
-        <div style={{ marginTop: 16, color: '#555', fontSize: 10, borderTop: '1px solid #1f1f1f', paddingTop: 8 }}>
+        <div style={{ marginTop: 16, color: '#e8e8e8', fontSize: 10, borderTop: '1px solid #1f1f1f', paddingTop: 8 }}>
           Data: Finnhub (quotes, profile, news) · Twelve Data / Stooq (charts) · FMP (financials) · SEC EDGAR (fallback)<br />
           Press <span style={{ color: '#ffa028' }}>HELP</span> at any time to return to this screen.
         </div>

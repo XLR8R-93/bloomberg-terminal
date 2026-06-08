@@ -2,7 +2,7 @@
 
 @theme inline {
   --color-background: #000000;
-  --color-foreground: #cccccc;
+  --color-foreground: #e8e8e8;
   --font-mono: 'IBM Plex Mono', 'JetBrains Mono', ui-monospace, monospace;
 }
 
@@ -12,9 +12,9 @@
   --bg-header: #0a0a0a;
   --border: #1f1f1f;
   --border-bright: #2a2a2a;
-  --text: #cccccc;
+  --text: #e8e8e8;
   --text-dim: #555555;
-  --text-bright: #eeeeee;
+  --text-bright: #ffffff;
   --amber: #ffa028;
   --amber-dim: #cc7a00;
   --green: #33ff66;
@@ -45,6 +45,13 @@ html, body {
   50% { opacity: 0; }
 }
 .cursor-blink { animation: blink 1s step-end infinite; }
+
+@keyframes ticker-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.ticker-track { animation: ticker-scroll 90s linear infinite; }
+.ticker-track:hover { animation-play-state: paused; }
 
 @keyframes skeleton-pulse {
   0%, 100% { opacity: 0.2; }

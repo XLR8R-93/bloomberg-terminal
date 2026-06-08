@@ -30,7 +30,7 @@ function DataRow({ label, value, valueColor, indent }: {
 }) {
   return (
     <div style={{ display: 'flex', justifyContent: 'space-between', padding: '1px 0', borderBottom: '1px solid #0d0d0d' }}>
-      <span style={{ color: '#555', fontSize: 11, paddingRight: 8, paddingLeft: indent ? 10 : 0 }}>{label}</span>
+      <span style={{ color: '#e8e8e8', fontSize: 11, paddingRight: 8, paddingLeft: indent ? 10 : 0 }}>{label}</span>
       <span style={{ color: valueColor || '#cccccc', fontSize: 11, textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>
         {value}
       </span>
@@ -134,8 +134,8 @@ function MiniBarChart({ bars, computeFn, color, title, suffix = '%' }: {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minWidth: 0 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 2 }}>
-        <span style={{ color: '#555', fontSize: 9, textTransform: 'uppercase', letterSpacing: '0.06em' }}>{title}</span>
-        <span style={{ color: '#cccccc', fontSize: 11, fontVariantNumeric: 'tabular-nums' }}>
+        <span style={{ color: '#e8e8e8', fontSize: 9, textTransform: 'uppercase', letterSpacing: '0.06em' }}>{title}</span>
+        <span style={{ color: '#e8e8e8', fontSize: 11, fontVariantNumeric: 'tabular-nums' }}>
           {latest != null ? `${(latest as number).toFixed(1)}${suffix}` : '—'}
         </span>
       </div>
@@ -204,9 +204,9 @@ export function RatiosTab({ metrics }: { metrics: Metrics }) {
           <div>
             <SectionLabel>Valuation</SectionLabel>
             <div style={{ display: 'flex', gap: 8, marginBottom: 4 }}>
-              <span style={{ color: '#33ff66', fontSize: 8 }}>■ CHEAP</span>
-              <span style={{ color: '#ffa028', fontSize: 8 }}>■ FAIR</span>
-              <span style={{ color: '#ff3b3b', fontSize: 8 }}>■ RICH</span>
+              <span style={{ color: '#33ff66', fontSize: 8 }}>â–  CHEAP</span>
+              <span style={{ color: '#ffa028', fontSize: 8 }}>â–  FAIR</span>
+              <span style={{ color: '#ff3b3b', fontSize: 8 }}>â–  RICH</span>
             </div>
             {[
               { label: 'P/E (TTM)',    key: 'peBasicExclExtraTTM', min: 5,  max: 60,  good: 'low'  as const },
@@ -221,10 +221,10 @@ export function RatiosTab({ metrics }: { metrics: Metrics }) {
               { label: 'P/FCF',       key: 'pfcfShareTTM',        min: 0,  max: 50,  good: 'low'  as const },
             ].map(({ label, key, min, max, good }) => (
               <div key={key} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1px 0', borderBottom: '1px solid #0d0d0d', gap: 6 }}>
-                <span style={{ color: '#555', fontSize: 11, flexShrink: 0 }}>{label}</span>
+                <span style={{ color: '#e8e8e8', fontSize: 11, flexShrink: 0 }}>{label}</span>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                   <GaugeBar value={m[key]} min={min} max={max} good={good} />
-                  <span style={{ color: '#cccccc', fontSize: 11, textAlign: 'right', fontVariantNumeric: 'tabular-nums', minWidth: 36 }}>
+                  <span style={{ color: '#e8e8e8', fontSize: 11, textAlign: 'right', fontVariantNumeric: 'tabular-nums', minWidth: 36 }}>
                     {fmt(m[key])}
                   </span>
                 </div>
@@ -244,9 +244,9 @@ export function RatiosTab({ metrics }: { metrics: Metrics }) {
           <div>
             <SectionLabel>Profitability</SectionLabel>
             <div style={{ display: 'flex', gap: 8, marginBottom: 4 }}>
-              <span style={{ color: '#33ff66', fontSize: 8 }}>■ STRONG</span>
-              <span style={{ color: '#ffa028', fontSize: 8 }}>■ OK</span>
-              <span style={{ color: '#ff3b3b', fontSize: 8 }}>■ WEAK</span>
+              <span style={{ color: '#33ff66', fontSize: 8 }}>â–  STRONG</span>
+              <span style={{ color: '#ffa028', fontSize: 8 }}>â–  OK</span>
+              <span style={{ color: '#ff3b3b', fontSize: 8 }}>â–  WEAK</span>
             </div>
             {[
               { label: 'Gross Margin (TTM)',  key: 'grossMarginTTM',        min: 0, max: 80, good: 'high' as const },
@@ -257,7 +257,7 @@ export function RatiosTab({ metrics }: { metrics: Metrics }) {
               { label: 'EBITDA Margin',       key: 'ebitdaMargin',          min: 0, max: 60, good: 'high' as const },
             ].map(({ label, key, min, max, good }) => (
               <div key={key} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1px 0', borderBottom: '1px solid #0d0d0d', gap: 6 }}>
-                <span style={{ color: '#555', fontSize: 11, flexShrink: 0 }}>{label}</span>
+                <span style={{ color: '#e8e8e8', fontSize: 11, flexShrink: 0 }}>{label}</span>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                   <GaugeBar value={m[key]} min={min} max={max} good={good} />
                   <span style={{ color: 'var(--green)', fontSize: 11, textAlign: 'right', fontVariantNumeric: 'tabular-nums', minWidth: 40 }}>
@@ -275,7 +275,7 @@ export function RatiosTab({ metrics }: { metrics: Metrics }) {
               { label: 'ROIC',       key: 'roiAnnual', min: 0, max: 40, good: 'high' as const },
             ].map(({ label, key, min, max, good }) => (
               <div key={key} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1px 0', borderBottom: '1px solid #0d0d0d', gap: 6 }}>
-                <span style={{ color: '#555', fontSize: 11, flexShrink: 0 }}>{label}</span>
+                <span style={{ color: '#e8e8e8', fontSize: 11, flexShrink: 0 }}>{label}</span>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                   <GaugeBar value={m[key]} min={min} max={max} good={good} />
                   <span style={{ color: 'var(--green)', fontSize: 11, textAlign: 'right', fontVariantNumeric: 'tabular-nums', minWidth: 40 }}>
@@ -297,9 +297,9 @@ export function RatiosTab({ metrics }: { metrics: Metrics }) {
           <div>
             <SectionLabel>Liquidity</SectionLabel>
             <div style={{ display: 'flex', gap: 8, marginBottom: 4 }}>
-              <span style={{ color: '#33ff66', fontSize: 8 }}>■ STRONG</span>
-              <span style={{ color: '#ffa028', fontSize: 8 }}>■ OK</span>
-              <span style={{ color: '#ff3b3b', fontSize: 8 }}>■ WEAK</span>
+              <span style={{ color: '#33ff66', fontSize: 8 }}>â–  STRONG</span>
+              <span style={{ color: '#ffa028', fontSize: 8 }}>â–  OK</span>
+              <span style={{ color: '#ff3b3b', fontSize: 8 }}>â–  WEAK</span>
             </div>
             {[
               { label: 'Current Ratio (Ann)', key: 'currentRatioAnnual',   min: 0, max: 4, good: 'high' as const },
@@ -307,10 +307,10 @@ export function RatiosTab({ metrics }: { metrics: Metrics }) {
               { label: 'Quick Ratio (Ann)',    key: 'quickRatioAnnual',     min: 0, max: 4, good: 'high' as const },
             ].map(({ label, key, min, max, good }) => (
               <div key={key} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1px 0', borderBottom: '1px solid #0d0d0d', gap: 6 }}>
-                <span style={{ color: '#555', fontSize: 11, flexShrink: 0 }}>{label}</span>
+                <span style={{ color: '#e8e8e8', fontSize: 11, flexShrink: 0 }}>{label}</span>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                   <GaugeBar value={m[key]} min={min} max={max} good={good} />
-                  <span style={{ color: '#cccccc', fontSize: 11, textAlign: 'right', fontVariantNumeric: 'tabular-nums', minWidth: 36 }}>
+                  <span style={{ color: '#e8e8e8', fontSize: 11, textAlign: 'right', fontVariantNumeric: 'tabular-nums', minWidth: 36 }}>
                     {fmt(m[key])}
                   </span>
                 </div>
@@ -319,19 +319,19 @@ export function RatiosTab({ metrics }: { metrics: Metrics }) {
 
             <SectionLabel>Leverage</SectionLabel>
             <div style={{ display: 'flex', gap: 8, marginBottom: 4 }}>
-              <span style={{ color: '#33ff66', fontSize: 8 }}>■ CHEAP</span>
-              <span style={{ color: '#ffa028', fontSize: 8 }}>■ FAIR</span>
-              <span style={{ color: '#ff3b3b', fontSize: 8 }}>■ RICH</span>
+              <span style={{ color: '#33ff66', fontSize: 8 }}>â–  CHEAP</span>
+              <span style={{ color: '#ffa028', fontSize: 8 }}>â–  FAIR</span>
+              <span style={{ color: '#ff3b3b', fontSize: 8 }}>â–  RICH</span>
             </div>
             {[
               { label: 'Debt/Equity (Ann)', key: 'totalDebt/totalEquityAnnual', min: 0, max: 3, good: 'low' as const },
               { label: 'LT Debt/Eq (Ann)',  key: 'longTermDebt/equityAnnual',   min: 0, max: 3, good: 'low' as const },
             ].map(({ label, key, min, max, good }) => (
               <div key={key} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1px 0', borderBottom: '1px solid #0d0d0d', gap: 6 }}>
-                <span style={{ color: '#555', fontSize: 11, flexShrink: 0 }}>{label}</span>
+                <span style={{ color: '#e8e8e8', fontSize: 11, flexShrink: 0 }}>{label}</span>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                   <GaugeBar value={m[key]} min={min} max={max} good={good} />
-                  <span style={{ color: '#cccccc', fontSize: 11, textAlign: 'right', fontVariantNumeric: 'tabular-nums', minWidth: 36 }}>
+                  <span style={{ color: '#e8e8e8', fontSize: 11, textAlign: 'right', fontVariantNumeric: 'tabular-nums', minWidth: 36 }}>
                     {fmt(m[key])}
                   </span>
                 </div>

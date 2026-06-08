@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 import { Component, type ReactNode } from 'react'
 
 interface Props { children: ReactNode }
@@ -20,12 +20,12 @@ export class ErrorBoundary extends Component<Props, State> {
     if (!this.state.error) return this.props.children
     return (
       <div style={{
-        background: '#000', color: '#ccc', fontFamily: 'IBM Plex Mono, ui-monospace, monospace',
+        background: '#000', color: '#e8e8e8', fontFamily: 'IBM Plex Mono, ui-monospace, monospace',
         fontSize: 12, padding: 24, height: '100vh', display: 'flex', flexDirection: 'column', gap: 12,
       }}>
         <div style={{ color: '#ffa028', fontSize: 14, fontWeight: 'bold' }}>TERMINAL ERROR</div>
         <div style={{ color: '#ff3b3b' }}>{this.state.error.message}</div>
-        <div style={{ color: '#555', fontSize: 11 }}>{this.state.error.stack?.split('\n').slice(0, 4).join('\n')}</div>
+        <div style={{ color: '#e8e8e8', fontSize: 11 }}>{this.state.error.stack?.split('\n').slice(0, 4).join('\n')}</div>
         <div style={{ display: 'flex', gap: 12, marginTop: 8 }}>
           <button
             onClick={() => window.location.reload()}

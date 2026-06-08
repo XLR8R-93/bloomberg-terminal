@@ -36,7 +36,7 @@ export function StatusBar() {
       padding: '0 8px',
       gap: 16,
       fontSize: 10,
-      color: '#555',
+      color: '#e8e8e8',
       flexShrink: 0,
     }}>
       <span style={{ color: '#ffa028' }}>{time}</span>

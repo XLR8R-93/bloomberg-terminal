@@ -1,6 +1,7 @@
 'use client'
 import { useQuery } from '@tanstack/react-query'
 import { useTerminalStore } from '@/lib/store'
+import { usePaneTicker } from '@/lib/pane-context'
 import type { EstimatesData } from '@/app/api/estimates/route'
 
 interface EarningsItem {
@@ -68,7 +69,7 @@ function RecBar({ r }: { r: RecommendationItem }) {
       </div>
       <div style={{ display: 'flex', gap: 10, fontSize: 9, marginTop: 2 }}>
         <span style={{ color: '#33ff66' }}>SB {r.strongBuy} · B {r.buy}</span>
-        <span style={{ color: '#666' }}>H {r.hold}</span>
+        <span style={{ color: '#e8e8e8' }}>H {r.hold}</span>
         <span style={{ color: '#ff3b3b' }}>S {r.sell} · SS {r.strongSell}</span>
       </div>
     </div>
@@ -104,7 +105,8 @@ function DistBar({ low, consensus, high }: { low: number | null; consensus: numb
 }
 
 export function EE() {
-  const { activeTicker } = useTerminalStore()
+  const { activeTicker: _globalTicker } = useTerminalStore()
+  const activeTicker = usePaneTicker(_globalTicker)
 
   const { data: earningsData, isLoading } = useQuery<EarningsData>({
     queryKey: ['earnings', activeTicker],
@@ -147,14 +149,14 @@ export function EE() {
                 <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 11 }}>
                   <thead>
                     <tr style={{ borderBottom: '1px solid #1f1f1f' }}>
-                      <th style={{ color: '#555', textAlign: 'left',   padding: '2px 6px 2px 0', fontWeight: 'normal', fontSize: 10 }}>Period</th>
-                      <th style={{ color: '#555', textAlign: 'left',   padding: '2px 6px', fontWeight: 'normal', fontSize: 10 }}>Metric</th>
-                      <th style={{ color: '#555', textAlign: 'right',  padding: '2px 6px', fontWeight: 'normal', fontSize: 10 }}>Consensus</th>
-                      <th style={{ color: '#555', textAlign: 'right',  padding: '2px 6px', fontWeight: 'normal', fontSize: 10 }}>Low</th>
-                      <th style={{ color: '#555', textAlign: 'center', padding: '2px 6px', fontWeight: 'normal', fontSize: 10 }}>Range</th>
-                      <th style={{ color: '#555', textAlign: 'right',  padding: '2px 6px', fontWeight: 'normal', fontSize: 10 }}>High</th>
-                      <th style={{ color: '#555', textAlign: 'right',  padding: '2px 6px', fontWeight: 'normal', fontSize: 10 }}>n</th>
-                      <th style={{ color: '#555', textAlign: 'right',  padding: '2px 6px', fontWeight: 'normal', fontSize: 10 }}>YoY</th>
+                      <th style={{ color: '#e8e8e8', textAlign: 'left',   padding: '2px 6px 2px 0', fontWeight: 'normal', fontSize: 10 }}>Period</th>
+                      <th style={{ color: '#e8e8e8', textAlign: 'left',   padding: '2px 6px', fontWeight: 'normal', fontSize: 10 }}>Metric</th>
+                      <th style={{ color: '#e8e8e8', textAlign: 'right',  padding: '2px 6px', fontWeight: 'normal', fontSize: 10 }}>Consensus</th>
+                      <th style={{ color: '#e8e8e8', textAlign: 'right',  padding: '2px 6px', fontWeight: 'normal', fontSize: 10 }}>Low</th>
+                      <th style={{ color: '#e8e8e8', textAlign: 'center', padding: '2px 6px', fontWeight: 'normal', fontSize: 10 }}>Range</th>
+                      <th style={{ color: '#e8e8e8', textAlign: 'right',  padding: '2px 6px', fontWeight: 'normal', fontSize: 10 }}>High</th>
+                      <th style={{ color: '#e8e8e8', textAlign: 'right',  padding: '2px 6px', fontWeight: 'normal', fontSize: 10 }}>n</th>
+                      <th style={{ color: '#e8e8e8', textAlign: 'right',  padding: '2px 6px', fontWeight: 'normal', fontSize: 10 }}>YoY</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -169,7 +171,7 @@ export function EE() {
                                 {label}
                               </td>
                             )}
-                            <td style={{ color: '#888', padding: '3px 6px', whiteSpace: 'nowrap' }}>{row.metric}</td>
+                            <td style={{ color: '#d8d8d8', padding: '3px 6px', whiteSpace: 'nowrap' }}>{row.metric}</td>
                             <td style={{ color: '#ffa028', textAlign: 'right', padding: '3px 6px', fontVariantNumeric: 'tabular-nums' }}>
                               {fmtEstimate(row.consensus, isRev)}
                             </td>
@@ -202,10 +204,10 @@ export function EE() {
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 11 }}>
               <thead>
                 <tr style={{ borderBottom: '1px solid #1f1f1f' }}>
-                  <th style={{ color: '#555', textAlign: 'left',  padding: '2px 6px 2px 0', fontWeight: 'normal', fontSize: 10 }}>Period</th>
-                  <th style={{ color: '#555', textAlign: 'right', padding: '2px 6px', fontWeight: 'normal', fontSize: 10 }}>Estimate</th>
-                  <th style={{ color: '#555', textAlign: 'right', padding: '2px 6px', fontWeight: 'normal', fontSize: 10 }}>Actual</th>
-                  <th style={{ color: '#555', textAlign: 'left',  padding: '2px 6px', fontWeight: 'normal', fontSize: 10 }}>Surprise</th>
+                  <th style={{ color: '#e8e8e8', textAlign: 'left',  padding: '2px 6px 2px 0', fontWeight: 'normal', fontSize: 10 }}>Period</th>
+                  <th style={{ color: '#e8e8e8', textAlign: 'right', padding: '2px 6px', fontWeight: 'normal', fontSize: 10 }}>Estimate</th>
+                  <th style={{ color: '#e8e8e8', textAlign: 'right', padding: '2px 6px', fontWeight: 'normal', fontSize: 10 }}>Actual</th>
+                  <th style={{ color: '#e8e8e8', textAlign: 'left',  padding: '2px 6px', fontWeight: 'normal', fontSize: 10 }}>Surprise</th>
                 </tr>
               </thead>
               <tbody>
@@ -218,8 +220,8 @@ export function EE() {
                       : null
                   return (
                     <tr key={i} style={{ borderBottom: '1px solid #0a0a0a' }}>
-                      <td style={{ color: '#666', padding: '3px 6px 3px 0' }}>{e.period}</td>
-                      <td style={{ textAlign: 'right', color: '#888', padding: '3px 6px', fontVariantNumeric: 'tabular-nums' }}>${fmt(e.estimate)}</td>
+                      <td style={{ color: '#e8e8e8', padding: '3px 6px 3px 0' }}>{e.period}</td>
+                      <td style={{ textAlign: 'right', color: '#d8d8d8', padding: '3px 6px', fontVariantNumeric: 'tabular-nums' }}>${fmt(e.estimate)}</td>
                       <td style={{ textAlign: 'right', color: beat ? '#33ff66' : '#ff3b3b', padding: '3px 6px', fontWeight: 'bold', fontVariantNumeric: 'tabular-nums' }}>${fmt(e.actual)}</td>
                       <td style={{ padding: '3px 6px' }}>
                         {surprisePct != null ? <SurpriseBar pct={surprisePct} /> : <span style={{ color: '#444' }}>—</span>}

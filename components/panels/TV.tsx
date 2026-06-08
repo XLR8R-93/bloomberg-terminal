@@ -17,7 +17,7 @@ function Clock() {
     const id = setInterval(tick, 1000)
     return () => clearInterval(id)
   }, [])
-  return <span style={{ color: '#888', fontSize: 10, fontVariantNumeric: 'tabular-nums' }}>{time}</span>
+  return <span style={{ color: '#d8d8d8', fontSize: 10, fontVariantNumeric: 'tabular-nums' }}>{time}</span>
 }
 
 export function TV() {
@@ -30,12 +30,12 @@ export function TV() {
           <button
             onClick={() => window.open(`https://www.youtube.com/watch?v=${VIDEO_ID}`, 'bloomberg-tv', 'width=1280,height=720,menubar=no,toolbar=no,location=no')}
             style={{
-              background: 'none', border: '1px solid #2a2a2a', color: '#888',
+              background: 'none', border: '1px solid #2a2a2a', color: '#d8d8d8',
               fontFamily: 'inherit', fontSize: 9, padding: '2px 7px',
               cursor: 'pointer', letterSpacing: '0.06em',
             }}
           >
-            ⤢ POP OUT
+            ↗ POP OUT
           </button>
         </div>
       </div>

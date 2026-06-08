@@ -1,6 +1,7 @@
 'use client'
 import { useQuery } from '@tanstack/react-query'
 import { useTerminalStore } from '@/lib/store'
+import { usePaneTicker } from '@/lib/pane-context'
 
 interface Quote { c: number; d: number; dp: number }
 interface Metrics { metric: Record<string, number | null> }
@@ -48,22 +49,23 @@ function PeerRow({ symbol, isActive }: { symbol: string; isActive: boolean }) {
       style={{ background: isActive ? '#0a1a0a' : 'transparent', cursor: 'pointer' }}
     >
       <td style={{ color: '#4d9fff', fontWeight: isActive ? 'bold' : 'normal' }}>{symbol}</td>
-      <td style={{ textAlign: 'right', color: '#ccc' }}>{quote ? fmt(quote.c) : '—'}</td>
+      <td style={{ textAlign: 'right', color: '#e8e8e8' }}>{quote ? fmt(quote.c) : '—'}</td>
       <td style={{ textAlign: 'right', color: up === null ? '#666' : up ? 'var(--green)' : 'var(--red)' }}>
         {quote ? `${up ? '+' : ''}${fmt(quote.dp)}%` : '—'}
       </td>
-      <td style={{ textAlign: 'right', color: '#888' }}>{fmtMktCap(profile?.marketCapitalization)}</td>
-      <td style={{ textAlign: 'right', color: '#888' }}>{fmt(m['peBasicExclExtraTTM'])}</td>
-      <td style={{ textAlign: 'right', color: '#888' }}>{fmt(m['psTTM'])}</td>
-      <td style={{ textAlign: 'right', color: '#888' }}>{fmt(m['evToEbitda'])}</td>
-      <td style={{ textAlign: 'right', color: '#888' }}>{m['grossMarginTTM'] != null ? `${m['grossMarginTTM']!.toFixed(1)}%` : '—'}</td>
-      <td style={{ textAlign: 'right', color: '#888' }}>{m['52WeekPriceReturnDaily'] != null ? `${m['52WeekPriceReturnDaily']!.toFixed(1)}%` : '—'}</td>
+      <td style={{ textAlign: 'right', color: '#d8d8d8' }}>{fmtMktCap(profile?.marketCapitalization)}</td>
+      <td style={{ textAlign: 'right', color: '#d8d8d8' }}>{fmt(m['peBasicExclExtraTTM'])}</td>
+      <td style={{ textAlign: 'right', color: '#d8d8d8' }}>{fmt(m['psTTM'])}</td>
+      <td style={{ textAlign: 'right', color: '#d8d8d8' }}>{fmt(m['evToEbitda'])}</td>
+      <td style={{ textAlign: 'right', color: '#d8d8d8' }}>{m['grossMarginTTM'] != null ? `${m['grossMarginTTM']!.toFixed(1)}%` : '—'}</td>
+      <td style={{ textAlign: 'right', color: '#d8d8d8' }}>{m['52WeekPriceReturnDaily'] != null ? `${m['52WeekPriceReturnDaily']!.toFixed(1)}%` : '—'}</td>
     </tr>
   )
 }
 
 export function RV() {
-  const { activeTicker } = useTerminalStore()
+  const { activeTicker: _globalTicker } = useTerminalStore()
+  const activeTicker = usePaneTicker(_globalTicker)
 
   const { data: peersRaw, isLoading } = useQuery<string[]>({
     queryKey: ['peers', activeTicker],

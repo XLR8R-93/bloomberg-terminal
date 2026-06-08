@@ -124,7 +124,7 @@ export function GLCO() {
   })
 
   const handleSelect = (symbol: string) => {
-    openTab(symbol, 'GIP')
+    window.open(`https://finance.yahoo.com/quote/${encodeURIComponent(symbol)}/chart/`, '_blank', 'noopener,noreferrer')
   }
 
   const rows = Array.isArray(data?.rows) ? data!.rows : []
@@ -136,7 +136,7 @@ export function GLCO() {
     <div className="panel" style={{ height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
       <div className="panel-header" style={{ justifyContent: 'space-between' }}>
         <span className="panel-mnemonic">GLCO — GLOBAL COMMODITY PRICES</span>
-        <span style={{ color: '#333', fontSize: 10 }}>Click row to chart · refreshes every 3 min</span>
+        <span style={{ color: '#333', fontSize: 10 }}>Click row → Yahoo Finance chart · refreshes every 3 min</span>
       </div>
 
       <div style={{ flex: 1, overflowY: 'auto', padding: '12px 16px' }}>

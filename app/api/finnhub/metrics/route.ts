@@ -24,6 +24,20 @@ export async function GET(request: NextRequest) {
         data = await finnhub.metrics(symbol)
         if (!data?.metric || Object.values(data.metric).every((v) => v == null)) {
           data = await yahooMetrics(symbol)
+        } else {
+          // Normalize Finnhub field names → add aliases used by RV / KS panels
+          // Finnhub uses 'currentEv/ebitdaTTM'; panels expect 'evToEbitda' / 'evEbitdaTTM'
+          const m = data.metric as Record<string, number | null>
+          const evEbitda = m['currentEv/ebitdaTTM'] ?? m['evEbitdaTTM'] ?? null
+          if (evEbitda != null) {
+            m['evToEbitda']  = m['evToEbitda']  ?? evEbitda
+            m['evEbitdaTTM'] = m['evEbitdaTTM'] ?? evEbitda
+          }
+          // EV/Revenue alias
+          const evRev = m['currentEv/revenuesTTM'] ?? m['evRevenuesTTM'] ?? null
+          if (evRev != null) {
+            m['evToRevenue'] = m['evToRevenue'] ?? evRev
+          }
         }
       } catch {
         data = await yahooMetrics(symbol)

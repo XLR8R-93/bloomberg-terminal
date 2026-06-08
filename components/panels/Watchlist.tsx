@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 import { useQuery } from '@tanstack/react-query'
 import { useTerminalStore } from '@/lib/store'
 import { useState } from 'react'
@@ -33,7 +33,7 @@ function WatchRow({ symbol }: { symbol: string }) {
       }}
     >
       <span style={{ color: '#4d9fff', fontSize: 11, width: 48, flexShrink: 0 }}>{symbol}</span>
-      <span style={{ flex: 1, color: '#ccc', fontSize: 11, textAlign: 'right' }}>
+      <span style={{ flex: 1, color: '#e8e8e8', fontSize: 11, textAlign: 'right' }}>
         {data ? data.c.toFixed(2) : <span className="skeleton" style={{ display: 'inline-block', width: 40, height: 10 }} />}
       </span>
       <span style={{ color, fontSize: 10, width: 40, textAlign: 'right', flexShrink: 0 }}>
@@ -72,7 +72,7 @@ export function Watchlist() {
     <div className="panel" style={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden' }}>
       <div className="panel-header">
         <span className="panel-mnemonic">WL</span>
-        <span style={{ color: '#555', fontSize: 10 }}>{watchlist.length} symbols</span>
+        <span style={{ color: '#e8e8e8', fontSize: 10 }}>{watchlist.length} symbols</span>
       </div>
       <div style={{ flex: 1, overflowY: 'auto' }}>
         {watchlist.map((sym) => <WatchRow key={sym} symbol={sym} />)}

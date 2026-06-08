@@ -102,20 +102,20 @@ export function MenuOverlay() {
           borderBottom: '1px solid #1a1a1a',
           background: '#090909',
         }}>
-          <div style={{ fontSize: 10, color: '#555', letterSpacing: '0.04em' }}>
+          <div style={{ fontSize: 10, color: '#e8e8e8', letterSpacing: '0.04em' }}>
             <span style={{ color: '#4d9fff', cursor: 'pointer' }} onClick={() => setMenuOpen(false)}>
               Main Menu of Bloomberg Functions
             </span>
             <span style={{ color: '#333', margin: '0 6px' }}>{'>'}</span>
-            <span style={{ color: '#555' }}>Equities</span>
+            <span style={{ color: '#e8e8e8' }}>Equities</span>
             <span style={{ color: '#333', margin: '0 6px' }}>{'>'}</span>
-            <span style={{ color: '#777' }}>Analyze {activeTicker} Equity</span>
+            <span style={{ color: '#d8d8d8' }}>Analyze {activeTicker} Equity</span>
           </div>
           <button
             onClick={() => setMenuOpen(false)}
             style={{
               background: 'none', border: '1px solid #333', cursor: 'pointer',
-              color: '#888', fontSize: 10, padding: '2px 8px',
+              color: '#d8d8d8', fontSize: 10, padding: '2px 8px',
               fontFamily: 'inherit', letterSpacing: '0.06em',
             }}
           >

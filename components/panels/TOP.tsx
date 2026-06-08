@@ -41,7 +41,7 @@ function IndexRow({ symbol, label }: { symbol: string; label: string }) {
   return (
     <tr>
       <td style={{ color: '#ffa028', paddingRight: 8 }}>{label}</td>
-      <td style={{ textAlign: 'right', color: '#ccc', paddingRight: 6 }}>{fmt(data?.c)}</td>
+      <td style={{ textAlign: 'right', color: '#e8e8e8', paddingRight: 6 }}>{fmt(data?.c)}</td>
       <td style={{ textAlign: 'right', color, paddingRight: 6 }}>
         {data?.d != null && !isNaN(data.d) ? `${signPrefix(data.d)}${fmt(data.d)}` : '—'}
       </td>
@@ -63,7 +63,7 @@ function MoverRow({ q, isGainer }: { q: MoverQuote; isGainer: boolean }) {
       title={q.shortName}
     >
       <td style={{ color: '#4d9fff', paddingRight: 6 }}>{q.symbol}</td>
-      <td style={{ textAlign: 'right', color: '#ccc', paddingRight: 6 }}>
+      <td style={{ textAlign: 'right', color: '#e8e8e8', paddingRight: 6 }}>
         {fmt(q.regularMarketPrice)}
       </td>
       <td style={{ textAlign: 'right', color }}>

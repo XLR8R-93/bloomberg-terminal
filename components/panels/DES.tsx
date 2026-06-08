@@ -2,6 +2,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 import { useTerminalStore } from '@/lib/store'
+import { usePaneTicker } from '@/lib/pane-context'
 import type { Executive } from '@/app/api/finnhub/executive/route'
 import { RevenueEPSCharts } from './RevenueEPSCharts'
 import { RatiosTab } from './RatiosTab'
@@ -42,7 +43,7 @@ type Tab = typeof TABS[number]
 function DataRow({ label, value, valueColor }: { label: string; value?: string | null; valueColor?: string }) {
   return (
     <div style={{ display: 'flex', justifyContent: 'space-between', padding: '1px 0', borderBottom: '1px solid #0d0d0d' }}>
-      <span style={{ color: '#555', fontSize: 11, flexShrink: 0, paddingRight: 8 }}>{label}</span>
+      <span style={{ color: '#e8e8e8', fontSize: 11, flexShrink: 0, paddingRight: 8 }}>{label}</span>
       <span style={{ color: valueColor || '#cccccc', fontSize: 11, textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>
         {value || '—'}
       </span>
@@ -87,7 +88,7 @@ function ProfileTab({ profile, metrics, executives }: {
         <div style={{ color: '#ffa028', fontSize: 11, fontWeight: 'bold', marginBottom: 4 }}>
           {profile.name}
         </div>
-        <div style={{ color: '#999', fontSize: 10, lineHeight: 1.5, marginBottom: 8 }}>
+        <div style={{ color: '#d8d8d8', fontSize: 10, lineHeight: 1.5, marginBottom: 8 }}>
           {descExpanded ? desc : descShort}
           {desc.length > 320 && (
             <span
@@ -166,12 +167,12 @@ function ProfileTab({ profile, metrics, executives }: {
             {topExecs.map((exec, i) => (
               <div key={i} style={{ borderBottom: '1px solid #0d0d0d', padding: '2px 0' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 4 }}>
-                  <span style={{ color: '#cccccc', fontSize: 11, fontWeight: 500 }}>{exec.name}</span>
+                  <span style={{ color: '#e8e8e8', fontSize: 11, fontWeight: 500 }}>{exec.name}</span>
                   {exec.positionCode && (
                     <span style={{ color: '#ffa028', fontSize: 9, flexShrink: 0 }}>{exec.positionCode}</span>
                   )}
                 </div>
-                <div style={{ color: '#555', fontSize: 10 }}>{exec.position}</div>
+                <div style={{ color: '#e8e8e8', fontSize: 10 }}>{exec.position}</div>
               </div>
             ))}
           </>
@@ -221,7 +222,8 @@ function RevenueEPSTab({ metrics }: { metrics: Metrics }) {
 }
 
 export function DES() {
-  const { activeTicker } = useTerminalStore()
+  const { activeTicker: _globalTicker } = useTerminalStore()
+  const activeTicker = usePaneTicker(_globalTicker)
   const [activeTab, setActiveTab] = useState<Tab>('Profile')
 
   const { data: profile, isLoading: profileLoading } = useQuery<Profile>({
@@ -268,7 +270,7 @@ export function DES() {
           {profile.gsector && (
             <>
               <span style={{ color: '#333', fontSize: 10 }}>|</span>
-              <span style={{ color: '#555', fontSize: 10 }}>Classification: {profile.gsector}</span>
+              <span style={{ color: '#e8e8e8', fontSize: 10 }}>Classification: {profile.gsector}</span>
             </>
           )}
         </div>
@@ -333,7 +335,7 @@ export function DES() {
               <RevenueEPSCharts />
             )}
             {activeTab === 'ESG' && (
-              <div style={{ color: '#555', fontSize: 11, paddingTop: 20 }}>
+              <div style={{ color: '#e8e8e8', fontSize: 11, paddingTop: 20 }}>
                 ESG data not available on free tier.
               </div>
             )}
