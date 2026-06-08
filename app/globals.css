@@ -1,0 +1,95 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-background: #000000;
+  --color-foreground: #cccccc;
+  --font-mono: 'IBM Plex Mono', 'JetBrains Mono', ui-monospace, monospace;
+}
+
+:root {
+  --bg: #000000;
+  --bg-panel: #050505;
+  --bg-header: #0a0a0a;
+  --border: #1f1f1f;
+  --border-bright: #2a2a2a;
+  --text: #cccccc;
+  --text-dim: #555555;
+  --text-bright: #eeeeee;
+  --amber: #ffa028;
+  --amber-dim: #cc7a00;
+  --green: #33ff66;
+  --red: #ff3b3b;
+  --blue: #4d9fff;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0; padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'IBM Plex Mono', 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 12px;
+  line-height: 1.4;
+  height: 100%;
+  overflow: hidden;
+}
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #000; }
+::-webkit-scrollbar-thumb { background: #222; }
+::-webkit-scrollbar-thumb:hover { background: #333; }
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+.cursor-blink { animation: blink 1s step-end infinite; }
+
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 0.5; }
+}
+.skeleton {
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+  background: #1a1a1a;
+}
+
+.panel { background: var(--bg-panel); border: 1px solid var(--border); }
+
+.panel-header {
+  background: var(--bg-header);
+  border-bottom: 1px solid var(--border);
+  padding: 2px 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 20px;
+  flex-shrink: 0;
+  font-size: 11px;
+}
+
+.panel-mnemonic { color: var(--amber); font-weight: bold; letter-spacing: 0.05em; }
+.panel-ticker { color: var(--blue); }
+
+.data-table { width: 100%; border-collapse: collapse; font-size: 11px; }
+.data-table td, .data-table th { padding: 1px 6px; border-bottom: 1px solid #0d0d0d; }
+.data-table th { color: var(--amber); text-align: left; font-weight: normal; border-bottom: 1px solid var(--border); }
+.data-table tr:hover { background: #0f0f0f; }
+
+.pos { color: var(--green); }
+.neg { color: var(--red); }
+.neu { color: var(--text); }
+.dim { color: var(--text-dim); }
+.amber { color: var(--amber); }
+.blue { color: var(--blue); }
+
+/* subtle scanline */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.04) 2px, rgba(0,0,0,0.04) 4px);
+  pointer-events: none;
+  z-index: 9999;
+}
