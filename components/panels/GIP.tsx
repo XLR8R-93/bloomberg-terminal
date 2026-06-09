@@ -171,15 +171,13 @@ export function GIP() {
     // Price chart
     priceChart.current = createChart(priceRef.current, {
       ...BASE_OPTS,
-      width: priceRef.current.clientWidth,
-      height: priceRef.current.clientHeight,
+      autoSize: true,
     })
 
     // RSI chart
     rsiChart.current = createChart(rsiRef.current, {
       ...BASE_OPTS,
-      width: rsiRef.current.clientWidth,
-      height: rsiRef.current.clientHeight,
+      autoSize: true,
       rightPriceScale: {
         borderColor: '#1a1a1a', textColor: '#555',
         scaleMargins: { top: 0.05, bottom: 0.05 },
@@ -190,16 +188,14 @@ export function GIP() {
     // MACD chart
     macdChart.current = createChart(macdRef.current, {
       ...BASE_OPTS,
-      width: macdRef.current.clientWidth,
-      height: macdRef.current.clientHeight,
+      autoSize: true,
       timeScale: { ...BASE_OPTS.timeScale, visible: false },
     })
 
     // Volume chart
     volChart.current = createChart(volRef.current, {
       ...BASE_OPTS,
-      width: volRef.current.clientWidth,
-      height: volRef.current.clientHeight,
+      autoSize: true,
       rightPriceScale: {
         borderColor: '#1a1a1a', textColor: '#444',
         scaleMargins: { top: 0.1, bottom: 0 },
@@ -287,19 +283,7 @@ export function GIP() {
       [volRef,   volChart],
     ] as const
 
-    const ro = new ResizeObserver(() => {
-      containers.forEach(([ref, chart]) => {
-        if (ref.current && chart.current) {
-          const w = ref.current.clientWidth
-          const h = ref.current.clientHeight
-          if (w > 0 && h > 0) chart.current.applyOptions({ width: w, height: h })
-        }
-      })
-    })
-    containers.forEach(([ref]) => { if (ref.current) ro.observe(ref.current) })
-
     return () => {
-      ro.disconnect()
       priceChart.current?.remove()
       rsiChart.current?.remove()
       macdChart.current?.remove()
@@ -352,8 +336,11 @@ export function GIP() {
     macdLineSer.current?.setData(macdLine.map(toTS))
     macdSigSer.current?.setData(signalLine.map(toTS))
 
-    priceChart.current?.timeScale().fitContent()
-    volChart.current?.timeScale().fitContent()
+    // Defer fitContent so autoSize has time to measure the container
+    setTimeout(() => {
+      priceChart.current?.timeScale().fitContent()
+      volChart.current?.timeScale().fitContent()
+    }, 50)
   }, [data, showSMA20, showSMA50, showSMA200, showEMA21, showBB, showVWAP, range])
 
   // ── UI helpers ─────────────────────────────────────────────────────────────

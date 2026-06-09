@@ -107,6 +107,10 @@ export function useQuoteWebSocket(symbol: string): LiveTick | null {
   }, [])
 
   useEffect(() => {
+    // Clear stale price from previous ticker immediately
+    setTick(null)
+    lastPrice.current = null
+
     let cancelled = false
 
     const setup = async () => {
