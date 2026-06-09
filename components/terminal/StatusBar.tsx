@@ -60,7 +60,7 @@ export function StatusBar() {
 
       {statuses.map(s => (
         <span key={s.label} title={s.session}>
-          <span style={{ color: '#444' }}>{s.label}: </span>
+          <span style={{ color: '#e8e8e8' }}>{s.label}: </span>
           <span style={{ color: s.open ? '#33ff66' : '#ff3b3b', fontWeight: 'bold' }}>
             {s.open ? '● OPEN' : '○ CLOSED'}
           </span>
@@ -68,7 +68,7 @@ export function StatusBar() {
       ))}
 
       <span style={{ flex: 1 }} />
-      <span style={{ color: '#333' }}>BLOOMBERG TERMINAL v1.0 — OAKWOOD CAPITAL</span>
+      <span style={{ color: '#e8e8e8' }}>BLOOMBERG TERMINAL v1.0 — OAKWOOD CAPITAL</span>
     </div>
   )
 }

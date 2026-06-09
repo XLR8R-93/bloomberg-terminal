@@ -134,7 +134,7 @@ function NavBtn({ code }: { code: string }) {
         border: 'none',
         borderRight: '1px solid #1f1f1f',
         borderBottom: isActive ? '2px solid #ffa028' : '2px solid transparent',
-        color: isActive ? '#ffa028' : '#555',
+        color: isActive ? '#ffa028' : '#c0c0c0',
         padding: '0 10px',
         cursor: 'pointer',
         font: 'inherit',
@@ -213,7 +213,7 @@ export function TerminalApp() {
               }}
             >
               <span style={{
-                color: isActive ? '#ffa028' : '#555',
+                color: isActive ? '#ffa028' : '#c0c0c0',
                 fontSize: 10,
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
