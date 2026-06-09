@@ -35,7 +35,10 @@ export function StatusBar() {
   useEffect(() => {
     const tick = () => {
       const now = new Date()
-      setTime(now.toLocaleTimeString('en-AU', { timeZone: 'Australia/Sydney', hour12: false }) + ' AEST')
+      // Extract the timezone abbreviation directly — automatically AEST or AEDT
+      const tzParts = new Intl.DateTimeFormat('en-AU', { timeZone: 'Australia/Sydney', timeZoneName: 'short' }).formatToParts(now)
+      const tzLabel = tzParts.find(p => p.type === 'timeZoneName')?.value ?? 'AEST'
+      setTime(now.toLocaleTimeString('en-AU', { timeZone: 'Australia/Sydney', hour12: false }) + ' ' + tzLabel)
       setStatuses(getMarketStatuses())
     }
     tick()
