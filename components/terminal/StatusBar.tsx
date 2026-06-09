@@ -35,7 +35,7 @@ export function StatusBar() {
   useEffect(() => {
     const tick = () => {
       const now = new Date()
-      setTime(now.toLocaleTimeString('en-US', { timeZone: 'America/New_York', hour12: false }) + ' ET')
+      setTime(now.toLocaleTimeString('en-AU', { timeZone: 'Australia/Sydney', hour12: false }) + ' AEST')
       setStatuses(getMarketStatuses())
     }
     tick()
