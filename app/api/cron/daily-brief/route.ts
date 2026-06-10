@@ -3,7 +3,9 @@ import { Resend } from 'resend'
 import { fetchCrumb } from '@/lib/providers/yahoo'
 import { finnhub } from '@/lib/providers/finnhub'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+// Defer construction — Resend throws at new-time if key is missing,
+// which breaks Next.js build-time page collection.
+function getResend() { return new Resend(process.env.RESEND_API_KEY!) }
 
 const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
 
@@ -268,7 +270,7 @@ export async function GET(req: NextRequest) {
 
   const html = buildEmail(date, indices, news, portfolio)
 
-  const { error } = await resend.emails.send({
+  const { error } = await getResend().emails.send({
     from:    FROM_EMAIL,
     to:      [TO_EMAIL],
     subject: `Oakwood Capital — Daily Brief ${date}`,
