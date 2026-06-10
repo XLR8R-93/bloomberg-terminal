@@ -2,7 +2,7 @@ import { type NextRequest } from 'next/server'
 import Groq from 'groq-sdk'
 import { getCached, setCached } from '@/lib/cache'
 
-const groq = new Groq({ apiKey: process.env.GROQ_API_KEY })
+function getGroq() { return new Groq({ apiKey: process.env.GROQ_API_KEY }) }
 const UA = 'Mozilla/5.0 (compatible; OakwoodCapital/1.0)'
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -573,7 +573,7 @@ Return ONLY valid JSON (do NOT change recommendation/conviction/targetPrice — 
 Rules: thesisRows exactly 3, keyRisks exactly 4. Australian English.`
 
   try {
-    const completion = await groq.chat.completions.create({
+    const completion = await getGroq().chat.completions.create({
       model: 'llama-3.3-70b-versatile',
       messages: [
         { role: 'system', content: 'JSON-only responder. No prose, no markdown.' },
