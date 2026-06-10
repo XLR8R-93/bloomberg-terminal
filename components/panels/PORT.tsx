@@ -2874,10 +2874,8 @@ function TickerTagInput({ tickers, onChange }: { tickers: string[]; onChange: (t
   const dropRef     = useRef<HTMLDivElement>(null)
   const inputRef    = useRef<HTMLInputElement>(null)
 
-  // Trigger search on query change
-  useEffect(() => {
+  function triggerSearch(q: string) {
     if (debounceRef.current) clearTimeout(debounceRef.current)
-    const q = query.trim()
     if (q.length < 2) { setResults([]); setLoading(false); return }
     setLoading(true)
     debounceRef.current = setTimeout(async () => {
@@ -2888,7 +2886,7 @@ function TickerTagInput({ tickers, onChange }: { tickers: string[]; onChange: (t
       } catch { setResults([]) }
       finally  { setLoading(false) }
     }, 200)
-  }, [query])
+  }
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -2953,7 +2951,7 @@ function TickerTagInput({ tickers, onChange }: { tickers: string[]; onChange: (t
       <input
         ref={inputRef}
         value={query}
-        onChange={e => { setQuery(e.target.value); setActiveIdx(-1) }}
+        onChange={e => { const v = e.target.value; setQuery(v); setActiveIdx(-1); triggerSearch(v.trim()) }}
         onKeyDown={handleKeyDown}
         placeholder={tickers.length === 0 ? 'Search ticker…' : ''}
         spellCheck={false}
