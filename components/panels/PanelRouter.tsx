@@ -24,6 +24,7 @@ import { MACRO } from './MACRO'
 import { ECAL } from './ECAL'
 import { INS } from './INS'
 import { MMAP } from './MMAP'
+import { MEMO } from './MEMO'
 
 export function PanelRouter() {
   // Prefer pane-local view; fall back to global activeView
@@ -53,6 +54,7 @@ export function PanelRouter() {
     case 'ECAL':  return <ECAL />
     case 'INS':   return <INS />
     case 'MMAP':  return <MMAP />
+    case 'MEMO':  return <MEMO />
     case 'HELP': return <HELP />
     default:     return <GIP />
   }

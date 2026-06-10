@@ -24,6 +24,9 @@
 
 * { box-sizing: border-box; }
 
+/* Hide lightweight-charts TradingView attribution logo */
+.tv-lightweight-charts a[href*="tradingview"] { display: none !important; }
+
 html, body {
   margin: 0; padding: 0;
   background: var(--bg);

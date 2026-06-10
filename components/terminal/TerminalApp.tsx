@@ -270,7 +270,7 @@ export function TerminalApp() {
         height: 22,
         alignItems: 'stretch',
       }}>
-        {(['GIP', 'DES', 'KS', 'FA', 'CN', 'EE', 'EST', 'RV', 'OPT', 'ECON', 'MACRO', 'ECAL', 'INS', 'MMAP', 'TOP', 'WB', 'GLCO', 'PORT', 'SCRN', 'TV', 'WL', 'HELP'] as const).map((code) => (
+        {(['GIP', 'DES', 'KS', 'FA', 'CN', 'EE', 'EST', 'RV', 'OPT', 'ECON', 'MACRO', 'ECAL', 'INS', 'MMAP', 'TOP', 'WB', 'GLCO', 'PORT', 'SCRN', 'TV', 'WL', 'MEMO', 'HELP'] as const).map((code) => (
           <NavBtn key={code} code={code} />
         ))}
         {/* Spacer */}

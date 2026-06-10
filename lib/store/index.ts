@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
-export type PanelView = 'DES' | 'GIP' | 'FA' | 'KS' | 'CN' | 'EE' | 'EST' | 'RV' | 'WL' | 'TOP' | 'TV' | 'WB' | 'GLCO' | 'PORT' | 'SCRN' | 'OPT' | 'ECON' | 'MACRO' | 'ECAL' | 'INS' | 'MMAP' | 'CORR' | 'HELP'
+export type PanelView = 'DES' | 'GIP' | 'FA' | 'KS' | 'CN' | 'EE' | 'EST' | 'RV' | 'WL' | 'TOP' | 'TV' | 'WB' | 'GLCO' | 'PORT' | 'SCRN' | 'OPT' | 'ECON' | 'MACRO' | 'ECAL' | 'INS' | 'MMAP' | 'CORR' | 'MEMO' | 'HELP'
 
 export type LayoutMode = '1x1' | '2h' | '2v' | '2x2'
 
