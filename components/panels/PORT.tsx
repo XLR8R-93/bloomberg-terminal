@@ -2841,21 +2841,182 @@ function CorrView({ positions }: { positions: Position[] }) {
   )
 }
 
+// ── Ticker search result type (mirrors finnhub SearchResult) ──────────────────
+interface SearchResult { symbol: string; displaySymbol: string; description: string; type: string }
+
+function exchangeLabel(symbol: string): string {
+  if (symbol.endsWith('.AX')) return 'ASX'
+  if (symbol.endsWith('.L'))  return 'LSE'
+  if (symbol.endsWith('.T'))  return 'TSE'
+  if (symbol.endsWith('.HK')) return 'HKEX'
+  if (symbol.endsWith('.PA')) return 'EURONEXT'
+  if (symbol.endsWith('.DE')) return 'XETRA'
+  if (symbol.endsWith('.TO')) return 'TSX'
+  return 'US'
+}
+
+function typeBadge(type: string): [string, string] {
+  if (type.includes('ETF') || type === 'ETP') return ['ETF', '#ffa028']
+  if (type.includes('Common'))               return ['EQ',  '#4d9fff']
+  if (type === 'ADR')                        return ['ADR', '#aa66ff']
+  if (type.includes('Preferred'))            return ['PRF', '#ff6ec7']
+  if (type === 'Fund')                       return ['FND', '#33ff99']
+  return [type.slice(0, 3).toUpperCase(), '#555']
+}
+
+// Multi-ticker input with live search dropdown
+function TickerTagInput({ tickers, onChange }: { tickers: string[]; onChange: (t: string[]) => void }) {
+  const [query,      setQuery]      = useState('')
+  const [results,    setResults]    = useState<SearchResult[]>([])
+  const [loading,    setLoading]    = useState(false)
+  const [activeIdx,  setActiveIdx]  = useState(-1)
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const dropRef     = useRef<HTMLDivElement>(null)
+  const inputRef    = useRef<HTMLInputElement>(null)
+
+  // Trigger search on query change
+  useEffect(() => {
+    if (debounceRef.current) clearTimeout(debounceRef.current)
+    const q = query.trim()
+    if (q.length < 2) { setResults([]); setLoading(false); return }
+    setLoading(true)
+    debounceRef.current = setTimeout(async () => {
+      try {
+        const res  = await fetch(`/api/search?q=${encodeURIComponent(q)}`)
+        const json = await res.json()
+        setResults((json.result ?? []).slice(0, 8))
+      } catch { setResults([]) }
+      finally  { setLoading(false) }
+    }, 200)
+  }, [query])
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (dropRef.current && !dropRef.current.contains(e.target as Node)) {
+        setResults([]); setActiveIdx(-1)
+      }
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [])
+
+  function addTicker(symbol: string) {
+    const sym = symbol.toUpperCase().trim()
+    if (!sym || tickers.includes(sym)) { setQuery(''); setResults([]); return }
+    onChange([...tickers, sym])
+    setQuery(''); setResults([]); setActiveIdx(-1)
+    setTimeout(() => inputRef.current?.focus(), 0)
+  }
+
+  function removeTicker(sym: string) { onChange(tickers.filter(t => t !== sym)) }
+
+  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (results.length > 0) {
+      if (e.key === 'ArrowDown') { e.preventDefault(); setActiveIdx(i => Math.min(results.length - 1, i + 1)); return }
+      if (e.key === 'ArrowUp')   { e.preventDefault(); setActiveIdx(i => Math.max(0, i - 1)); return }
+      if (e.key === 'Escape')    { setResults([]); setActiveIdx(-1); return }
+      if (e.key === 'Enter') {
+        e.preventDefault()
+        if (activeIdx >= 0) addTicker(results[activeIdx].symbol)
+        else if (query.trim()) addTicker(query)
+        return
+      }
+    } else {
+      if (e.key === 'Enter' && query.trim()) { e.preventDefault(); addTicker(query); return }
+      if (e.key === 'Backspace' && !query && tickers.length > 0) {
+        onChange(tickers.slice(0, -1)); return
+      }
+    }
+  }
+
+  const showDrop = results.length > 0 || (loading && query.trim().length >= 2)
+
+  return (
+    <div style={{ position: 'relative', display: 'inline-flex', flexWrap: 'wrap', alignItems: 'center', gap: 4,
+      minWidth: 280, maxWidth: 480, background: '#0a0a0a', border: '1px solid #2a2a2a',
+      padding: '3px 6px', cursor: 'text' }}
+      onClick={() => inputRef.current?.focus()}
+    >
+      {/* Existing ticker chips */}
+      {tickers.map(t => (
+        <span key={t} style={{ display: 'inline-flex', alignItems: 'center', gap: 3,
+          background: '#0d1a0d', border: '1px solid #1e3d1e', color: '#ffa028',
+          fontSize: 10, padding: '1px 5px', fontFamily: 'monospace', letterSpacing: '0.04em' }}>
+          {t}
+          <span onClick={e => { e.stopPropagation(); removeTicker(t) }}
+            style={{ color: '#555', cursor: 'pointer', marginLeft: 1, lineHeight: 1 }}>×</span>
+        </span>
+      ))}
+
+      {/* Typing input */}
+      <input
+        ref={inputRef}
+        value={query}
+        onChange={e => { setQuery(e.target.value); setActiveIdx(-1) }}
+        onKeyDown={handleKeyDown}
+        placeholder={tickers.length === 0 ? 'Search ticker…' : ''}
+        spellCheck={false}
+        autoComplete="off"
+        style={{ flex: 1, minWidth: 100, background: 'transparent', border: 'none', outline: 'none',
+          color: '#e8e8e8', fontFamily: 'inherit', fontSize: 11 }}
+      />
+
+      {/* Dropdown */}
+      {showDrop && (
+        <div ref={dropRef} style={{ position: 'absolute', top: '100%', left: 0, right: 0, marginTop: 2,
+          background: '#050505', border: '1px solid #2a2a2a', zIndex: 300,
+          boxShadow: '0 8px 24px rgba(0,0,0,0.8)', minWidth: 320 }}>
+          {loading && results.length === 0 && (
+            <div style={{ padding: '6px 10px', color: '#555', fontSize: 10 }}>Searching…</div>
+          )}
+          {results.map((s, i) => {
+            const [badge, badgeColor] = typeBadge(s.type)
+            const active = i === activeIdx
+            return (
+              <div key={s.symbol}
+                onMouseDown={e => { e.preventDefault(); addTicker(s.symbol) }}
+                onMouseEnter={() => setActiveIdx(i)}
+                style={{ padding: '5px 10px', cursor: 'pointer',
+                  background: active ? '#0c180c' : 'transparent',
+                  borderBottom: '1px solid #0d0d0d',
+                  display: 'flex', alignItems: 'center', gap: 10 }}>
+                <span style={{ color: active ? '#ffa028' : '#d4d4d4', fontSize: 11, fontWeight: 'bold', minWidth: 80, letterSpacing: '0.04em' }}>
+                  {s.displaySymbol}
+                </span>
+                <span style={{ color: '#b8b8b8', fontSize: 10, flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {s.description}
+                </span>
+                <span style={{ color: '#aaaaaa', fontSize: 9, minWidth: 40, textAlign: 'right', letterSpacing: '0.04em' }}>
+                  {exchangeLabel(s.symbol)}
+                </span>
+                <span style={{ color: badgeColor, fontSize: 8, minWidth: 28, textAlign: 'center',
+                  border: `1px solid ${badgeColor}55`, padding: '1px 4px', letterSpacing: '0.04em' }}>
+                  {badge}
+                </span>
+              </div>
+            )
+          })}
+        </div>
+      )}
+    </div>
+  )
+}
+
 // ── OPTIMIZER view ────────────────────────────────────────────────────────────
 function OptimizerView({ positions }: { positions: Position[] }) {
   const portTickers = useMemo(() => Array.from(new Set(positions.map(p => p.ticker))), [positions])
 
   const [tickerSource, setTickerSource] = useState<'portfolio' | 'custom'>('portfolio')
-  const [customInput,  setCustomInput]  = useState('')
-  const [submitted,    setSubmitted]    = useState<string[]>([])
+  const [customTickers, setCustomTickers] = useState<string[]>([])
   const [simCount,     setSimCount]     = useState(20000)
   const [rfRate,       setRfRate]       = useState(4.35)
 
   // Determine active tickers
   const activeTickers: string[] = useMemo(() => {
     if (tickerSource === 'portfolio') return portTickers
-    return submitted
-  }, [tickerSource, portTickers, submitted])
+    return customTickers
+  }, [tickerSource, portTickers, customTickers])
 
   const queries = useQueries({
     queries: activeTickers.map(ticker => ({
@@ -2906,14 +3067,6 @@ function OptimizerView({ positions }: { positions: Position[] }) {
     return { portfolios, maxSharpePort, minVolPort }
   }, [dataReady, means, cov, simCount, rfRate])
 
-  function handleRunCustom() {
-    const tickers = customInput
-      .split(/[\s,;]+/)
-      .map(s => s.trim().toUpperCase())
-      .filter(Boolean)
-    setSubmitted(tickers)
-  }
-
   function fmtPct(v: number) { return (v * 100).toFixed(1) + '%' }
   function fmtPctAnn(v: number) { return (v * 100).toFixed(1) + '%' }
 
@@ -2948,11 +3101,6 @@ function OptimizerView({ positions }: { positions: Position[] }) {
   const maxSharpeSVG = maxSharpePort ? toSVG(maxSharpePort.vol, maxSharpePort.ret) : null
   const minVolSVG    = minVolPort    ? toSVG(minVolPort.vol,    minVolPort.ret)    : null
 
-  const inputStyle: React.CSSProperties = {
-    background: '#0a0a0a', border: '1px solid #222', color: '#e8e8e8',
-    fontFamily: 'inherit', fontSize: 11, padding: '3px 8px', outline: 'none',
-  }
-
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
 
@@ -2970,19 +3118,7 @@ function OptimizerView({ positions }: { positions: Position[] }) {
         ))}
 
         {tickerSource === 'custom' && (
-          <>
-            <input
-              value={customInput}
-              onChange={e => setCustomInput(e.target.value)}
-              onKeyDown={e => e.key === 'Enter' && handleRunCustom()}
-              placeholder="AAPL, MSFT, BHP.AX …"
-              style={{ ...inputStyle, width: 220 }}
-            />
-            <button onClick={handleRunCustom} style={{
-              ...inputStyle, cursor: 'pointer', padding: '3px 10px',
-              borderColor: '#ffa028', color: '#ffa028',
-            }}>RUN</button>
-          </>
+          <TickerTagInput tickers={customTickers} onChange={setCustomTickers} />
         )}
 
         <span style={{ color: '#888', fontSize: 9, marginLeft: 4 }}>SIM:</span>
@@ -2999,7 +3135,7 @@ function OptimizerView({ positions }: { positions: Position[] }) {
           type="number" step="0.05" min="0" max="20"
           value={rfRate}
           onChange={e => setRfRate(parseFloat(e.target.value) || 0)}
-          style={{ ...inputStyle, width: 52, textAlign: 'right' }}
+          style={{ background: '#0a0a0a', border: '1px solid #222', color: '#e8e8e8', fontFamily: 'inherit', fontSize: 11, padding: '3px 8px', outline: 'none', width: 52, textAlign: 'right' }}
         />
         <span style={{ color: '#666', fontSize: 9 }}>%</span>
 
