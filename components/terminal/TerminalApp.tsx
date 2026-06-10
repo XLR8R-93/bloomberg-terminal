@@ -11,6 +11,7 @@ import { PanelRouter } from '@/components/panels/PanelRouter'
 import { MenuOverlay } from '@/components/panels/MenuOverlay'
 import { useTerminalStore, type LayoutMode, type Pane } from '@/lib/store'
 import { PaneContext } from '@/lib/pane-context'
+import { IndexBar } from '@/components/terminal/IndexBar'
 import { X, Plus } from 'lucide-react'
 
 // Fetches company name for a tab and updates its label
@@ -256,6 +257,7 @@ export function TerminalApp() {
       <CommandBar />
       <AlertMonitor />
       <QuoteHeader />
+      <IndexBar />
       <TickerTape />
 
       {/* Function nav strip */}
