@@ -40,7 +40,7 @@ export class ErrorBoundary extends Component<Props, State> {
             RESET STATE &amp; RELOAD
           </button>
         </div>
-        <div style={{ color: '#333', fontSize: 10, marginTop: 4 }}>
+        <div style={{ color: '#888', fontSize: 10, marginTop: 4 }}>
           "RESET STATE" clears your watchlist and resets to defaults. Use if a bad ticker broke the app.
         </div>
       </div>

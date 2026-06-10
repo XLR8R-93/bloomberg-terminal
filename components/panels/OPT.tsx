@@ -52,8 +52,8 @@ function OptionRow({ opt, isCall, spotPrice, isATM }: {
           </td>
           <td style={{ padding: '2px 6px', color: '#e8e8e8', fontSize: 10, textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>{fmt(opt.delta)}</td>
           <td style={{ padding: '2px 6px', color: '#c0c0c0', fontSize: 10, textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>{fmt(opt.impliedVol * 100, 1)}%</td>
-          <td style={{ padding: '2px 6px', color: '#777', fontSize: 10, textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>{fmtVol(opt.openInterest)}</td>
-          <td style={{ padding: '2px 6px', color: '#777', fontSize: 10, textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>{fmtVol(opt.volume)}</td>
+          <td style={{ padding: '2px 6px', color: '#c0c0c0', fontSize: 10, textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>{fmtVol(opt.openInterest)}</td>
+          <td style={{ padding: '2px 6px', color: '#c0c0c0', fontSize: 10, textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>{fmtVol(opt.volume)}</td>
           <td style={{ padding: '2px 6px', color: '#d8d8d8', fontSize: 10, textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>{fmt(opt.bid)}</td>
           <td style={{ padding: '2px 6px', color: '#d8d8d8', fontSize: 10, textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>{fmt(opt.ask)}</td>
           <td style={{ padding: '2px 6px', color: '#e8e8e8', fontSize: 10, textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>{fmt(mid)}</td>
@@ -81,8 +81,8 @@ function OptionRow({ opt, isCall, spotPrice, isATM }: {
           <td style={{ padding: '2px 6px', color: '#e8e8e8', fontSize: 10, textAlign: 'left', fontVariantNumeric: 'tabular-nums' }}>{fmt(mid)}</td>
           <td style={{ padding: '2px 6px', color: '#d8d8d8', fontSize: 10, textAlign: 'left', fontVariantNumeric: 'tabular-nums' }}>{fmt(opt.bid)}</td>
           <td style={{ padding: '2px 6px', color: '#d8d8d8', fontSize: 10, textAlign: 'left', fontVariantNumeric: 'tabular-nums' }}>{fmt(opt.ask)}</td>
-          <td style={{ padding: '2px 6px', color: '#777', fontSize: 10, textAlign: 'left', fontVariantNumeric: 'tabular-nums' }}>{fmtVol(opt.volume)}</td>
-          <td style={{ padding: '2px 6px', color: '#777', fontSize: 10, textAlign: 'left', fontVariantNumeric: 'tabular-nums' }}>{fmtVol(opt.openInterest)}</td>
+          <td style={{ padding: '2px 6px', color: '#c0c0c0', fontSize: 10, textAlign: 'left', fontVariantNumeric: 'tabular-nums' }}>{fmtVol(opt.volume)}</td>
+          <td style={{ padding: '2px 6px', color: '#c0c0c0', fontSize: 10, textAlign: 'left', fontVariantNumeric: 'tabular-nums' }}>{fmtVol(opt.openInterest)}</td>
           <td style={{ padding: '2px 6px', color: '#c0c0c0', fontSize: 10, textAlign: 'left', fontVariantNumeric: 'tabular-nums' }}>{fmt(opt.impliedVol * 100, 1)}%</td>
           <td style={{ padding: '2px 6px', color: '#e8e8e8', fontSize: 10, textAlign: 'left', fontVariantNumeric: 'tabular-nums' }}>{fmt(opt.delta)}</td>
           <td style={{ padding: '2px 6px', color: itm ? '#ff3b3b' : dimClr, fontSize: 9, textAlign: 'left' }}>
@@ -143,13 +143,13 @@ export function OPT() {
     Math.abs(s - S) < Math.abs(best - S) ? s : best, allStrikes[0] ?? 0)
 
   const hdr = (label: string, align: 'left' | 'right' | 'center' = 'right') => (
-    <th style={{ color: '#444', fontSize: 9, padding: '2px 6px', textAlign: align, fontWeight: 'normal', letterSpacing: '0.06em', borderBottom: '1px solid #111', whiteSpace: 'nowrap' }}>
+    <th style={{ color: '#aaaaaa', fontSize: 9, padding: '2px 6px', textAlign: align, fontWeight: 'normal', letterSpacing: '0.06em', borderBottom: '1px solid #111', whiteSpace: 'nowrap' }}>
       {label}
     </th>
   )
 
   if (!activeTicker) return (
-    <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#333' }}>
+    <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#888' }}>
       Enter a ticker in the command bar
     </div>
   )
@@ -167,15 +167,15 @@ export function OPT() {
         <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
           {chainOk && (
             <>
-              <span style={{ color: '#444', fontSize: 9 }}>P/C RATIO:</span>
+              <span style={{ color: '#aaaaaa', fontSize: 9 }}>P/C RATIO:</span>
               <span style={{ color: (chain.pcRatio ?? 0) > 1 ? '#ff3b3b' : '#33ff66', fontSize: 10 }}>
                 {(chain.pcRatio ?? 0).toFixed(2)}
               </span>
-              <span style={{ color: '#444', fontSize: 9 }}>ATM IV:</span>
+              <span style={{ color: '#aaaaaa', fontSize: 9 }}>ATM IV:</span>
               <span style={{ color: '#ffa028', fontSize: 10 }}>{fmtPct(chain.atmIV)}</span>
             </>
           )}
-          <span style={{ color: '#444', fontSize: 9 }}>RANGE:</span>
+          <span style={{ color: '#aaaaaa', fontSize: 9 }}>RANGE:</span>
           {(['10%', '20%', 'all'] as const).map(r => (
             <button key={r} onClick={() => setStrikeRange(r)} style={{
               background: strikeRange === r ? '#0d1a0d' : 'none',
@@ -207,7 +207,7 @@ export function OPT() {
               whiteSpace: 'nowrap',
             }}>
               {fmtExpiry(ts)}
-              <span style={{ color: '#333', marginLeft: 4 }}>{days}d</span>
+              <span style={{ color: '#888', marginLeft: 4 }}>{days}d</span>
             </button>
           )
         })}
@@ -215,7 +215,7 @@ export function OPT() {
 
       {/* Loading / error */}
       {isLoading && (
-        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#444' }}>
+        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#aaaaaa' }}>
           Loading option chain…
         </div>
       )}
@@ -227,7 +227,7 @@ export function OPT() {
 
       {/* Chain table */}
       {!isLoading && !chainOk && !error && (
-        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#555', fontSize: 11 }}>
+        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#b0b0b0', fontSize: 11 }}>
           No option chain available for {activeTicker} — options may not trade on this symbol
         </div>
       )}
@@ -276,13 +276,13 @@ export function OPT() {
                 return (
                   <tr key={strike} style={{ background: isATM ? '#0d160d' : 'transparent', borderBottom: '1px solid #0a0a0a' }}>
                     {/* CALL side */}
-                    <td style={{ padding: '2px 6px', color: call?.inTheMoney ? '#33ff66' : '#444', fontSize: 9, textAlign: 'right' }}>
+                    <td style={{ padding: '2px 6px', color: call?.inTheMoney ? '#33ff66' : '#aaaaaa', fontSize: 9, textAlign: 'right' }}>
                       {call ? (call.inTheMoney ? 'ITM' : 'OTM') : ''}
                     </td>
                     <td style={{ padding: '2px 6px', color: '#e8e8e8', fontSize: 10, textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>{call ? fmt(call.delta) : '—'}</td>
                     <td style={{ padding: '2px 6px', color: '#c0c0c0', fontSize: 10, textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>{call ? fmt(call.impliedVol * 100, 1) + '%' : '—'}</td>
-                    <td style={{ padding: '2px 6px', color: '#666', fontSize: 10, textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>{call ? fmtVol(call.openInterest) : '—'}</td>
-                    <td style={{ padding: '2px 6px', color: '#666', fontSize: 10, textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>{call ? fmtVol(call.volume) : '—'}</td>
+                    <td style={{ padding: '2px 6px', color: '#b8b8b8', fontSize: 10, textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>{call ? fmtVol(call.openInterest) : '—'}</td>
+                    <td style={{ padding: '2px 6px', color: '#b8b8b8', fontSize: 10, textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>{call ? fmtVol(call.volume) : '—'}</td>
                     <td style={{ padding: '2px 6px', color: '#d8d8d8', fontSize: 10, textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>{call ? fmt(call.bid) : '—'}</td>
                     <td style={{ padding: '2px 6px', color: '#d8d8d8', fontSize: 10, textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>{call ? fmt(call.ask) : '—'}</td>
                     <td style={{ padding: '2px 6px', color: '#ddd', fontSize: 10, textAlign: 'right', fontVariantNumeric: 'tabular-nums', fontWeight: 'bold' }}>
@@ -306,11 +306,11 @@ export function OPT() {
                     </td>
                     <td style={{ padding: '2px 6px', color: '#d8d8d8', fontSize: 10, textAlign: 'left', fontVariantNumeric: 'tabular-nums' }}>{put ? fmt(put.bid) : '—'}</td>
                     <td style={{ padding: '2px 6px', color: '#d8d8d8', fontSize: 10, textAlign: 'left', fontVariantNumeric: 'tabular-nums' }}>{put ? fmt(put.ask) : '—'}</td>
-                    <td style={{ padding: '2px 6px', color: '#666', fontSize: 10, textAlign: 'left', fontVariantNumeric: 'tabular-nums' }}>{put ? fmtVol(put.volume) : '—'}</td>
-                    <td style={{ padding: '2px 6px', color: '#666', fontSize: 10, textAlign: 'left', fontVariantNumeric: 'tabular-nums' }}>{put ? fmtVol(put.openInterest) : '—'}</td>
+                    <td style={{ padding: '2px 6px', color: '#b8b8b8', fontSize: 10, textAlign: 'left', fontVariantNumeric: 'tabular-nums' }}>{put ? fmtVol(put.volume) : '—'}</td>
+                    <td style={{ padding: '2px 6px', color: '#b8b8b8', fontSize: 10, textAlign: 'left', fontVariantNumeric: 'tabular-nums' }}>{put ? fmtVol(put.openInterest) : '—'}</td>
                     <td style={{ padding: '2px 6px', color: '#c0c0c0', fontSize: 10, textAlign: 'left', fontVariantNumeric: 'tabular-nums' }}>{put ? fmt(put.impliedVol * 100, 1) + '%' : '—'}</td>
                     <td style={{ padding: '2px 6px', color: '#e8e8e8', fontSize: 10, textAlign: 'left', fontVariantNumeric: 'tabular-nums' }}>{put ? fmt(put.delta) : '—'}</td>
-                    <td style={{ padding: '2px 6px', color: put?.inTheMoney ? '#ff3b3b' : '#444', fontSize: 9, textAlign: 'left' }}>
+                    <td style={{ padding: '2px 6px', color: put?.inTheMoney ? '#ff3b3b' : '#aaaaaa', fontSize: 9, textAlign: 'left' }}>
                       {put ? (put.inTheMoney ? 'ITM' : 'OTM') : ''}
                     </td>
                   </tr>
@@ -320,7 +320,7 @@ export function OPT() {
           </table>
 
           {rows.length === 0 && !isLoading && (
-            <div style={{ padding: 20, color: '#333', textAlign: 'center', fontSize: 11 }}>
+            <div style={{ padding: 20, color: '#888', textAlign: 'center', fontSize: 11 }}>
               No options data for this expiry
             </div>
           )}
@@ -337,8 +337,8 @@ export function OPT() {
             ['VOL', 'Volume traded today'],
             ['MID', 'Mid-point of bid/ask spread'],
           ].map(([k, v]) => (
-            <span key={k} style={{ fontSize: 8, color: '#333' }}>
-              <span style={{ color: '#555' }}>{k}</span> {v}
+            <span key={k} style={{ fontSize: 8, color: '#888' }}>
+              <span style={{ color: '#b0b0b0' }}>{k}</span> {v}
             </span>
           ))}
         </div>

@@ -250,7 +250,7 @@ export function CommandBar() {
 
         {/* Searching spinner */}
         {searching && (
-          <span style={{ color: '#444', fontSize: 9, flexShrink: 0 }}>searching…</span>
+          <span style={{ color: '#aaaaaa', fontSize: 9, flexShrink: 0 }}>searching…</span>
         )}
       </div>
 
@@ -286,12 +286,12 @@ export function CommandBar() {
                 </span>
 
                 {/* Name */}
-                <span style={{ color: '#666', fontSize: 10, flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                <span style={{ color: '#b8b8b8', fontSize: 10, flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                   {s.description}
                 </span>
 
                 {/* Exchange */}
-                <span style={{ color: '#444', fontSize: 9, minWidth: 40, textAlign: 'right', letterSpacing: '0.04em' }}>
+                <span style={{ color: '#aaaaaa', fontSize: 9, minWidth: 40, textAlign: 'right', letterSpacing: '0.04em' }}>
                   {exch}
                 </span>
 
@@ -311,7 +311,7 @@ export function CommandBar() {
             {[['↑↓', 'navigate'], ['↵', 'select'], ['Esc', 'dismiss']].map(([key, label]) => (
               <span key={key} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                 <span style={{ color: '#ffa028', fontSize: 8, border: '1px solid #333', padding: '0 3px' }}>{key}</span>
-                <span style={{ color: '#333', fontSize: 8 }}>{label}</span>
+                <span style={{ color: '#888', fontSize: 8 }}>{label}</span>
               </span>
             ))}
             <span style={{ marginLeft: 'auto', color: '#222', fontSize: 8 }}>append GIP · DES · FA · OPT after symbol</span>

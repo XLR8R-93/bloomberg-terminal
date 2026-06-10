@@ -149,7 +149,7 @@ export function CORR() {
       <div className="panel-header" style={{ justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <span className="panel-mnemonic">CORR</span>
-          <span style={{ color: '#444', fontSize: 10 }}>CORRELATION MATRIX</span>
+          <span style={{ color: '#aaaaaa', fontSize: 10 }}>CORRELATION MATRIX</span>
         </div>
         <div style={{ display: 'flex', gap: 4, alignItems: 'center' }}>
           {/* Source */}
@@ -157,7 +157,7 @@ export function CORR() {
             <button key={s} onClick={() => setSource(s)} style={{
               background: source === s ? '#0a1a0a' : 'none',
               border: `1px solid ${source === s ? '#ffa028' : '#222'}`,
-              color: source === s ? '#ffa028' : '#444',
+              color: source === s ? '#ffa028' : '#aaaaaa',
               fontFamily: 'inherit', fontSize: 8, padding: '1px 7px', cursor: 'pointer',
               letterSpacing: '0.04em', textTransform: 'uppercase',
             }}>{s}</button>
@@ -168,7 +168,7 @@ export function CORR() {
             <button key={r} onClick={() => setRange(r)} style={{
               background: range === r ? '#0a1a0a' : 'none',
               border: `1px solid ${range === r ? '#ffa028' : '#222'}`,
-              color: range === r ? '#ffa028' : '#444',
+              color: range === r ? '#ffa028' : '#aaaaaa',
               fontFamily: 'inherit', fontSize: 8, padding: '1px 7px', cursor: 'pointer',
             }}>{r}</button>
           ))}
@@ -177,7 +177,7 @@ export function CORR() {
 
       {empty && (
         <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 8 }}>
-          <div style={{ color: '#444', fontSize: 11 }}>No {source} holdings</div>
+          <div style={{ color: '#aaaaaa', fontSize: 11 }}>No {source} holdings</div>
           <div style={{ color: '#2a2a2a', fontSize: 9 }}>
             {source === 'portfolio' ? 'Add positions in PORT' : 'Add tickers to watchlist with WL ADD <TICKER>'}
           </div>
@@ -185,13 +185,13 @@ export function CORR() {
       )}
 
       {!empty && loading && (
-        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#444' }}>
+        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#aaaaaa' }}>
           Loading price history for {tickers.length} tickers…
         </div>
       )}
 
       {!empty && !loading && n < 2 && (
-        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#444', fontSize: 11 }}>
+        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#aaaaaa', fontSize: 11 }}>
           Need at least 2 tickers with available price history
         </div>
       )}
@@ -202,11 +202,11 @@ export function CORR() {
           {/* Summary bar */}
           <div style={{ display: 'flex', gap: 24, padding: '8px 14px', borderBottom: '1px solid #111', flexShrink: 0 }}>
             <div>
-              <div style={{ color: '#333', fontSize: 8, letterSpacing: '0.06em' }}>TICKERS</div>
+              <div style={{ color: '#888', fontSize: 8, letterSpacing: '0.06em' }}>TICKERS</div>
               <div style={{ color: '#b0b0b0', fontSize: 14, fontWeight: 'bold' }}>{n}</div>
             </div>
             <div>
-              <div style={{ color: '#333', fontSize: 8, letterSpacing: '0.06em' }}>AVG CORRELATION</div>
+              <div style={{ color: '#888', fontSize: 8, letterSpacing: '0.06em' }}>AVG CORRELATION</div>
               <div style={{
                 fontSize: 14, fontWeight: 'bold',
                 color: avgCorr == null ? '#555'
@@ -218,7 +218,7 @@ export function CORR() {
               </div>
             </div>
             <div>
-              <div style={{ color: '#333', fontSize: 8, letterSpacing: '0.06em' }}>DIVERSIFICATION</div>
+              <div style={{ color: '#888', fontSize: 8, letterSpacing: '0.06em' }}>DIVERSIFICATION</div>
               <div style={{
                 fontSize: 14, fontWeight: 'bold',
                 color: avgCorr == null ? '#555'
@@ -246,7 +246,7 @@ export function CORR() {
                   <th style={{ width: 56 }} />
                   {readyTickers.map(t => (
                     <th key={t} style={{
-                      color: '#666', fontSize: 8, fontWeight: 'normal', letterSpacing: '0.06em',
+                      color: '#b8b8b8', fontSize: 8, fontWeight: 'normal', letterSpacing: '0.06em',
                       padding: '0 2px 6px', textAlign: 'center', width: 52,
                     }}>
                       <div style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)', height: 44, overflow: 'hidden', textOverflow: 'ellipsis' }}>
@@ -259,7 +259,7 @@ export function CORR() {
               <tbody>
                 {readyTickers.map((ti, i) => (
                   <tr key={ti}>
-                    <td style={{ color: '#666', fontSize: 9, padding: '2px 8px 2px 0', textAlign: 'right', whiteSpace: 'nowrap' }}>
+                    <td style={{ color: '#b8b8b8', fontSize: 9, padding: '2px 8px 2px 0', textAlign: 'right', whiteSpace: 'nowrap' }}>
                       {ti}
                     </td>
                     {readyTickers.map((tj, j) => {
@@ -284,11 +284,11 @@ export function CORR() {
 
             {/* Legend */}
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 16 }}>
-              <span style={{ color: '#333', fontSize: 8 }}>CORRELATION:</span>
+              <span style={{ color: '#888', fontSize: 8 }}>CORRELATION:</span>
               {[[-1,'#501010'],[-0.5,'#381818'],[0,'#141414'],[0.5,'#183818'],[1,'#105010']].map(([v, bg]) => (
                 <div key={v} style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
                   <div style={{ width: 12, height: 12, background: bg as string }} />
-                  <span style={{ color: '#333', fontSize: 8 }}>{v}</span>
+                  <span style={{ color: '#888', fontSize: 8 }}>{v}</span>
                 </div>
               ))}
               <span style={{ color: '#1a1a1a', fontSize: 8, marginLeft: 8 }}>

@@ -78,7 +78,7 @@ function TapeItem({ entry, price, change, changePct, onClick }: {
           )}
         </>
       ) : (
-        <span style={{ color: '#333', fontSize: 10 }}>···</span>
+        <span style={{ color: '#888', fontSize: 10 }}>···</span>
       )}
     </span>
   )

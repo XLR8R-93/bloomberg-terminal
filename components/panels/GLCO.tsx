@@ -18,7 +18,7 @@ function RangeBar({ low, high, price, label = '' }: { low: number | null; high: 
       style={{ position: 'relative', width: 80, height: 4, background: '#1a1a1a', borderRadius: 2, cursor: 'default' }}>
       <div style={{
         position: 'absolute', left: 0, top: 0, height: '100%',
-        width: `${pct}%`, background: '#333', borderRadius: 2,
+        width: `${pct}%`, background: '#888888', borderRadius: 2,
       }} />
       <div style={{
         position: 'absolute', top: -2, left: `${pct}%`, transform: 'translateX(-50%)',
@@ -61,13 +61,13 @@ function CommoditySection({
         </colgroup>
         <thead>
           <tr style={{ borderBottom: '1px solid #111' }}>
-            <th style={{ color: '#333', fontSize: 9, fontWeight: 'normal', padding: '3px 8px', textAlign: 'left',   letterSpacing: '0.05em' }}>Commodity</th>
-            <th style={{ color: '#333', fontSize: 9, fontWeight: 'normal', padding: '3px 8px', textAlign: 'right',  letterSpacing: '0.05em' }}>Last</th>
-            <th style={{ color: '#333', fontSize: 9, fontWeight: 'normal', padding: '3px 8px', textAlign: 'right',  letterSpacing: '0.05em' }}>Chg</th>
-            <th style={{ color: '#333', fontSize: 9, fontWeight: 'normal', padding: '3px 8px', textAlign: 'right',  letterSpacing: '0.05em' }}>%Chg</th>
-            <th style={{ color: '#333', fontSize: 9, fontWeight: 'normal', padding: '3px 8px', textAlign: 'right',  letterSpacing: '0.05em' }}>Unit</th>
-            <th style={{ color: '#333', fontSize: 9, fontWeight: 'normal', padding: '3px 8px', textAlign: 'center', letterSpacing: '0.05em' }}>52W Range</th>
-            <th style={{ color: '#333', fontSize: 9, fontWeight: 'normal', padding: '3px 8px', textAlign: 'right',  letterSpacing: '0.05em' }}>Symbol</th>
+            <th style={{ color: '#888', fontSize: 9, fontWeight: 'normal', padding: '3px 8px', textAlign: 'left',   letterSpacing: '0.05em' }}>Commodity</th>
+            <th style={{ color: '#888', fontSize: 9, fontWeight: 'normal', padding: '3px 8px', textAlign: 'right',  letterSpacing: '0.05em' }}>Last</th>
+            <th style={{ color: '#888', fontSize: 9, fontWeight: 'normal', padding: '3px 8px', textAlign: 'right',  letterSpacing: '0.05em' }}>Chg</th>
+            <th style={{ color: '#888', fontSize: 9, fontWeight: 'normal', padding: '3px 8px', textAlign: 'right',  letterSpacing: '0.05em' }}>%Chg</th>
+            <th style={{ color: '#888', fontSize: 9, fontWeight: 'normal', padding: '3px 8px', textAlign: 'right',  letterSpacing: '0.05em' }}>Unit</th>
+            <th style={{ color: '#888', fontSize: 9, fontWeight: 'normal', padding: '3px 8px', textAlign: 'center', letterSpacing: '0.05em' }}>52W Range</th>
+            <th style={{ color: '#888', fontSize: 9, fontWeight: 'normal', padding: '3px 8px', textAlign: 'right',  letterSpacing: '0.05em' }}>Symbol</th>
           </tr>
         </thead>
         <tbody>
@@ -93,7 +93,7 @@ function CommoditySection({
                 <td style={{ padding: '5px 8px', color: chgColor, textAlign: 'right', fontVariantNumeric: 'tabular-nums', fontSize: 11 }}>
                   {row.changePct != null ? `${row.changePct >= 0 ? '+' : ''}${row.changePct.toFixed(2)}%` : '—'}
                 </td>
-                <td style={{ padding: '5px 8px', color: '#444', textAlign: 'right', fontSize: 9 }}>
+                <td style={{ padding: '5px 8px', color: '#aaaaaa', textAlign: 'right', fontSize: 9 }}>
                   {row.unit}
                 </td>
                 <td style={{ padding: '5px 8px', textAlign: 'center' }}>
@@ -101,7 +101,7 @@ function CommoditySection({
                     <RangeBar low={row.low52} high={row.high52} price={row.price} label="52W: " />
                   </div>
                 </td>
-                <td style={{ padding: '5px 8px', color: '#333', textAlign: 'right', fontSize: 9, fontFamily: 'monospace', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                <td style={{ padding: '5px 8px', color: '#888', textAlign: 'right', fontSize: 9, fontFamily: 'monospace', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                   {row.symbol}
                 </td>
               </tr>
@@ -136,7 +136,7 @@ export function GLCO() {
     <div className="panel" style={{ height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
       <div className="panel-header" style={{ justifyContent: 'space-between' }}>
         <span className="panel-mnemonic">GLCO — GLOBAL COMMODITY PRICES</span>
-        <span style={{ color: '#333', fontSize: 10 }}>Click row → Yahoo Finance chart · refreshes every 3 min</span>
+        <span style={{ color: '#888', fontSize: 10 }}>Click row → Yahoo Finance chart · refreshes every 3 min</span>
       </div>
 
       <div style={{ flex: 1, overflowY: 'auto', padding: '12px 16px' }}>

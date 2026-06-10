@@ -98,7 +98,7 @@ export function TOP() {
       <div className="panel-header">
         <span className="panel-mnemonic">TOP — MARKET OVERVIEW</span>
         {movers && (
-          <span style={{ color: '#333', fontSize: 9 }}>
+          <span style={{ color: '#888', fontSize: 9 }}>
             REFRESHES EVERY 3 MIN
           </span>
         )}
@@ -152,7 +152,7 @@ export function TOP() {
                 </tbody>
               </table>
             ) : (
-              <div style={{ color: '#444', fontSize: 11 }}>No data</div>
+              <div style={{ color: '#aaaaaa', fontSize: 11 }}>No data</div>
             )}
           </div>
 
@@ -179,7 +179,7 @@ export function TOP() {
                 </tbody>
               </table>
             ) : (
-              <div style={{ color: '#444', fontSize: 11 }}>No data</div>
+              <div style={{ color: '#aaaaaa', fontSize: 11 }}>No data</div>
             )}
           </div>
 

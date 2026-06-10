@@ -248,7 +248,7 @@ export function MMAP() {
       <div className="panel-header" style={{ justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <span className="panel-mnemonic">MMAP</span>
-          <span style={{ color: '#444', fontSize: 10 }}>MARKET MAP</span>
+          <span style={{ color: '#aaaaaa', fontSize: 10 }}>MARKET MAP</span>
           {/* Index selector */}
           <div style={{ display: 'flex', gap: 2, marginLeft: 8 }}>
             {INDICES.map(idx => (
@@ -280,7 +280,7 @@ export function MMAP() {
       <div ref={containerRef} style={{ flex: 1, overflow: 'hidden', position: 'relative', background: '#050505' }}>
         {isLoading && (
           <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <div style={{ color: '#333', fontSize: 11, letterSpacing: '0.1em' }}>
+            <div style={{ color: '#888', fontSize: 11, letterSpacing: '0.1em' }}>
               LOADING {activeIndex} DATA…
             </div>
           </div>
@@ -436,7 +436,7 @@ export function MMAP() {
               {tooltip.stock.symbol}
             </div>
             <div style={{ color: '#aaa', fontSize: 10, marginTop: 2 }}>{tooltip.stock.name}</div>
-            <div style={{ color: '#555', fontSize: 9, marginTop: 1 }}>{tooltip.stock.sector}</div>
+            <div style={{ color: '#b0b0b0', fontSize: 9, marginTop: 1 }}>{tooltip.stock.sector}</div>
             <div style={{ marginTop: 5, display: 'flex', gap: 12 }}>
               {tooltip.stock.price != null && (
                 <span style={{ color: '#e8e8e8', fontSize: 11, fontFamily: 'monospace' }}>
@@ -454,7 +454,7 @@ export function MMAP() {
                 </span>
               )}
             </div>
-            <div style={{ color: '#333', fontSize: 8, marginTop: 4 }}>Click to open GIP</div>
+            <div style={{ color: '#888', fontSize: 8, marginTop: 4 }}>Click to open GIP</div>
           </div>
         )}
       </div>
@@ -469,7 +469,7 @@ export function MMAP() {
         {([-5,-3,-1,0,1,3,5] as number[]).map(v => (
           <div key={v} style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
             <div style={{ width: 10, height: 10, background: changeColor(v), border: '1px solid #111' }} />
-            <span style={{ color: '#333', fontSize: 8 }}>{v > 0 ? '+' : ''}{v}%</span>
+            <span style={{ color: '#888', fontSize: 8 }}>{v > 0 ? '+' : ''}{v}%</span>
           </div>
         ))}
         <span style={{ color: '#1a1a1a', fontSize: 8, marginLeft: 4 }}>· Tile size = market cap · Click tile → GIP</span>

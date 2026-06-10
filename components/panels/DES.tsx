@@ -265,11 +265,11 @@ export function DES() {
             <img src={profile.logo} alt="" style={{ width: 16, height: 16, objectFit: 'contain', opacity: 0.8 }} />
           )}
           <span style={{ color: '#ffa028', fontSize: 12, fontWeight: 'bold' }}>{profile.name}</span>
-          <span style={{ color: '#333', fontSize: 10 }}>|</span>
+          <span style={{ color: '#888', fontSize: 10 }}>|</span>
           <span style={{ color: '#4d9fff', fontSize: 10 }}>{activeTicker} {profile.exchange} Equity</span>
           {profile.gsector && (
             <>
-              <span style={{ color: '#333', fontSize: 10 }}>|</span>
+              <span style={{ color: '#888', fontSize: 10 }}>|</span>
               <span style={{ color: '#e8e8e8', fontSize: 10 }}>Classification: {profile.gsector}</span>
             </>
           )}

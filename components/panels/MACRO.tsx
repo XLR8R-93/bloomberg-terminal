@@ -63,7 +63,7 @@ function MacroCard({ ind, selected, onClick }: {
       }}
     >
       {/* Category + label */}
-      <div style={{ color: '#444', fontSize: 8, letterSpacing: '0.08em' }}>{ind.category}</div>
+      <div style={{ color: '#aaaaaa', fontSize: 8, letterSpacing: '0.08em' }}>{ind.category}</div>
       <div style={{ color: '#b0b0b0', fontSize: 9, letterSpacing: '0.04em', lineHeight: 1.2 }}>{ind.label}</div>
 
       {/* Main value */}
@@ -80,7 +80,7 @@ function MacroCard({ ind, selected, onClick }: {
 
       {/* Prev + date */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <span style={{ color: '#333', fontSize: 8 }}>
+        <span style={{ color: '#888', fontSize: 8 }}>
           {ind.previous != null ? `prev ${fmtVal(ind.previous)}` : ''}
           {ind.estimate != null && ind.latest == null
             ? ` est ${fmtVal(ind.estimate)}` : ''}
@@ -92,7 +92,7 @@ function MacroCard({ ind, selected, onClick }: {
 
       {/* Sparkline */}
       <Sparkline series={ind.series} color={
-        ind.series.length < 2 ? '#333' :
+        ind.series.length < 2 ? '#888' :
         isGood === true  ? '#1a8a3a' :
         isGood === false ? '#8a1a1a' : '#555'
       } />
@@ -112,30 +112,30 @@ function MacroDetail({ ind }: { ind: MacroSeries }) {
 
   return (
     <div style={{ padding: '12px 16px', borderLeft: '1px solid #111', height: '100%', overflow: 'auto' }}>
-      <div style={{ color: '#555', fontSize: 8, letterSpacing: '0.08em', marginBottom: 4 }}>{ind.category}</div>
+      <div style={{ color: '#b0b0b0', fontSize: 8, letterSpacing: '0.08em', marginBottom: 4 }}>{ind.category}</div>
       <div style={{ color: '#e8e8e8', fontSize: 13, fontWeight: 'bold', marginBottom: 2 }}>{ind.label}</div>
-      <div style={{ color: '#444', fontSize: 9, marginBottom: 16 }}>{ind.description}</div>
+      <div style={{ color: '#aaaaaa', fontSize: 9, marginBottom: 16 }}>{ind.description}</div>
 
       {/* Current value large */}
       <div style={{ color: '#ffa028', fontSize: 28, fontWeight: 'bold', marginBottom: 4 }}>
         {fmtVal(ind.latest)}
       </div>
       {ind.estimate != null && ind.latest == null && (
-        <div style={{ color: '#555', fontSize: 10, marginBottom: 8 }}>
+        <div style={{ color: '#b0b0b0', fontSize: 10, marginBottom: 8 }}>
           Est: {fmtVal(ind.estimate)}
         </div>
       )}
 
       {/* History table */}
       <div style={{ marginTop: 16 }}>
-        <div style={{ color: '#333', fontSize: 9, letterSpacing: '0.06em', marginBottom: 6 }}>
+        <div style={{ color: '#888', fontSize: 9, letterSpacing: '0.06em', marginBottom: 6 }}>
           HISTORY
         </div>
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead>
             <tr>
               {['DATE','ACTUAL','PREV','CHANGE'].map(h => (
-                <th key={h} style={{ color: '#333', fontSize: 8, textAlign: h === 'DATE' ? 'left' : 'right',
+                <th key={h} style={{ color: '#888', fontSize: 8, textAlign: h === 'DATE' ? 'left' : 'right',
                   padding: '2px 6px', fontWeight: 'normal', letterSpacing: '0.06em', borderBottom: '1px solid #111' }}>
                   {h}
                 </th>
@@ -152,9 +152,9 @@ function MacroDetail({ ind }: { ind: MacroSeries }) {
                 : '#aaa'
               return (
                 <tr key={pt.date} style={{ borderBottom: '1px solid #0a0a0a' }}>
-                  <td style={{ color: '#555', fontSize: 9, padding: '3px 6px' }}>{pt.date.slice(0, 7)}</td>
+                  <td style={{ color: '#b0b0b0', fontSize: 9, padding: '3px 6px' }}>{pt.date.slice(0, 7)}</td>
                   <td style={{ color: '#e8e8e8', fontSize: 9, padding: '3px 6px', textAlign: 'right' }}>{fmtVal(pt.value)}</td>
-                  <td style={{ color: '#444', fontSize: 9, padding: '3px 6px', textAlign: 'right' }}>{prev != null ? fmtVal(prev) : '—'}</td>
+                  <td style={{ color: '#aaaaaa', fontSize: 9, padding: '3px 6px', textAlign: 'right' }}>{prev != null ? fmtVal(prev) : '—'}</td>
                   <td style={{ color: dColor, fontSize: 9, padding: '3px 6px', textAlign: 'right' }}>
                     {delta != null ? `${delta >= 0 ? '+' : ''}${fmtVal(delta)}` : '—'}
                   </td>
@@ -197,7 +197,7 @@ export function MACRO() {
       <div className="panel-header" style={{ justifyContent: 'space-between', flexWrap: 'wrap', gap: 4 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <span className="panel-mnemonic">MACRO</span>
-          <span style={{ color: '#444', fontSize: 10 }}>MACROECONOMIC DASHBOARD</span>
+          <span style={{ color: '#aaaaaa', fontSize: 10 }}>MACROECONOMIC DASHBOARD</span>
           {/* Country toggle */}
           <div style={{ display: 'flex', gap: 2, marginLeft: 8 }}>
             {(['ALL', 'US', 'AU'] as const).map(c => (
@@ -216,7 +216,7 @@ export function MACRO() {
             <button key={c} onClick={() => setCatFilter(c)} style={{
               background: catFilter === c ? '#0a1a0a' : 'none',
               border: `1px solid ${catFilter === c ? '#ffa028' : '#222'}`,
-              color: catFilter === c ? '#ffa028' : '#444',
+              color: catFilter === c ? '#ffa028' : '#aaaaaa',
               fontFamily: 'inherit', fontSize: 8, padding: '1px 7px', cursor: 'pointer',
               letterSpacing: '0.05em',
             }}>{c}</button>
@@ -225,7 +225,7 @@ export function MACRO() {
       </div>
 
       {isLoading && (
-        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#444' }}>
+        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#aaaaaa' }}>
           Loading macro indicators…
         </div>
       )}
@@ -257,7 +257,7 @@ export function MACRO() {
               />
             ))}
             {filtered.length === 0 && (
-              <div style={{ padding: 20, color: '#333', fontSize: 11, gridColumn: '1/-1' }}>
+              <div style={{ padding: 20, color: '#888', fontSize: 11, gridColumn: '1/-1' }}>
                 No data available for this category yet
               </div>
             )}

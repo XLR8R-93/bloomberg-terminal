@@ -5,7 +5,7 @@ import type { BondsData, CurvePoint, SovereignRow } from '@/app/api/bonds/route'
 // â"€â"€ Yield Curve SVG â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
 function YieldCurve({ points }: { points: CurvePoint[] }) {
   const valid = points.filter((p) => p.yield != null)
-  if (valid.length < 2) return <div style={{ color: '#333', fontSize: 11, padding: 20 }}>Curve data unavailable</div>
+  if (valid.length < 2) return <div style={{ color: '#888', fontSize: 11, padding: 20 }}>Curve data unavailable</div>
 
   const W = 540; const H = 130
   const PAD = { top: 12, right: 16, bottom: 28, left: 36 }
@@ -115,11 +115,11 @@ function CurveStats({ points }: { points: CurvePoint[] }) {
           flex: 1, padding: '6px 0', textAlign: 'center',
           borderRight: i < shown.length - 1 ? '1px solid #111' : 'none',
         }}>
-          <div style={{ color: '#444', fontSize: 9, letterSpacing: '0.06em', marginBottom: 2 }}>{p.label}</div>
+          <div style={{ color: '#aaaaaa', fontSize: 9, letterSpacing: '0.06em', marginBottom: 2 }}>{p.label}</div>
           <div style={{ color: '#ffa028', fontSize: 13, fontWeight: 'bold', fontVariantNumeric: 'tabular-nums' }}>
             {p.yield != null ? p.yield.toFixed(2) : '—'}
           </div>
-          <div style={{ color: '#333', fontSize: 8 }}>%</div>
+          <div style={{ color: '#888', fontSize: 8 }}>%</div>
         </div>
       ))}
     </div>
@@ -133,7 +133,7 @@ function fmt(v: number | null, dec = 2): string {
 }
 
 function Chg({ v }: { v: number | null }) {
-  if (v == null) return <span style={{ color: '#333' }}>—</span>
+  if (v == null) return <span style={{ color: '#888' }}>—</span>
   const color = v > 0 ? '#33ff66' : v < 0 ? '#ff3b3b' : '#888'
   return <span style={{ color }}>{v > 0 ? '+' : ''}{v.toFixed(2)}</span>
 }
@@ -190,7 +190,7 @@ export function WB() {
       <div className="panel-header" style={{ justifyContent: 'space-between' }}>
         <span className="panel-mnemonic">WB — WORLD BOND MARKETS</span>
         {data?.curveDate && (
-          <span style={{ color: '#333', fontSize: 10 }}>As of {data.curveDate}</span>
+          <span style={{ color: '#888', fontSize: 10 }}>As of {data.curveDate}</span>
         )}
       </div>
 

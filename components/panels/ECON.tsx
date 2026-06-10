@@ -38,8 +38,8 @@ function isToday(dateKey: string) {
 const IMPACT_COLOR: Record<string, string> = {
   high:   '#ff3b3b',
   medium: '#ffa028',
-  low:    '#555',
-  '':     '#333',
+  low:    '#b0b0b0',
+  '':     '#888',
 }
 
 const IMPACT_LABEL: Record<string, string> = {
@@ -70,7 +70,7 @@ function SurpriseBar({ actual, estimate }: { actual: number; estimate: number })
         ) : (
           <div style={{ position: 'absolute', right: '50%', width: `${barW / 2}%`, height: '100%', background: '#ff3b3b', borderRadius: 2 }} />
         )}
-        <div style={{ position: 'absolute', left: '50%', top: -1, width: 1, height: 6, background: '#333' }} />
+        <div style={{ position: 'absolute', left: '50%', top: -1, width: 1, height: 6, background: '#888888' }} />
       </div>
       <span style={{ color: beat ? '#33ff66' : '#ff3b3b', fontSize: 9, minWidth: 36, textAlign: 'right' }}>
         {beat ? '+' : ''}{pct.toFixed(1)}%
@@ -81,7 +81,7 @@ function SurpriseBar({ actual, estimate }: { actual: number; estimate: number })
 
 // ── Row ───────────────────────────────────────────────────────────────────────
 function EventRow({ ev, dimPast }: { ev: EconEvent; dimPast: boolean }) {
-  const impactClr = IMPACT_COLOR[ev.impact] ?? '#333'
+  const impactClr = IMPACT_COLOR[ev.impact] ?? '#888'
   const hasResult = ev.actual != null
   const hasBoth   = hasResult && ev.estimate != null
   const beat      = hasBoth && ev.actual! >= ev.estimate!
@@ -90,12 +90,12 @@ function EventRow({ ev, dimPast }: { ev: EconEvent; dimPast: boolean }) {
   return (
     <tr style={{ borderBottom: '1px solid #0a0a0a', opacity: dimPast ? 0.45 : 1 }}>
       {/* Time */}
-      <td style={{ ...cellBase, color: '#444', whiteSpace: 'nowrap', width: 60 }}>
+      <td style={{ ...cellBase, color: '#aaaaaa', whiteSpace: 'nowrap', width: 60 }}>
         {fmtTime(ev.time)}
       </td>
       {/* Country flag */}
       <td style={{ ...cellBase, textAlign: 'center', width: 28, fontSize: 13 }}>
-        {FLAG[ev.country] ?? <span style={{ color: '#333', fontSize: 9 }}>{ev.country}</span>}
+        {FLAG[ev.country] ?? <span style={{ color: '#888', fontSize: 9 }}>{ev.country}</span>}
       </td>
       {/* Impact */}
       <td style={{ ...cellBase, color: impactClr, fontSize: 9, letterSpacing: 1, width: 36 }}>
@@ -107,15 +107,15 @@ function EventRow({ ev, dimPast }: { ev: EconEvent; dimPast: boolean }) {
       </td>
       {/* Actual */}
       <td style={{ ...cellBase, textAlign: 'right', fontVariantNumeric: 'tabular-nums', width: 72,
-        color: hasResult ? (hasBoth ? (beat ? '#33ff66' : '#ff3b3b') : '#ccc') : '#333' }}>
+        color: hasResult ? (hasBoth ? (beat ? '#33ff66' : '#ff3b3b') : '#ccc') : '#888888' }}>
         {hasResult ? fmtVal(ev.actual, ev.unit) : <span style={{ color: '#222' }}>—</span>}
       </td>
       {/* Estimate */}
-      <td style={{ ...cellBase, textAlign: 'right', fontVariantNumeric: 'tabular-nums', color: '#555', width: 72 }}>
+      <td style={{ ...cellBase, textAlign: 'right', fontVariantNumeric: 'tabular-nums', color: '#b0b0b0', width: 72 }}>
         {ev.estimate != null ? fmtVal(ev.estimate, ev.unit) : '—'}
       </td>
       {/* Previous */}
-      <td style={{ ...cellBase, textAlign: 'right', fontVariantNumeric: 'tabular-nums', color: '#444', width: 72 }}>
+      <td style={{ ...cellBase, textAlign: 'right', fontVariantNumeric: 'tabular-nums', color: '#aaaaaa', width: 72 }}>
         {ev.prev != null ? fmtVal(ev.prev, ev.unit) : '—'}
       </td>
       {/* Surprise bar */}
@@ -186,7 +186,7 @@ export function ECON() {
       <div className="panel-header" style={{ justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <span className="panel-mnemonic">ECON</span>
-          <span style={{ color: '#444', fontSize: 10 }}>ECONOMIC CALENDAR</span>
+          <span style={{ color: '#aaaaaa', fontSize: 10 }}>ECONOMIC CALENDAR</span>
           {highCount > 0 && (
             <span style={{ color: '#ff3b3b', fontSize: 9, border: '1px solid #ff3b3b44', padding: '1px 6px' }}>
               {highCount} HIGH IMPACT UPCOMING
@@ -194,17 +194,17 @@ export function ECON() {
           )}
         </div>
         <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-          <span style={{ color: '#444', fontSize: 9 }}>COUNTRY:</span>
+          <span style={{ color: '#aaaaaa', fontSize: 9 }}>COUNTRY:</span>
           <select value={country} onChange={e => setCountry(e.target.value)} style={selStyle}>
             {COUNTRIES.map(c => <option key={c} value={c}>{c}</option>)}
           </select>
-          <span style={{ color: '#444', fontSize: 9 }}>IMPACT:</span>
+          <span style={{ color: '#aaaaaa', fontSize: 9 }}>IMPACT:</span>
           <select value={impact} onChange={e => setImpact(e.target.value)} style={selStyle}>
             {IMPACTS.map(i => <option key={i} value={i}>{i.toUpperCase()}</option>)}
           </select>
           <button onClick={() => setShowPast(p => !p)} style={{
             background: showPast ? '#1a0a0a' : 'none',
-            border: '1px solid #222', color: showPast ? '#ffa028' : '#444',
+            border: '1px solid #222', color: showPast ? '#ffa028' : '#aaaaaa',
             fontFamily: 'inherit', fontSize: 9, padding: '2px 8px', cursor: 'pointer',
           }}>
             {showPast ? 'HIDE PAST' : 'SHOW PAST'}
@@ -214,7 +214,7 @@ export function ECON() {
 
       {/* Loading */}
       {isLoading && (
-        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#444' }}>
+        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#aaaaaa' }}>
           Loading calendar…
         </div>
       )}
@@ -230,7 +230,7 @@ export function ECON() {
       {!isLoading && !error && (
         <div style={{ flex: 1, overflowY: 'auto' }}>
           {grouped.length === 0 && (
-            <div style={{ padding: 20, color: '#333', textAlign: 'center', fontSize: 11 }}>
+            <div style={{ padding: 20, color: '#888', textAlign: 'center', fontSize: 11 }}>
               No events match current filters
             </div>
           )}
@@ -248,7 +248,7 @@ export function ECON() {
                   position: 'sticky', top: 0, zIndex: 1,
                 }}>
                   <span style={{
-                    color: today ? '#ffa028' : '#444',
+                    color: today ? '#ffa028' : '#aaaaaa',
                     fontSize: 10, fontWeight: 'bold', letterSpacing: '0.08em',
                   }}>
                     {formatDateHeader(dateKey)}
@@ -267,7 +267,7 @@ export function ECON() {
                     <tr style={{ background: '#030303' }}>
                       {[['TIME (ET)', 60], ['', 28], ['', 36], ['EVENT', null], ['ACTUAL', 72], ['EST.', 72], ['PREV.', 72], ['SURPRISE', 120]].map(([label, w], i) => (
                         <th key={i} style={{
-                          color: '#333', fontSize: 9, padding: '2px 8px', textAlign: i >= 4 ? 'right' : 'left',
+                          color: '#888', fontSize: 9, padding: '2px 8px', textAlign: i >= 4 ? 'right' : 'left',
                           fontWeight: 'normal', letterSpacing: '0.06em', borderBottom: '1px solid #0d0d0d',
                           width: w ? w : undefined,
                         }}>
@@ -302,7 +302,7 @@ export function ECON() {
         ].map(([sym, clr, label]) => (
           <span key={label} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
             <span style={{ color: clr, fontSize: 9, letterSpacing: 1 }}>{sym}</span>
-            <span style={{ color: '#333', fontSize: 9 }}>{label}</span>
+            <span style={{ color: '#888', fontSize: 9 }}>{label}</span>
           </span>
         ))}
         <span style={{ color: '#222', fontSize: 9, marginLeft: 'auto' }}>All times Eastern · Source: Finnhub</span>

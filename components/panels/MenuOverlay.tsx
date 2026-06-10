@@ -47,7 +47,7 @@ function MenuRow({ item, active, onSelect }: {
         borderLeft: active ? '2px solid #ffa028' : '2px solid transparent',
       }}
     >
-      <span style={{ color: '#444', fontSize: 11, width: 18, textAlign: 'right', flexShrink: 0 }}>
+      <span style={{ color: '#aaaaaa', fontSize: 11, width: 18, textAlign: 'right', flexShrink: 0 }}>
         {item.num})
       </span>
       <span style={{
@@ -106,9 +106,9 @@ export function MenuOverlay() {
             <span style={{ color: '#4d9fff', cursor: 'pointer' }} onClick={() => setMenuOpen(false)}>
               Main Menu of Bloomberg Functions
             </span>
-            <span style={{ color: '#333', margin: '0 6px' }}>{'>'}</span>
+            <span style={{ color: '#888', margin: '0 6px' }}>{'>'}</span>
             <span style={{ color: '#e8e8e8' }}>Equities</span>
-            <span style={{ color: '#333', margin: '0 6px' }}>{'>'}</span>
+            <span style={{ color: '#888', margin: '0 6px' }}>{'>'}</span>
             <span style={{ color: '#d8d8d8' }}>Analyze {activeTicker} Equity</span>
           </div>
           <button

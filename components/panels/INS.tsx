@@ -34,7 +34,7 @@ function SentimentBar({ buyCount, sellCount, netValue }: {
   return (
     <div style={{ padding: '10px 14px', borderBottom: '1px solid #111', flexShrink: 0 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
-        <span style={{ color: '#444', fontSize: 9, letterSpacing: '0.06em' }}>90-DAY INSIDER SENTIMENT</span>
+        <span style={{ color: '#aaaaaa', fontSize: 9, letterSpacing: '0.06em' }}>90-DAY INSIDER SENTIMENT</span>
         <span style={{ color: bullish ? '#33ff66' : '#ff3b3b', fontSize: 9, fontWeight: 'bold' }}>
           {bullish ? '▲ BULLISH' : '▼ BEARISH'} · {(netValue >= 0 ? '+' : '') + fmtValue(netValue)} net
         </span>
@@ -48,7 +48,7 @@ function SentimentBar({ buyCount, sellCount, netValue }: {
         <span style={{ color: '#ff3b3b', fontSize: 8 }}>{sellCount} SALE{sellCount !== 1 ? 'S' : ''} ▼</span>
       </div>
       {total === 0 && (
-        <div style={{ color: '#333', fontSize: 9, marginTop: 4, textAlign: 'center' }}>
+        <div style={{ color: '#888', fontSize: 9, marginTop: 4, textAlign: 'center' }}>
           No open-market transactions in the last 90 days
         </div>
       )}
@@ -63,7 +63,7 @@ function TxRow({ tx }: { tx: InsiderTransaction }) {
 
   return (
     <tr style={{ background: isBuy ? '#003a08' : isSell ? '#3a0008' : 'transparent', borderBottom: '1px solid #0a0a0a' }}>
-      <td style={{ padding: '3px 8px', color: '#555', fontSize: 8 }}>{tx.transactionDate.slice(0, 10)}</td>
+      <td style={{ padding: '3px 8px', color: '#b0b0b0', fontSize: 8 }}>{tx.transactionDate.slice(0, 10)}</td>
       <td style={{ padding: '3px 8px', color: '#b0b0b0', fontSize: 8, maxWidth: 120 }}>
         <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{tx.name || '—'}</div>
       </td>
@@ -73,11 +73,11 @@ function TxRow({ tx }: { tx: InsiderTransaction }) {
         </span>
       </td>
       <td style={{ padding: '3px 8px', color: '#c0c0c0', fontSize: 9, textAlign: 'right' }}>{fmtShares(tx.share)}</td>
-      <td style={{ padding: '3px 8px', color: '#666', fontSize: 9, textAlign: 'right' }}>
+      <td style={{ padding: '3px 8px', color: '#b8b8b8', fontSize: 9, textAlign: 'right' }}>
         {tx.transactionPrice != null ? `$${tx.transactionPrice.toFixed(2)}` : '—'}
       </td>
-      <td style={{ padding: '3px 8px', color: '#555', fontSize: 9, textAlign: 'right' }}>{value > 0 ? fmtValue(value) : '—'}</td>
-      <td style={{ padding: '3px 8px', color: '#333', fontSize: 8, textAlign: 'right' }}>{tx.filingDate.slice(0, 10)}</td>
+      <td style={{ padding: '3px 8px', color: '#b0b0b0', fontSize: 9, textAlign: 'right' }}>{value > 0 ? fmtValue(value) : '—'}</td>
+      <td style={{ padding: '3px 8px', color: '#888', fontSize: 8, textAlign: 'right' }}>{tx.filingDate.slice(0, 10)}</td>
     </tr>
   )
 }
@@ -94,7 +94,7 @@ function TickerTab({ ticker }: { ticker: string }) {
   const apiError = data && 'error' in data ? (data as { error: string }).error : null
 
   if (isLoading) return (
-    <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#444' }}>
+    <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#aaaaaa' }}>
       Loading insider data…
     </div>
   )
@@ -114,14 +114,14 @@ function TickerTab({ ticker }: { ticker: string }) {
             <tr>
               {[['TXN DATE','left'],['INSIDER','left'],['TYPE','left'],
                 ['SHARES','right'],['PRICE','right'],['VALUE','right'],['FILED','right']].map(([h, align]) => (
-                <th key={h} style={{ color: '#333', fontSize: 8, textAlign: align as 'left'|'right',
+                <th key={h} style={{ color: '#888', fontSize: 8, textAlign: align as 'left'|'right',
                   padding: '3px 8px', fontWeight: 'normal', letterSpacing: '0.06em', borderBottom: '1px solid #111' }}>{h}</th>
               ))}
             </tr>
           </thead>
           <tbody>
             {data!.transactions.length === 0 && (
-              <tr><td colSpan={7} style={{ padding: 20, color: '#333', fontSize: 11, textAlign: 'center' }}>
+              <tr><td colSpan={7} style={{ padding: 20, color: '#888', fontSize: 11, textAlign: 'center' }}>
                 No recent insider transactions
               </td></tr>
             )}
@@ -146,25 +146,25 @@ function FlowRow({ tx, rank, side, onClickTicker }: {
   const isBuy = side === 'buy'
   return (
     <tr style={{ borderBottom: '1px solid #0a0a0a', background: isBuy ? '#001a06' : '#1a0006' }}>
-      <td style={{ padding: '3px 6px', color: '#333', fontSize: 8, textAlign: 'right', width: 20 }}>{rank}</td>
+      <td style={{ padding: '3px 6px', color: '#888', fontSize: 8, textAlign: 'right', width: 20 }}>{rank}</td>
       <td style={{ padding: '3px 8px' }}>
         <button onClick={() => onClickTicker(tx.symbol)} style={{
           background: 'none', border: 'none', cursor: 'pointer',
           color: '#ffa028', fontFamily: 'inherit', fontSize: 10, fontWeight: 'bold', padding: 0,
         }}>{tx.symbol}</button>
-        <span style={{ color: '#333', fontSize: 7, marginLeft: 4 }}>{tx.exchange}</span>
+        <span style={{ color: '#888', fontSize: 7, marginLeft: 4 }}>{tx.exchange}</span>
       </td>
-      <td style={{ padding: '3px 8px', color: '#666', fontSize: 8, maxWidth: 130 }}>
+      <td style={{ padding: '3px 8px', color: '#b8b8b8', fontSize: 8, maxWidth: 130 }}>
         <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{tx.name}</div>
       </td>
       <td style={{ padding: '3px 8px', color: isBuy ? '#33ff66' : '#ff3b3b', fontSize: 10, fontWeight: 'bold', textAlign: 'right' }}>
         {fmtValue(tx.value)}
       </td>
-      <td style={{ padding: '3px 8px', color: '#555', fontSize: 9, textAlign: 'right' }}>{fmtShares(tx.share)}</td>
-      <td style={{ padding: '3px 8px', color: '#444', fontSize: 9, textAlign: 'right' }}>
+      <td style={{ padding: '3px 8px', color: '#b0b0b0', fontSize: 9, textAlign: 'right' }}>{fmtShares(tx.share)}</td>
+      <td style={{ padding: '3px 8px', color: '#aaaaaa', fontSize: 9, textAlign: 'right' }}>
         {tx.transactionPrice != null ? `$${tx.transactionPrice.toFixed(2)}` : '—'}
       </td>
-      <td style={{ padding: '3px 8px', color: '#333', fontSize: 8, textAlign: 'right' }}>{tx.transactionDate.slice(0, 10)}</td>
+      <td style={{ padding: '3px 8px', color: '#888', fontSize: 8, textAlign: 'right' }}>{tx.transactionDate.slice(0, 10)}</td>
     </tr>
   )
 }
@@ -178,17 +178,17 @@ function FlowTable({ txns, side, onClickTicker }: {
       <table style={{ width: '100%', borderCollapse: 'collapse' }}>
         <thead style={{ position: 'sticky', top: 0, background: '#030303', zIndex: 1 }}>
           <tr>
-            <th style={{ color: '#333', fontSize: 8, padding: '3px 6px', fontWeight: 'normal', textAlign: 'right', width: 20 }}>#</th>
+            <th style={{ color: '#888', fontSize: 8, padding: '3px 6px', fontWeight: 'normal', textAlign: 'right', width: 20 }}>#</th>
             {[['SYMBOL','left'],['INSIDER','left'],['VALUE','right'],
               ['SHARES','right'],['PRICE','right'],['DATE','right']].map(([h,align]) => (
-              <th key={h} style={{ color: '#333', fontSize: 8, textAlign: align as 'left'|'right',
+              <th key={h} style={{ color: '#888', fontSize: 8, textAlign: align as 'left'|'right',
                 padding: '3px 8px', fontWeight: 'normal', letterSpacing: '0.06em', borderBottom: '1px solid #111' }}>{h}</th>
             ))}
           </tr>
         </thead>
         <tbody>
           {txns.length === 0 && (
-            <tr><td colSpan={7} style={{ padding: 20, color: '#333', fontSize: 11, textAlign: 'center' }}>
+            <tr><td colSpan={7} style={{ padding: 20, color: '#888', fontSize: 11, textAlign: 'center' }}>
               No {isBuy ? 'purchase' : 'sale'} transactions found in this period
             </td></tr>
           )}
@@ -219,22 +219,22 @@ function FlowTab({ onClickTicker }: { onClickTicker: (s: string) => void }) {
     <>
       {/* Sub-controls */}
       <div style={{ display: 'flex', gap: 8, padding: '5px 10px', borderBottom: '1px solid #111', flexShrink: 0, alignItems: 'center' }}>
-        <span style={{ color: '#333', fontSize: 9 }}>WINDOW:</span>
+        <span style={{ color: '#888', fontSize: 9 }}>WINDOW:</span>
         {([30, 60, 90] as const).map(d => (
           <button key={d} onClick={() => setDays(d)} style={{
             background: days === d ? '#0a1a0a' : 'none',
             border: `1px solid ${days === d ? '#ffa028' : '#222'}`,
-            color: days === d ? '#ffa028' : '#444',
+            color: days === d ? '#ffa028' : '#aaaaaa',
             fontFamily: 'inherit', fontSize: 8, padding: '1px 8px', cursor: 'pointer',
           }}>{d}D</button>
         ))}
         <div style={{ width: 1, background: '#222', height: 12 }} />
-        <span style={{ color: '#333', fontSize: 9 }}>SHOW:</span>
+        <span style={{ color: '#888', fontSize: 9 }}>SHOW:</span>
         {(['buy', 'sell'] as const).map(s => (
           <button key={s} onClick={() => setSide(s)} style={{
             background: side === s ? (s === 'buy' ? '#001a06' : '#1a0006') : 'none',
             border: `1px solid ${side === s ? (s === 'buy' ? '#33ff66' : '#ff3b3b') : '#222'}`,
-            color: side === s ? (s === 'buy' ? '#33ff66' : '#ff3b3b') : '#444',
+            color: side === s ? (s === 'buy' ? '#33ff66' : '#ff3b3b') : '#aaaaaa',
             fontFamily: 'inherit', fontSize: 8, padding: '1px 8px', cursor: 'pointer',
           }}>{s === 'buy' ? '▲ BUYS' : '▼ SELLS'}</button>
         ))}
@@ -245,7 +245,7 @@ function FlowTab({ onClickTicker }: { onClickTicker: (s: string) => void }) {
 
       {isLoading && (
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
-          <div style={{ color: '#444', fontSize: 11 }}>Loading market-wide insider flow…</div>
+          <div style={{ color: '#aaaaaa', fontSize: 11 }}>Loading market-wide insider flow…</div>
           <div style={{ color: '#2a2a2a', fontSize: 9 }}>First load fetches ~60 stocks — may take 30–60s</div>
         </div>
       )}
@@ -292,7 +292,7 @@ export function INS() {
           {tab === 'TICKER' && (
             <span style={{ color: '#b0b0b0', fontSize: 10 }}>{activeTicker}</span>
           )}
-          <span style={{ color: '#444', fontSize: 10 }}>INSIDER TRANSACTIONS</span>
+          <span style={{ color: '#aaaaaa', fontSize: 10 }}>INSIDER TRANSACTIONS</span>
         </div>
         {/* Tab switcher */}
         <div style={{ display: 'flex', gap: 2 }}>
@@ -303,7 +303,7 @@ export function INS() {
             <button key={t.id} onClick={() => setTab(t.id)} style={{
               background: tab === t.id ? '#0a1a0a' : 'none',
               border: `1px solid ${tab === t.id ? '#ffa028' : '#222'}`,
-              color: tab === t.id ? '#ffa028' : '#444',
+              color: tab === t.id ? '#ffa028' : '#aaaaaa',
               fontFamily: 'inherit', fontSize: 8, padding: '1px 8px', cursor: 'pointer',
               letterSpacing: '0.04em',
             }}>{t.label}</button>

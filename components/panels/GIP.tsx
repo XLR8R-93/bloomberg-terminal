@@ -197,7 +197,7 @@ export function GIP() {
       ...BASE_OPTS,
       autoSize: true,
       rightPriceScale: {
-        borderColor: '#1a1a1a', textColor: '#444',
+        borderColor: '#1a1a1a', textColor: '#aaaaaa',
         scaleMargins: { top: 0.1, bottom: 0 },
       },
       timeScale: { ...BASE_OPTS.timeScale, visible: false },
@@ -238,7 +238,7 @@ export function GIP() {
     })
     // Reference lines: 70, 50, 30
     rsiLineSer.current.createPriceLine({ price: 70, color: '#ff3b3b', lineWidth: 1, lineStyle: LineStyle.Dashed, axisLabelVisible: true, title: 'OB' })
-    rsiLineSer.current.createPriceLine({ price: 50, color: '#333',    lineWidth: 1, lineStyle: LineStyle.Dotted, axisLabelVisible: false, title: '' })
+    rsiLineSer.current.createPriceLine({ price: 50, color: '#888',    lineWidth: 1, lineStyle: LineStyle.Dotted, axisLabelVisible: false, title: '' })
     rsiLineSer.current.createPriceLine({ price: 30, color: '#33ff66', lineWidth: 1, lineStyle: LineStyle.Dashed, axisLabelVisible: true, title: 'OS' })
 
     macdHistSer.current = macdChart.current.addSeries(HistogramSeries, {
@@ -250,7 +250,7 @@ export function GIP() {
     macdSigSer.current = macdChart.current.addSeries(LineSeries, {
       color: '#ffa028', lineWidth: 1, priceLineVisible: false, lastValueVisible: false,
     })
-    macdHistSer.current.createPriceLine({ price: 0, color: '#333', lineWidth: 1, lineStyle: LineStyle.Solid, axisLabelVisible: false, title: '' })
+    macdHistSer.current.createPriceLine({ price: 0, color: '#888', lineWidth: 1, lineStyle: LineStyle.Solid, axisLabelVisible: false, title: '' })
 
     volSer.current = volChart.current.addSeries(HistogramSeries, {
       priceFormat: { type: 'volume' }, priceScaleId: 'left',
@@ -381,7 +381,7 @@ export function GIP() {
 
         {/* Row 2: overlay toggles + sub-panel toggles */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '3px 10px' }}>
-          <span style={{ color: '#333', fontSize: 9, marginRight: 2, letterSpacing: '0.06em' }}>OVERLAYS</span>
+          <span style={{ color: '#888', fontSize: 9, marginRight: 2, letterSpacing: '0.06em' }}>OVERLAYS</span>
           <TBtn label="SMA20"  active={showSMA20}  onClick={() => setShowSMA20(x  => !x)} color="#ffa028" />
           <TBtn label="SMA50"  active={showSMA50}  onClick={() => setShowSMA50(x  => !x)} color="#4d9fff" />
           <TBtn label="SMA200" active={showSMA200} onClick={() => setShowSMA200(x => !x)} color="#aa66ff" />
@@ -391,7 +391,7 @@ export function GIP() {
             <TBtn label="VWAP" active={showVWAP}   onClick={() => setShowVWAP(x   => !x)} color="#00e5ff" />
           )}
           <div style={{ width: 1, height: 12, background: '#222', margin: '0 4px' }} />
-          <span style={{ color: '#333', fontSize: 9, marginRight: 2, letterSpacing: '0.06em' }}>INDICATORS</span>
+          <span style={{ color: '#888', fontSize: 9, marginRight: 2, letterSpacing: '0.06em' }}>INDICATORS</span>
           <TBtn label="RSI"  active={showRSI}  onClick={() => setShowRSI(x  => !x)} color="#e8e8e8" />
           <TBtn label="MACD" active={showMACD} onClick={() => setShowMACD(x => !x)} color="#4d9fff" />
         </div>
@@ -439,7 +439,7 @@ export function GIP() {
         }}>
           <div ref={rsiRef} style={{ width: '100%', height: '100%' }} />
           <div style={{ position: 'absolute', top: 4, left: 8, pointerEvents: 'none' }}>
-            <span style={{ color: '#555', fontSize: 9 }}>RSI(14)</span>
+            <span style={{ color: '#b0b0b0', fontSize: 9 }}>RSI(14)</span>
           </div>
         </div>
 
@@ -454,7 +454,7 @@ export function GIP() {
         }}>
           <div ref={macdRef} style={{ width: '100%', height: '100%' }} />
           <div style={{ position: 'absolute', top: 4, left: 8, pointerEvents: 'none', display: 'flex', gap: 10 }}>
-            <span style={{ color: '#555', fontSize: 9 }}>MACD(12,26,9)</span>
+            <span style={{ color: '#b0b0b0', fontSize: 9 }}>MACD(12,26,9)</span>
             <span style={{ color: '#4d9fff', fontSize: 9 }}>— MACD</span>
             <span style={{ color: '#ffa028', fontSize: 9 }}>— Signal</span>
           </div>
@@ -464,7 +464,7 @@ export function GIP() {
         <div style={{ height: 70, borderTop: '1px solid #111', flexShrink: 0, position: 'relative' }}>
           <div ref={volRef} style={{ width: '100%', height: '100%' }} />
           <div style={{ position: 'absolute', top: 4, left: 8, pointerEvents: 'none' }}>
-            <span style={{ color: '#333', fontSize: 9 }}>VOL</span>
+            <span style={{ color: '#888', fontSize: 9 }}>VOL</span>
           </div>
         </div>
       </div>

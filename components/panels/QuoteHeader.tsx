@@ -35,7 +35,7 @@ function Divider() {
 function Cell({ label, value, color }: { label: string; value: string; color?: string }) {
   return (
     <div style={{ flexShrink: 0 }}>
-      <div style={{ color: '#444', fontSize: 9, textTransform: 'uppercase', letterSpacing: '0.06em' }}>{label}</div>
+      <div style={{ color: '#aaaaaa', fontSize: 9, textTransform: 'uppercase', letterSpacing: '0.06em' }}>{label}</div>
       <div style={{ color: color || '#cccccc', fontSize: 11, fontVariantNumeric: 'tabular-nums' }}>{value}</div>
     </div>
   )

@@ -135,7 +135,7 @@ export function FA() {
         <TabBtn id="annual"    label="Annual"    active={period === 'annual'}    onClick={() => setPeriod('annual')} />
         <TabBtn id="quarterly" label="Quarterly" active={period === 'quarterly'} onClick={() => setPeriod('quarterly')} />
         <div style={{ flex: 1 }} />
-        <span style={{ color: '#333', fontSize: 10, padding: '0 8px', alignSelf: 'center' }}>{activeTicker}</span>
+        <span style={{ color: '#888', fontSize: 10, padding: '0 8px', alignSelf: 'center' }}>{activeTicker}</span>
       </div>
 
       <div style={{ flex: 1, overflowX: 'auto', overflowY: 'auto' }}>
@@ -154,7 +154,7 @@ export function FA() {
           <table style={{ borderCollapse: 'collapse', width: '100%', fontSize: 11 }}>
             <thead>
               <tr style={{ borderBottom: '1px solid #1f1f1f' }}>
-                <th style={{ color: '#444', textAlign: 'left', padding: '4px 8px', fontWeight: 'normal', fontSize: 10, width: 160, position: 'sticky', left: 0, background: '#050505' }}>
+                <th style={{ color: '#aaaaaa', textAlign: 'left', padding: '4px 8px', fontWeight: 'normal', fontSize: 10, width: 160, position: 'sticky', left: 0, background: '#050505' }}>
                   {period === 'annual' ? 'FY' : 'QTR'} (USD)
                 </th>
                 {periods.map((p, i) => (

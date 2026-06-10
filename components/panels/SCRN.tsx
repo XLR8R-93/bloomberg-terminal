@@ -352,9 +352,9 @@ export function SCRN() {
       <div className="panel-header" style={{ justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <span className="panel-mnemonic">SCRN</span>
-          <span style={{ color: '#444', fontSize: 10 }}>STOCK SCREENER</span>
+          <span style={{ color: '#aaaaaa', fontSize: 10 }}>STOCK SCREENER</span>
         </div>
-        <span style={{ color: '#444', fontSize: 10 }}>
+        <span style={{ color: '#aaaaaa', fontSize: 10 }}>
           {isFetching ? 'REFRESHING...' : `${rows.length} stocks · ${posCount} up · ${negCount} down`}
         </span>
       </div>
@@ -365,18 +365,18 @@ export function SCRN() {
         padding: '5px 8px', borderBottom: '1px solid #111',
         background: '#020202', flexShrink: 0,
       }}>
-        <span style={{ color: '#444', fontSize: 9, letterSpacing: '0.08em' }}>FILTER:</span>
+        <span style={{ color: '#aaaaaa', fontSize: 9, letterSpacing: '0.08em' }}>FILTER:</span>
         {filterInput(search, setSearch, 'Search symbol/name…', 130)}
         {filterSelect(exch,       setExch,       ALL_EXCH)}
         {filterSelect(assetClass, setAssetClass, ALL_ASSET_CLASS)}
         {filterSelect(sector,     setSector,     ALL_SECTORS)}
         {filterSelect(cap,        setCap,        ALL_TYPES)}
-        <span style={{ color: '#333', fontSize: 9 }}>DAY CHG%:</span>
+        <span style={{ color: '#888', fontSize: 9 }}>DAY CHG%:</span>
         {filterInput(minDp, setMinDp, 'Min', 50)}
-        <span style={{ color: '#333', fontSize: 9 }}>to</span>
+        <span style={{ color: '#888', fontSize: 9 }}>to</span>
         {filterInput(maxDp, setMaxDp, 'Max', 50)}
         <button onClick={() => { setSector('All'); setCap('All'); setExch('All'); setAssetClass('All'); setMinDp(''); setMaxDp(''); setSearch('') }}
-          style={{ background: 'none', border: '1px solid #222', color: '#555', fontFamily: 'inherit', fontSize: 9, padding: '2px 8px', cursor: 'pointer' }}>
+          style={{ background: 'none', border: '1px solid #222', color: '#b0b0b0', fontFamily: 'inherit', fontSize: 9, padding: '2px 8px', cursor: 'pointer' }}>
           CLEAR
         </button>
       </div>
@@ -388,13 +388,13 @@ export function SCRN() {
             <tr>
               <Th field="symbol" label="SYMBOL" />
               <Th field="name"   label="NAME" />
-              <th style={{ color: '#666', fontSize: 10, padding: '3px 8px', borderBottom: '1px solid #1f1f1f', textAlign: 'left' }}>SECTOR</th>
-              <th style={{ color: '#666', fontSize: 10, padding: '3px 8px', borderBottom: '1px solid #1f1f1f', textAlign: 'left' }}>EXCH</th>
+              <th style={{ color: '#b8b8b8', fontSize: 10, padding: '3px 8px', borderBottom: '1px solid #1f1f1f', textAlign: 'left' }}>SECTOR</th>
+              <th style={{ color: '#b8b8b8', fontSize: 10, padding: '3px 8px', borderBottom: '1px solid #1f1f1f', textAlign: 'left' }}>EXCH</th>
               <Th field="price"  label="PRICE"   right />
               <Th field="d"      label="CHG"      right />
               <Th field="dp"     label="CHG %"    right />
               <Th field="volume" label="VOLUME"   right />
-              <th style={{ color: '#666', fontSize: 10, padding: '3px 8px', borderBottom: '1px solid #1f1f1f' }} />
+              <th style={{ color: '#b8b8b8', fontSize: 10, padding: '3px 8px', borderBottom: '1px solid #1f1f1f' }} />
             </tr>
           </thead>
           <tbody>
@@ -412,7 +412,7 @@ export function SCRN() {
                       <span style={{ marginLeft: 5, fontSize: 8, color: '#ffa028', border: '1px solid #ffa02866', padding: '0 3px', verticalAlign: 'middle', letterSpacing: '0.05em' }}>ETF</span>
                     )}
                   </td>
-                  <td style={{ color: '#777', fontSize: 10, padding: '2px 8px', whiteSpace: 'nowrap' }}>{r.sector}</td>
+                  <td style={{ color: '#c0c0c0', fontSize: 10, padding: '2px 8px', whiteSpace: 'nowrap' }}>{r.sector}</td>
                   <td style={{ padding: '2px 8px' }}>
                     <span style={{ color: r.exchange === 'ASX' ? '#ffa028' : '#4d9fff', fontSize: 8, border: `1px solid ${r.exchange === 'ASX' ? '#ffa028' : '#4d9fff'}`, padding: '0 3px', opacity: 0.7 }}>
                       {r.exchange}
@@ -429,12 +429,12 @@ export function SCRN() {
                       {r.dp != null ? (r.dp >= 0 ? '▲ ' : '▼ ') + Math.abs(r.dp).toFixed(2) + '%' : '—'}
                     </span>
                   </td>
-                  <td style={{ color: '#777', fontSize: 10, padding: '2px 8px', textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>
+                  <td style={{ color: '#c0c0c0', fontSize: 10, padding: '2px 8px', textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>
                     {r.volume != null ? fmtVol(r.volume) : '—'}
                   </td>
                   <td style={{ padding: '2px 8px', textAlign: 'right' }}>
                     <button onClick={e => { e.stopPropagation(); openTab(r.symbol, 'DES') }}
-                      style={{ background: 'none', border: 'none', color: '#333', fontFamily: 'inherit', fontSize: 9, cursor: 'pointer', padding: 0 }}>
+                      style={{ background: 'none', border: 'none', color: '#888', fontFamily: 'inherit', fontSize: 9, cursor: 'pointer', padding: 0 }}>
                       DES →
                     </button>
                   </td>
@@ -442,7 +442,7 @@ export function SCRN() {
               )
             })}
             {rows.length === 0 && (
-              <tr><td colSpan={9} style={{ color: '#333', fontSize: 11, padding: '20px 8px', textAlign: 'center' }}>No stocks match current filters</td></tr>
+              <tr><td colSpan={9} style={{ color: '#888', fontSize: 11, padding: '20px 8px', textAlign: 'center' }}>No stocks match current filters</td></tr>
             )}
           </tbody>
         </table>

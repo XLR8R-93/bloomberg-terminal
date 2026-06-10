@@ -127,7 +127,7 @@ function PriceTargetRow({ pt, currentPrice }: { pt: PriceTarget; currentPrice?: 
   return (
     <div style={{ borderBottom: '1px solid #1f1f1f', paddingBottom: 8, marginBottom: 12 }}>
       <div style={{ color: '#ffa028', fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 6 }}>
-        Price Target  {pt.count != null && <span style={{ color: '#444', fontWeight: 'normal' }}>({pt.count} analysts)</span>}
+        Price Target  {pt.count != null && <span style={{ color: '#aaaaaa', fontWeight: 'normal' }}>({pt.count} analysts)</span>}
       </div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
         {/* Visual range bar */}
@@ -143,7 +143,7 @@ function PriceTargetRow({ pt, currentPrice }: { pt: PriceTarget; currentPrice?: 
               <div style={{ position: 'absolute', left: 0, top: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
                 <span style={{ color: '#ff3b3b', fontSize: 9 }}>{fmtNum(pt.low)}</span>
                 <div style={{ width: 1, height: 8, background: '#ff3b3b44' }} />
-                <span style={{ color: '#444', fontSize: 8 }}>LOW</span>
+                <span style={{ color: '#aaaaaa', fontSize: 8 }}>LOW</span>
               </div>
 
               {/* Mean marker */}
@@ -157,7 +157,7 @@ function PriceTargetRow({ pt, currentPrice }: { pt: PriceTarget; currentPrice?: 
                 }}>
                   <span style={{ color: '#ffa028', fontSize: 10, fontWeight: 'bold' }}>{fmtNum(pt.mean)}</span>
                   <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#ffa028', border: '1px solid #000' }} />
-                  <span style={{ color: '#444', fontSize: 8 }}>MEAN</span>
+                  <span style={{ color: '#aaaaaa', fontSize: 8 }}>MEAN</span>
                 </div>
               )}
 
@@ -165,7 +165,7 @@ function PriceTargetRow({ pt, currentPrice }: { pt: PriceTarget; currentPrice?: 
               <div style={{ position: 'absolute', right: 0, top: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
                 <span style={{ color: '#33ff66', fontSize: 9 }}>{fmtNum(pt.high)}</span>
                 <div style={{ width: 1, height: 8, background: '#33ff6644' }} />
-                <span style={{ color: '#444', fontSize: 8 }}>HIGH</span>
+                <span style={{ color: '#aaaaaa', fontSize: 8 }}>HIGH</span>
               </div>
 
               {/* Current price marker */}
@@ -242,7 +242,7 @@ export function EST() {
           </button>
         ))}
         <div style={{ flex: 1 }} />
-        <span style={{ color: '#333', fontSize: 9, padding: '0 8px', alignSelf: 'center' }}>
+        <span style={{ color: '#888', fontSize: 9, padding: '0 8px', alignSelf: 'center' }}>
           0Q=CUR QTR  +1Q=NEXT QTR  0Y=CUR YEAR  +1Y=NEXT YEAR
         </span>
       </div>

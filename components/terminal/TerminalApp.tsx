@@ -48,7 +48,7 @@ function LayoutBtn({ opt }: { opt: typeof LAYOUT_OPTS[0] }) {
         border: 'none',
         borderRight: '1px solid #1f1f1f',
         borderBottom: active ? '2px solid #ffa028' : '2px solid transparent',
-        color: active ? '#ffa028' : '#444',
+        color: active ? '#ffa028' : '#aaaaaa',
         padding: '0 9px',
         cursor: 'pointer',
         font: 'inherit',
@@ -246,7 +246,7 @@ export function TerminalApp() {
           title="Open new tab  (then type a command to navigate)"
           style={{
             background: 'none', border: 'none', borderRight: '1px solid #1a1a1a',
-            cursor: 'pointer', color: '#333', padding: '0 10px',
+            cursor: 'pointer', color: '#888', padding: '0 10px',
             display: 'flex', alignItems: 'center',
           }}
         >
@@ -288,7 +288,7 @@ export function TerminalApp() {
             border: 'none',
             borderLeft: '1px solid #1f1f1f',
             borderBottom: isFullscreen ? '2px solid #ffa028' : '2px solid transparent',
-            color: isFullscreen ? '#ffa028' : '#444',
+            color: isFullscreen ? '#ffa028' : '#aaaaaa',
             padding: '0 10px',
             cursor: 'pointer',
             font: 'inherit',

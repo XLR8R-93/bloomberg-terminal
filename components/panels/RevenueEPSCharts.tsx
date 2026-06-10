@@ -34,7 +34,7 @@ const CHART_OPTS = {
   grid: { vertLines: { color: '#0d0d0d' }, horzLines: { color: '#0d0d0d' } },
   rightPriceScale: { borderColor: '#1a1a1a', textColor: '#555' },
   timeScale: { borderColor: '#1a1a1a', timeVisible: false, fixLeftEdge: true, fixRightEdge: true },
-  crosshair: { vertLine: { color: '#333' }, horzLine: { color: '#333' } },
+  crosshair: { vertLine: { color: '#888' }, horzLine: { color: '#888' } },
   handleScroll: false,
   handleScale: false,
 }
@@ -148,7 +148,7 @@ function MetricTable({ bars }: { bars: AnnualBar[] }) {
         <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 10 }}>
           <thead>
             <tr>
-              <th style={{ color: '#444', textAlign: 'left', padding: '1px 6px 1px 0', fontWeight: 'normal', whiteSpace: 'nowrap' }}>
+              <th style={{ color: '#aaaaaa', textAlign: 'left', padding: '1px 6px 1px 0', fontWeight: 'normal', whiteSpace: 'nowrap' }}>
                 FY
               </th>
               {displayed.map((b) => (
@@ -245,12 +245,12 @@ export function RevenueEPSCharts() {
       <div style={{ display: 'flex', paddingLeft: 0, flexShrink: 0 }}>
         <div style={{ flex: 1, display: 'flex', justifyContent: 'space-around' }}>
           {bars.map((b) => (
-            <span key={b.date} style={{ color: '#444', fontSize: 9 }}>{b.year}</span>
+            <span key={b.date} style={{ color: '#aaaaaa', fontSize: 9 }}>{b.year}</span>
           ))}
         </div>
         <div style={{ flex: 1, display: 'flex', justifyContent: 'space-around' }}>
           {bars.map((b) => (
-            <span key={b.date} style={{ color: '#444', fontSize: 9 }}>{b.year}</span>
+            <span key={b.date} style={{ color: '#aaaaaa', fontSize: 9 }}>{b.year}</span>
           ))}
         </div>
       </div>

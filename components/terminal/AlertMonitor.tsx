@@ -43,13 +43,13 @@ function AlertToast({ toast, onDismiss }: { toast: Toast; onDismiss: () => void 
         <span style={{ color: '#e8e8e8' }}>${toast.price.toFixed(2)}</span>
       </span>
       {toast.alert.note && (
-        <span style={{ color: '#555', fontSize: 9 }}>· {toast.alert.note}</span>
+        <span style={{ color: '#b0b0b0', fontSize: 9 }}>· {toast.alert.note}</span>
       )}
       <span style={{ flex: 1 }} />
       <button
         onClick={onDismiss}
         style={{
-          background: 'none', border: 'none', color: '#444',
+          background: 'none', border: 'none', color: '#aaaaaa',
           cursor: 'pointer', fontSize: 10, padding: '0 4px',
           fontFamily: 'inherit',
         }}
@@ -175,7 +175,7 @@ export function AlertMonitor() {
           <button
             onClick={() => setShowPermBanner(false)}
             style={{
-              background: 'none', border: 'none', color: '#444',
+              background: 'none', border: 'none', color: '#aaaaaa',
               cursor: 'pointer', fontFamily: 'inherit', fontSize: 10,
             }}
           >✕</button>

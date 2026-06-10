@@ -56,7 +56,7 @@ export function IndexBar() {
       {INDICES.map((idx, i) => {
         const q  = quotes[idx.symbol]
         const up = q ? q.dp >= 0 : null
-        const clr = up === null ? '#444' : up ? '#33ff66' : '#ff3b3b'
+        const clr = up === null ? '#aaaaaa' : up ? '#33ff66' : '#ff3b3b'
         const regionClr = REGION_COLOR[idx.region] ?? '#888'
 
         return (

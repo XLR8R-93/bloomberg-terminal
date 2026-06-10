@@ -77,8 +77,8 @@ function NewsRow({ item, expanded, onToggle, showTickers }: {
     >
       <div style={{ display: 'flex', gap: 8, alignItems: 'flex-start', padding: '5px 8px' }}>
         <div style={{ flexShrink: 0, textAlign: 'right', width: 54 }}>
-          <div style={{ color: '#444', fontSize: 9 }}>{dateStr}</div>
-          <div style={{ color: '#333', fontSize: 9 }}>{timeStr}</div>
+          <div style={{ color: '#aaaaaa', fontSize: 9 }}>{dateStr}</div>
+          <div style={{ color: '#888', fontSize: 9 }}>{timeStr}</div>
         </div>
         <div style={{ flex: 1, minWidth: 0 }}>
           {/* Ticker badges for watchlist/portfolio tab */}
@@ -86,7 +86,7 @@ function NewsRow({ item, expanded, onToggle, showTickers }: {
             <div style={{ marginBottom: 3 }}>
               {item.tickers.slice(0, 5).map(t => <TickerBadge key={t} ticker={t} />)}
               {item.tickers.length > 5 && (
-                <span style={{ color: '#333', fontSize: 8 }}>+{item.tickers.length - 5}</span>
+                <span style={{ color: '#888', fontSize: 8 }}>+{item.tickers.length - 5}</span>
               )}
             </div>
           )}
@@ -103,7 +103,7 @@ function NewsRow({ item, expanded, onToggle, showTickers }: {
               <ExternalLink size={9} />
             </a>
           </div>
-          <div style={{ color: '#444', fontSize: 9, marginTop: 1 }}>{item.source} · {timeAgo(item.datetime)}</div>
+          <div style={{ color: '#aaaaaa', fontSize: 9, marginTop: 1 }}>{item.source} · {timeAgo(item.datetime)}</div>
           {expanded && item.summary && (
             <div style={{ color: '#d8d8d8', fontSize: 10, marginTop: 4, lineHeight: 1.5, borderTop: '1px solid #111', paddingTop: 4 }}>
               {item.summary}
@@ -164,7 +164,7 @@ function WatchNews({ tickers, filter, expandedId, onToggle }: {
 
   if (tickers.length === 0) return (
     <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 6 }}>
-      <div style={{ color: '#444', fontSize: 11 }}>No tickers in watchlist / portfolio</div>
+      <div style={{ color: '#aaaaaa', fontSize: 11 }}>No tickers in watchlist / portfolio</div>
       <div style={{ color: '#2a2a2a', fontSize: 9 }}>Add stocks to your watchlist or PORT positions</div>
     </div>
   )
@@ -180,7 +180,7 @@ function WatchNews({ tickers, filter, expandedId, onToggle }: {
   return (
     <div style={{ flex: 1, overflowY: 'auto' }}>
       {items.length === 0 && (
-        <div style={{ padding: 8, color: '#555', fontSize: 11 }}>
+        <div style={{ padding: 8, color: '#b0b0b0', fontSize: 11 }}>
           {filter ? 'No matching stories' : 'No recent news for your holdings'}
         </div>
       )}
@@ -290,7 +290,7 @@ export function CN() {
             }}
           />
           {filter && (
-            <button onClick={() => setFilter('')} style={{ background: 'none', border: 'none', color: '#444', cursor: 'pointer', fontSize: 10, padding: 0 }}>✕</button>
+            <button onClick={() => setFilter('')} style={{ background: 'none', border: 'none', color: '#aaaaaa', cursor: 'pointer', fontSize: 10, padding: 0 }}>✕</button>
           )}
         </div>
         {tab !== 'watchlist' && (

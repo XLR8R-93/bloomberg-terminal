@@ -41,7 +41,7 @@ function WatchRow({ symbol }: { symbol: string }) {
       </span>
       <button
         onClick={(e) => { e.stopPropagation(); removeFromWatchlist(symbol) }}
-        style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, color: '#333', marginLeft: 2 }}
+        style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, color: '#888', marginLeft: 2 }}
       >
         <X size={10} />
       </button>

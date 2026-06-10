@@ -57,8 +57,8 @@ function RecBar({ r }: { r: RecommendationItem }) {
   return (
     <div style={{ marginBottom: 10 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 3 }}>
-        <span style={{ color: '#444', fontSize: 10 }}>{r.period}</span>
-        <span style={{ color: '#444', fontSize: 10 }}>n={total}</span>
+        <span style={{ color: '#aaaaaa', fontSize: 10 }}>{r.period}</span>
+        <span style={{ color: '#aaaaaa', fontSize: 10 }}>n={total}</span>
       </div>
       <div style={{ display: 'flex', height: 10, width: '100%', overflow: 'hidden', borderRadius: 1 }}>
         <div style={{ width: pct(r.strongBuy),  background: '#1a5a1a' }} title={`Strong Buy: ${r.strongBuy}`} />
@@ -167,7 +167,7 @@ export function EE() {
                         return (
                           <tr key={`${label}-${ri}`} style={{ borderBottom: '1px solid #0a0a0a' }}>
                             {ri === 0 && (
-                              <td rowSpan={rows.length} style={{ color: '#444', fontSize: 10, padding: '3px 6px 3px 0', verticalAlign: 'top', paddingTop: 5, whiteSpace: 'nowrap' }}>
+                              <td rowSpan={rows.length} style={{ color: '#aaaaaa', fontSize: 10, padding: '3px 6px 3px 0', verticalAlign: 'top', paddingTop: 5, whiteSpace: 'nowrap' }}>
                                 {label}
                               </td>
                             )}
@@ -175,7 +175,7 @@ export function EE() {
                             <td style={{ color: '#ffa028', textAlign: 'right', padding: '3px 6px', fontVariantNumeric: 'tabular-nums' }}>
                               {fmtEstimate(row.consensus, isRev)}
                             </td>
-                            <td style={{ color: '#444', textAlign: 'right', padding: '3px 6px', fontSize: 10, fontVariantNumeric: 'tabular-nums' }}>
+                            <td style={{ color: '#aaaaaa', textAlign: 'right', padding: '3px 6px', fontSize: 10, fontVariantNumeric: 'tabular-nums' }}>
                               {fmtEstimate(row.low, isRev)}
                             </td>
                             <td style={{ padding: '3px 6px', textAlign: 'center' }}>
@@ -183,10 +183,10 @@ export function EE() {
                                 <DistBar low={row.low} consensus={row.consensus} high={row.high} />
                               </div>
                             </td>
-                            <td style={{ color: '#444', textAlign: 'right', padding: '3px 6px', fontSize: 10, fontVariantNumeric: 'tabular-nums' }}>
+                            <td style={{ color: '#aaaaaa', textAlign: 'right', padding: '3px 6px', fontSize: 10, fontVariantNumeric: 'tabular-nums' }}>
                               {fmtEstimate(row.high, isRev)}
                             </td>
-                            <td style={{ color: '#444', textAlign: 'right', padding: '3px 6px', fontSize: 10 }}>{row.count ?? '—'}</td>
+                            <td style={{ color: '#aaaaaa', textAlign: 'right', padding: '3px 6px', fontSize: 10 }}>{row.count ?? '—'}</td>
                             <td style={{ color: growthColor, textAlign: 'right', padding: '3px 6px', fontSize: 10, fontVariantNumeric: 'tabular-nums' }}>
                               {row.growth != null ? `${row.growth >= 0 ? '+' : ''}${(row.growth * 100).toFixed(1)}%` : '—'}
                             </td>
@@ -224,7 +224,7 @@ export function EE() {
                       <td style={{ textAlign: 'right', color: '#d8d8d8', padding: '3px 6px', fontVariantNumeric: 'tabular-nums' }}>${fmt(e.estimate)}</td>
                       <td style={{ textAlign: 'right', color: beat ? '#33ff66' : '#ff3b3b', padding: '3px 6px', fontWeight: 'bold', fontVariantNumeric: 'tabular-nums' }}>${fmt(e.actual)}</td>
                       <td style={{ padding: '3px 6px' }}>
-                        {surprisePct != null ? <SurpriseBar pct={surprisePct} /> : <span style={{ color: '#444' }}>—</span>}
+                        {surprisePct != null ? <SurpriseBar pct={surprisePct} /> : <span style={{ color: '#aaaaaa' }}>—</span>}
                       </td>
                     </tr>
                   )

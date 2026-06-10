@@ -82,25 +82,25 @@ function ECalRow({ ev, onClickTicker }: { ev: EarningsEvent; onClickTicker: (t: 
           {hourLabel(ev.hour)}
         </span>
       </td>
-      <td style={{ padding: '4px 8px', color: '#555', fontSize: 9, textAlign: 'right' }}>
+      <td style={{ padding: '4px 8px', color: '#b0b0b0', fontSize: 9, textAlign: 'right' }}>
         {fmtEPS(ev.epsEstimate)}
       </td>
-      <td style={{ padding: '4px 8px', color: pending ? '#333' : '#ccc', fontSize: 9, textAlign: 'right' }}>
+      <td style={{ padding: '4px 8px', color: pending ? '#888' : '#ccc', fontSize: 9, textAlign: 'right' }}>
         {pending ? '—' : fmtEPS(ev.epsActual)}
       </td>
       <td style={{ padding: '4px 8px', fontSize: 9, textAlign: 'right', color: surpriseColor(pending ? null : ev.epsSurprise) }}>
         {pending ? '—' : (surprEps ?? '—')}
       </td>
-      <td style={{ padding: '4px 8px', color: '#555', fontSize: 9, textAlign: 'right' }}>
+      <td style={{ padding: '4px 8px', color: '#b0b0b0', fontSize: 9, textAlign: 'right' }}>
         {fmtRev(ev.revenueEstimate)}
       </td>
-      <td style={{ padding: '4px 8px', color: pending ? '#333' : '#ccc', fontSize: 9, textAlign: 'right' }}>
+      <td style={{ padding: '4px 8px', color: pending ? '#888' : '#ccc', fontSize: 9, textAlign: 'right' }}>
         {pending ? '—' : fmtRev(ev.revenueActual)}
       </td>
       <td style={{ padding: '4px 8px', fontSize: 9, textAlign: 'right', color: surpriseColor(pending ? null : ev.revSurprise) }}>
         {pending ? '—' : (surprRev ?? '—')}
       </td>
-      <td style={{ padding: '4px 8px', color: '#333', fontSize: 8, textAlign: 'right' }}>
+      <td style={{ padding: '4px 8px', color: '#888', fontSize: 8, textAlign: 'right' }}>
         Q{ev.quarter}'{String(ev.year).slice(2)}
       </td>
     </tr>
@@ -122,7 +122,7 @@ function DateHeader({ dateStr }: { dateStr: string }) {
       }}>
         <span style={{
           fontSize: 9, letterSpacing: '0.06em',
-          color: today ? '#ffa028' : future ? '#888' : '#444',
+          color: today ? '#ffa028' : future ? '#b0b0b0' : '#888',
           fontWeight: today ? 'bold' : 'normal',
         }}>
           {label.toUpperCase()}
@@ -181,14 +181,14 @@ export function ECAL() {
       <div className="panel-header" style={{ justifyContent: 'space-between', flexWrap: 'wrap', gap: 4 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <span className="panel-mnemonic">ECAL</span>
-          <span style={{ color: '#444', fontSize: 10 }}>EARNINGS CALENDAR</span>
+          <span style={{ color: '#aaaaaa', fontSize: 10 }}>EARNINGS CALENDAR</span>
         </div>
         <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
           {(['ALL', 'UPCOMING', 'RECENT'] as const).map(f => (
             <button key={f} onClick={() => setFilter(f)} style={{
               background: filter === f ? '#0a1a0a' : 'none',
               border: `1px solid ${filter === f ? '#ffa028' : '#222'}`,
-              color: filter === f ? '#ffa028' : '#444',
+              color: filter === f ? '#ffa028' : '#aaaaaa',
               fontFamily: 'inherit', fontSize: 8, padding: '1px 7px', cursor: 'pointer',
               letterSpacing: '0.05em',
             }}>{f}</button>
@@ -207,7 +207,7 @@ export function ECAL() {
       </div>
 
       {isLoading && (
-        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#444' }}>
+        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#aaaaaa' }}>
           Loading earnings calendar…
         </div>
       )}
@@ -229,7 +229,7 @@ export function ECAL() {
                   ['QTR', 'right'],
                 ].map(([h, align]) => (
                   <th key={h} style={{
-                    color: '#333', fontSize: 8, textAlign: align as 'left' | 'right',
+                    color: '#888', fontSize: 8, textAlign: align as 'left' | 'right',
                     padding: '3px 8px', fontWeight: 'normal', letterSpacing: '0.06em',
                     borderBottom: '1px solid #111',
                   }}>{h}</th>
@@ -238,7 +238,7 @@ export function ECAL() {
             </thead>
             <tbody>
               {grouped.length === 0 && (
-                <tr><td colSpan={9} style={{ padding: 20, color: '#333', fontSize: 11, textAlign: 'center' }}>
+                <tr><td colSpan={9} style={{ padding: 20, color: '#888', fontSize: 11, textAlign: 'center' }}>
                   No earnings events found
                 </td></tr>
               )}

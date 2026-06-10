@@ -143,7 +143,7 @@ function MiniBarChart({ bars, computeFn, color, title, suffix = '%' }: {
       {/* Year labels */}
       <div style={{ display: 'flex', justifyContent: 'space-around', paddingRight: 44, marginTop: 2 }}>
         {points.map((p) => (
-          <span key={p.date} style={{ color: '#444', fontSize: 8 }}>
+          <span key={p.date} style={{ color: '#aaaaaa', fontSize: 8 }}>
             {new Date(p.date).getFullYear()}
           </span>
         ))}

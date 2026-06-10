@@ -302,7 +302,7 @@ function TickerSearch({ value, onChange, onSelect, activeTab, onTabChange }: {
                     <span style={{ color: '#4d9fff', fontSize: 12, fontWeight: 'bold', marginRight: 8 }}>{r.symbol}</span>
                     <span style={{ color: '#e8e8e8', fontSize: 10 }}>{r.description?.slice(0, 38)}</span>
                   </div>
-                  <span style={{ color: '#333', fontSize: 9 }}>{r.type}</span>
+                  <span style={{ color: '#888', fontSize: 9 }}>{r.type}</span>
                 </div>
               ))}
             </div>,
@@ -370,7 +370,7 @@ function PositionModal({ initial, onSave, onClose }: {
           <div>
             <label style={labelStyle}>INSTRUMENT</label>
             <TickerSearch value={ticker} onChange={v => { setTicker(v); setCurrency(currencyFor(v)) }} onSelect={handleSelect} activeTab={tab} onTabChange={t => { setTab(t); setTicker('') }} />
-            {ticker && <div style={{ marginTop: 4, fontSize: 10, color: '#e8e8e8' }}>Selected: <span style={{ color: typeColor }}>{ticker}</span>{unit !== 'share' && <span style={{ color: '#444' }}> · {unit}</span>}</div>}
+            {ticker && <div style={{ marginTop: 4, fontSize: 10, color: '#e8e8e8' }}>Selected: <span style={{ color: typeColor }}>{ticker}</span>{unit !== 'share' && <span style={{ color: '#aaaaaa' }}> · {unit}</span>}</div>}
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
             <div>
@@ -389,7 +389,7 @@ function PositionModal({ initial, onSave, onClose }: {
             </select>
           </div>
           {parseFloat(shares) > 0 && parseFloat(avgCost) > 0 && (
-            <div style={{ color: '#444', fontSize: 10, borderTop: '1px solid #111', paddingTop: 10 }}>
+            <div style={{ color: '#aaaaaa', fontSize: 10, borderTop: '1px solid #111', paddingTop: 10 }}>
               Total exposure: <span style={{ color: '#d8d8d8' }}>{fmtVal(parseFloat(shares) * parseFloat(avgCost), currency)}</span>
             </div>
           )}
@@ -398,7 +398,7 @@ function PositionModal({ initial, onSave, onClose }: {
           <button onClick={onClose} style={{ background: 'none', border: '1px solid #333', color: '#d8d8d8', cursor: 'pointer', fontFamily: 'inherit', fontSize: 11, padding: '6px 16px' }}>CANCEL</button>
           <button onClick={() => { if (!valid) return; onSave({ ticker: ticker.trim().toUpperCase(), shares: parseFloat(shares), avgCost: parseFloat(avgCost), currency }); onClose() }}
             disabled={!valid}
-            style={{ background: valid ? '#1a3a1a' : '#111', border: `1px solid ${valid ? '#33ff66' : '#333'}`, color: valid ? '#33ff66' : '#444', cursor: valid ? 'pointer' : 'default', fontFamily: 'inherit', fontSize: 11, padding: '6px 16px' }}>SAVE</button>
+            style={{ background: valid ? '#1a3a1a' : '#111', border: `1px solid ${valid ? '#33ff66' : '#888888'}`, color: valid ? '#33ff66' : '#aaaaaa', cursor: valid ? 'pointer' : 'default', fontFamily: 'inherit', fontSize: 11, padding: '6px 16px' }}>SAVE</button>
         </div>
       </div>
     </div>
@@ -429,7 +429,7 @@ function SummaryStrip({ positions, quotes, loaded, fx, baseCcy, metrics }: { pos
 
   const stat = (label: string, value: string, color = '#eee') => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-      <span style={{ color: '#444', fontSize: 9, letterSpacing: '0.08em' }}>{label}</span>
+      <span style={{ color: '#aaaaaa', fontSize: 9, letterSpacing: '0.08em' }}>{label}</span>
       <span style={{ color, fontSize: 13, fontWeight: 'bold', fontVariantNumeric: 'tabular-nums' }}>{value}</span>
     </div>
   )
@@ -457,7 +457,7 @@ function HoldingsView({ positions, quotes, totalValue, fx, baseCcy, alerts, metr
   metrics: Record<string, SymbolMetrics>
   onEdit: (p: Position) => void; onRemove: (id: string) => void; onSelect: (p: Position) => void
 }) {
-  const th: React.CSSProperties = { color: '#333', fontSize: 9, fontWeight: 'normal', padding: '4px 8px', textAlign: 'right', letterSpacing: '0.05em', borderBottom: '1px solid #111' }
+  const th: React.CSSProperties = { color: '#888', fontSize: 9, fontWeight: 'normal', padding: '4px 8px', textAlign: 'right', letterSpacing: '0.05em', borderBottom: '1px solid #111' }
   const cell: React.CSSProperties = { padding: '5px 8px', fontSize: 11, fontVariantNumeric: 'tabular-nums' }
 
   const typeColor = (t: string) => {
@@ -468,7 +468,7 @@ function HoldingsView({ positions, quotes, totalValue, fx, baseCcy, alerts, metr
   return (
     <div style={{ flex: 1, overflowY: 'auto' }}>
       {positions.length === 0 ? (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', gap: 12, color: '#333' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', gap: 12, color: '#888' }}>
           <div style={{ fontSize: 13, letterSpacing: '0.06em' }}>NO POSITIONS</div>
           <div style={{ fontSize: 11 }}>Click <span style={{ color: '#33ff66' }}>+ ADD POSITION</span> to get started</div>
         </div>
@@ -539,12 +539,12 @@ function HoldingsView({ positions, quotes, totalValue, fx, baseCcy, alerts, metr
                   </td>
                   <td style={{ ...cell, color: '#d8d8d8', textAlign: 'right' }}>{fmt(pos.shares, pos.shares % 1 === 0 ? 0 : 2)}</td>
                   <td style={{ ...cell, color: '#e8e8e8', textAlign: 'right' }}>{fmtVal(pos.avgCost, c)}</td>
-                  <td style={{ ...cell, color: '#eee', textAlign: 'right', fontWeight: 'bold' }}>{price != null ? fmtVal(price, c) : <span style={{ color: '#333' }}>…</span>}</td>
+                  <td style={{ ...cell, color: '#eee', textAlign: 'right', fontWeight: 'bold' }}>{price != null ? fmtVal(price, c) : <span style={{ color: '#888' }}>…</span>}</td>
                   <td style={{ ...cell, color: '#e8e8e8', textAlign: 'right' }}>{mv != null ? fmtVal(mv, c) : '—'}</td>
-                  <td style={{ ...cell, color: dpnl != null ? clr(dpnl) : '#333', textAlign: 'right' }}>{dpnl != null ? `${sign(dpnl)}${fmtVal(Math.abs(dpnl), c)}` : '—'}</td>
-                  <td style={{ ...cell, color: q?.dp != null ? clr(q.dp) : '#333', textAlign: 'right' }}>{q?.dp != null ? pct(q.dp) : '—'}</td>
-                  <td style={{ ...cell, color: tpnl != null ? clr(tpnl) : '#333', textAlign: 'right' }}>{tpnl != null ? `${sign(tpnl)}${fmtVal(Math.abs(tpnl), c)}` : '—'}</td>
-                  <td style={{ ...cell, color: tret != null ? clr(tret) : '#333', textAlign: 'right' }}>{tret != null ? pct(tret) : '—'}</td>
+                  <td style={{ ...cell, color: dpnl != null ? clr(dpnl) : '#888888', textAlign: 'right' }}>{dpnl != null ? `${sign(dpnl)}${fmtVal(Math.abs(dpnl), c)}` : '—'}</td>
+                  <td style={{ ...cell, color: q?.dp != null ? clr(q.dp) : '#888888', textAlign: 'right' }}>{q?.dp != null ? pct(q.dp) : '—'}</td>
+                  <td style={{ ...cell, color: tpnl != null ? clr(tpnl) : '#888888', textAlign: 'right' }}>{tpnl != null ? `${sign(tpnl)}${fmtVal(Math.abs(tpnl), c)}` : '—'}</td>
+                  <td style={{ ...cell, color: tret != null ? clr(tret) : '#888888', textAlign: 'right' }}>{tret != null ? pct(tret) : '—'}</td>
                   <td style={{ ...cell, color: '#e8e8e8', textAlign: 'right' }}>{wt > 0 ? `${fmt(wt, 1)}%` : '—'}</td>
                   <td style={{ ...cell, textAlign: 'right' }}>
                     {divYield != null
@@ -610,7 +610,7 @@ function PerformanceView({ positions, quotes, fx, baseCcy }: { positions: Positi
       <span style={{ color: '#e8e8e8', fontSize: 11 }}>{label}</span>
       <div style={{ textAlign: 'right' }}>
         <span style={{ color, fontSize: 12, fontVariantNumeric: 'tabular-nums', fontWeight: 'bold' }}>{value}</span>
-        {sub && <span style={{ color: '#444', fontSize: 10, marginLeft: 6 }}>{sub}</span>}
+        {sub && <span style={{ color: '#aaaaaa', fontSize: 10, marginLeft: 6 }}>{sub}</span>}
       </div>
     </div>
   )
@@ -650,7 +650,7 @@ function PerformanceView({ positions, quotes, fx, baseCcy }: { positions: Positi
       <div style={{ gridColumn: '1 / -1' }}>
         <span style={sectionLabel}>P&L CONTRIBUTION — TODAY</span>
         <div style={{ display: 'grid', gap: 4 }}>
-          {contributors.length === 0 && <span style={{ color: '#333', fontSize: 11 }}>No data yet</span>}
+          {contributors.length === 0 && <span style={{ color: '#888', fontSize: 11 }}>No data yet</span>}
           {contributors.map(p => {
             const contrib = totalDayPnl !== 0 ? (p.dpnl / Math.abs(totalDayPnl)) * 100 : 0
             return (
@@ -660,7 +660,7 @@ function PerformanceView({ positions, quotes, fx, baseCcy }: { positions: Positi
                 <span style={{ color: clr(p.dpnl), fontSize: 11, textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>
                   {sign(p.dpnl)}{fmtVal(Math.abs(p.dpnl), baseCcy)}
                 </span>
-                <span style={{ color: '#444', fontSize: 10, textAlign: 'right' }}>
+                <span style={{ color: '#aaaaaa', fontSize: 10, textAlign: 'right' }}>
                   {sign(contrib)}{fmt(Math.abs(contrib), 1)}% of PnL
                 </span>
               </div>
@@ -800,7 +800,7 @@ function RiskView({ positions, quotes, fx, baseCcy }: { positions: Position[]; q
       <span style={{ color: '#e8e8e8', fontSize: 11 }}>{label}</span>
       <div style={{ textAlign: 'right' }}>
         <span style={{ color, fontSize: 12, fontVariantNumeric: 'tabular-nums', fontWeight: 'bold' }}>{value}</span>
-        {sub && <span style={{ color: '#444', fontSize: 10, marginLeft: 6 }}>{sub}</span>}
+        {sub && <span style={{ color: '#aaaaaa', fontSize: 10, marginLeft: 6 }}>{sub}</span>}
       </div>
     </div>
   )
@@ -842,7 +842,7 @@ function RiskView({ positions, quotes, fx, baseCcy }: { positions: Position[]; q
         {metricRow('Sharpe Ratio', sharpe != null ? fmt(sharpe) : '—', sharpeColor, sharpeLabel)}
         {metricRow('Portfolio Return', portReturnPct != null ? pct(portReturnPct) : '—', portReturnPct != null ? clr(portReturnPct) : '#555')}
         {metricRow('Est. Volatility', portfolioVol != null ? `${fmt(portfolioVol, 1)}%` : '—', '#888')}
-        {metricRow('Risk-Free Rate', `${fmt(RISK_FREE_ANNUAL)}% (assumed)`, '#444')}
+        {metricRow('Risk-Free Rate', `${fmt(RISK_FREE_ANNUAL)}% (assumed)`, '#aaaaaa')}
         <div style={{ marginTop: 10, padding: '8px', background: '#080808', border: '1px solid #1a1a1a', fontSize: 10, color: '#e8e8e8', lineHeight: 1.6 }}>
           {sharpe == null ? 'Sharpe ratio requires â‰¥2 positions with return data.' :
            sharpe > 2   ? 'Excellent risk-adjusted returns. Portfolio generating strong alpha per unit of risk.' :
@@ -883,7 +883,7 @@ function RiskView({ positions, quotes, fx, baseCcy }: { positions: Position[]; q
           <thead>
             <tr>
               {['Ticker','Weight','Beta','52W Low','Current','52W High','Position in Range','Dist from High'].map(h => (
-                <th key={h} style={{ color: '#333', fontSize: 9, fontWeight: 'normal', padding: '3px 8px', textAlign: h === 'Ticker' ? 'left' : 'right', borderBottom: '1px solid #111', letterSpacing: '0.04em' }}>{h}</th>
+                <th key={h} style={{ color: '#888', fontSize: 9, fontWeight: 'normal', padding: '3px 8px', textAlign: h === 'Ticker' ? 'left' : 'right', borderBottom: '1px solid #111', letterSpacing: '0.04em' }}>{h}</th>
               ))}
             </tr>
           </thead>
@@ -900,7 +900,7 @@ function RiskView({ positions, quotes, fx, baseCcy }: { positions: Position[]; q
                 >
                   <td style={{ padding: '5px 8px', color: '#4d9fff', fontSize: 11, fontWeight: 'bold' }}>{p.ticker}</td>
                   <td style={{ padding: '5px 8px', color: '#d8d8d8', fontSize: 11, textAlign: 'right' }}>{fmt(wt, 1)}%</td>
-                  <td style={{ padding: '5px 8px', fontSize: 11, textAlign: 'right', color: m?.beta != null ? (m.beta > 1.2 ? '#ffa028' : m.beta < 0.5 ? '#4d9fff' : '#eee') : '#333' }}>
+                  <td style={{ padding: '5px 8px', fontSize: 11, textAlign: 'right', color: m?.beta != null ? (m.beta > 1.2 ? '#ffa028' : m.beta < 0.5 ? '#4d9fff' : '#eee') : '#888888' }}>
                     {m?.beta != null ? fmt(m.beta) : '—'}
                   </td>
                   <td style={{ padding: '5px 8px', color: '#e8e8e8', fontSize: 10, textAlign: 'right' }}>{m?.week52Low  != null ? fmt(m.week52Low)  : '—'}</td>
@@ -909,9 +909,9 @@ function RiskView({ positions, quotes, fx, baseCcy }: { positions: Position[]; q
                   <td style={{ padding: '5px 8px', width: 120 }}>
                     {m?.week52Low != null && m?.week52High != null
                       ? <RangeGauge low={m.week52Low} high={m.week52High} current={price} />
-                      : <span style={{ color: '#333', fontSize: 10 }}>—</span>}
+                      : <span style={{ color: '#888', fontSize: 10 }}>—</span>}
                   </td>
-                  <td style={{ padding: '5px 8px', fontSize: 11, textAlign: 'right', color: distHigh != null ? clr(distHigh) : '#333' }}>
+                  <td style={{ padding: '5px 8px', fontSize: 11, textAlign: 'right', color: distHigh != null ? clr(distHigh) : '#888888' }}>
                     {distHigh != null ? pct(distHigh) : '—'}
                   </td>
                 </tr>
@@ -964,7 +964,7 @@ function AllocationView({ positions, quotes, metrics, fx, baseCcy }: { positions
             <div key={name}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 3 }}>
                 <span style={{ color: PALETTE[i % PALETTE.length], fontSize: 11, textTransform: 'capitalize' }}>{name}</span>
-                <span style={{ color: '#d8d8d8', fontSize: 11, fontVariantNumeric: 'tabular-nums' }}>{fmt(w, 1)}%  <span style={{ color: '#444' }}>{fmtVal(mv)}</span></span>
+                <span style={{ color: '#d8d8d8', fontSize: 11, fontVariantNumeric: 'tabular-nums' }}>{fmt(w, 1)}%  <span style={{ color: '#aaaaaa' }}>{fmtVal(mv)}</span></span>
               </div>
               <Bar pct={w} color={PALETTE[i % PALETTE.length]} height={7} />
             </div>
@@ -1010,7 +1010,7 @@ function BlotterView({ positions, quotes, fx, baseCcy, onSelect }: { positions: 
   const totalPnl   = totalValue - totalCost
   const totalPnlPct = totalCost > 0 ? (totalPnl / totalCost) * 100 : 0
 
-  const th: React.CSSProperties   = { color: '#333', fontSize: 9, fontWeight: 'normal', padding: '4px 8px', textAlign: 'left', letterSpacing: '0.05em', borderBottom: '1px solid #111' }
+  const th: React.CSSProperties   = { color: '#888', fontSize: 9, fontWeight: 'normal', padding: '4px 8px', textAlign: 'left', letterSpacing: '0.05em', borderBottom: '1px solid #111' }
   const cell: React.CSSProperties = { padding: '5px 8px', fontSize: 11, fontVariantNumeric: 'tabular-nums' }
 
   return (
@@ -1025,7 +1025,7 @@ function BlotterView({ positions, quotes, fx, baseCcy, onSelect }: { positions: 
             ['UNREALISED P&L', `${sign(totalPnl)}${fmtVal(Math.abs(totalPnl), baseCcy)}  (${pct(totalPnlPct)})`, clr(totalPnl)],
           ] as [string, string, string][]).map(([label, value, color]) => (
             <div key={label} style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-              <span style={{ color: '#444', fontSize: 9, letterSpacing: '0.08em' }}>{label}</span>
+              <span style={{ color: '#aaaaaa', fontSize: 9, letterSpacing: '0.08em' }}>{label}</span>
               <span style={{ color, fontSize: 13, fontWeight: 'bold' }}>{value}</span>
             </div>
           ))}
@@ -1034,19 +1034,19 @@ function BlotterView({ positions, quotes, fx, baseCcy, onSelect }: { positions: 
 
       {/* Filter toolbar */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 16px', borderBottom: '1px solid #111', flexShrink: 0 }}>
-        <span style={{ color: '#444', fontSize: 10 }}>FILTER:</span>
+        <span style={{ color: '#aaaaaa', fontSize: 10 }}>FILTER:</span>
         <select value={filterTicker} onChange={e => setFilterTicker(e.target.value)}
           style={{ background: '#0a0a0a', border: '1px solid #222', color: '#d8d8d8', fontFamily: 'inherit', fontSize: 10, padding: '3px 8px' }}>
           {tickers.map(t => <option key={t} value={t}>{t}</option>)}
         </select>
         <span style={{ flex: 1 }} />
-        <span style={{ color: '#333', fontSize: 10 }}>{rows.length} entr{rows.length === 1 ? 'y' : 'ies'} · edit via HOLDINGS tab</span>
+        <span style={{ color: '#888', fontSize: 10 }}>{rows.length} entr{rows.length === 1 ? 'y' : 'ies'} · edit via HOLDINGS tab</span>
       </div>
 
       {/* Table */}
       <div style={{ flex: 1, overflowY: 'auto' }}>
         {rows.length === 0 ? (
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', color: '#333', gap: 10 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', color: '#888', gap: 10 }}>
             <span style={{ fontSize: 13, letterSpacing: '0.06em' }}>NO POSITIONS</span>
             <span style={{ fontSize: 11 }}>Add positions via the HOLDINGS tab</span>
           </div>
@@ -1095,13 +1095,13 @@ function BlotterView({ positions, quotes, fx, baseCcy, onSelect }: { positions: 
                     <td style={{ ...cell, color: '#eee', textAlign: 'right', fontWeight: 'bold' }}>{last != null ? fmtVal(last, p.currency) : '…'}</td>
                     <td style={{ ...cell, color: '#d8d8d8', textAlign: 'right' }}>{fmtVal(cost, baseCcy)}</td>
                     <td style={{ ...cell, color: '#e8e8e8', textAlign: 'right' }}>{mv != null ? fmtVal(mv, baseCcy) : '—'}</td>
-                    <td style={{ ...cell, textAlign: 'right', color: upnl != null ? clr(upnl) : '#333', fontWeight: 'bold' }}>
+                    <td style={{ ...cell, textAlign: 'right', color: upnl != null ? clr(upnl) : '#888888', fontWeight: 'bold' }}>
                       {upnl != null ? `${sign(upnl)}${fmtVal(Math.abs(upnl), baseCcy)}` : '—'}
                     </td>
-                    <td style={{ ...cell, textAlign: 'right', color: ret != null ? clr(ret) : '#333' }}>
+                    <td style={{ ...cell, textAlign: 'right', color: ret != null ? clr(ret) : '#888888' }}>
                       {ret != null ? pct(ret) : '—'}
                     </td>
-                    <td style={{ ...cell, color: '#444', textAlign: 'right' }}>{p.currency}</td>
+                    <td style={{ ...cell, color: '#aaaaaa', textAlign: 'right' }}>{p.currency}</td>
                   </tr>
                 )
               })}
@@ -1281,7 +1281,7 @@ function HistoryView({ positions, fx, baseCcy }: {
   const unrealisedPnl = lastVal - lastCost
 
   if (positions.length === 0) return (
-    <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#333', fontSize: 13, letterSpacing: '0.06em' }}>
+    <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#888', fontSize: 13, letterSpacing: '0.06em' }}>
       NO POSITIONS — add holdings to plot P&L history
     </div>
   )
@@ -1312,9 +1312,9 @@ function HistoryView({ positions, fx, baseCcy }: {
           </span>
           <button onClick={() => setShowBench(b => !b)} style={{
             display: 'flex', alignItems: 'center', gap: 5, fontSize: 10,
-            color: showBench ? '#4d9fff' : '#333', background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit', padding: 0,
+            color: showBench ? '#4d9fff' : '#888888', background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit', padding: 0,
           }}>
-            <span style={{ width: 16, height: 2, background: showBench ? '#4d9fff' : '#333', display: 'inline-block' }} />SPY (normalised)
+            <span style={{ width: 16, height: 2, background: showBench ? '#4d9fff' : '#888888', display: 'inline-block' }} />SPY (normalised)
           </button>
         </div>
 
@@ -1326,7 +1326,7 @@ function HistoryView({ positions, fx, baseCcy }: {
             ['Current Value', lastVal ? fmtVal(lastVal, baseCcy) : '—', '#eee'],
           ].map(([label, val, col]) => (
             <div key={label} style={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-              <span style={{ color: '#444', fontSize: 9, letterSpacing: '0.07em' }}>{label}</span>
+              <span style={{ color: '#aaaaaa', fontSize: 9, letterSpacing: '0.07em' }}>{label}</span>
               <span style={{ color: col, fontSize: 12, fontWeight: 'bold', fontVariantNumeric: 'tabular-nums' }}>{val}</span>
             </div>
           ))}
@@ -1336,7 +1336,7 @@ function HistoryView({ positions, fx, baseCcy }: {
       {/* Chart */}
       <div style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
         {isLoading && (
-          <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 2, color: '#444', fontSize: 11, letterSpacing: '0.08em' }}>
+          <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 2, color: '#aaaaaa', fontSize: 11, letterSpacing: '0.08em' }}>
             LOADING HISTORICAL DATA…
           </div>
         )}
@@ -1507,7 +1507,7 @@ function HeatMapView({ positions, quotes, fx, baseCcy, metrics, onSelect }: {
   }, [nodes, dims, groupBy])
 
   if (positions.length === 0) return (
-    <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#333', fontSize: 13, letterSpacing: '0.06em' }}>
+    <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#888', fontSize: 13, letterSpacing: '0.06em' }}>
       NO POSITIONS — add holdings to see heat map
     </div>
   )
@@ -1516,7 +1516,7 @@ function HeatMapView({ positions, quotes, fx, baseCcy, metrics, onSelect }: {
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
       {/* Toolbar */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '6px 16px', borderBottom: '1px solid #111', flexShrink: 0 }}>
-        <span style={{ color: '#444', fontSize: 10 }}>GROUP BY:</span>
+        <span style={{ color: '#aaaaaa', fontSize: 10 }}>GROUP BY:</span>
         {(['none', 'sector', 'type'] as const).map(g => (
           <button key={g} onClick={() => setGroupBy(g)} style={{
             background: groupBy === g ? '#1a1a0a' : 'none',
@@ -1527,7 +1527,7 @@ function HeatMapView({ positions, quotes, fx, baseCcy, metrics, onSelect }: {
         ))}
         <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 8 }}>
           {/* Legend */}
-          <span style={{ color: '#333', fontSize: 9 }}>Day return:</span>
+          <span style={{ color: '#888', fontSize: 9 }}>Day return:</span>
           {[-3,-2,-1,0,1,2,3].map(v => (
             <div key={v} style={{ width: 18, height: 10, background: dpColor(v), border: '1px solid #111' }} title={`${v > 0 ? '+' : ''}${v}%`} />
           ))}
@@ -1703,7 +1703,7 @@ function AlertManager({ pos, price, alerts, addAlert, removeAlert }: {
           {(['TARGET', 'STOP'] as const).map(t => (
             <button key={t} onClick={() => setType(t)} style={{
               flex: 1, ...inputStyle, cursor: 'pointer',
-              color: type === t ? (t === 'TARGET' ? '#33ff66' : '#ff3b3b') : '#444',
+              color: type === t ? (t === 'TARGET' ? '#33ff66' : '#ff3b3b') : '#aaaaaa',
               border: `1px solid ${type === t ? (t === 'TARGET' ? '#1a3a1a' : '#3a1010') : '#2a2a2a'}`,
               background: type === t ? (t === 'TARGET' ? '#0a1a0a' : '#1a0505') : '#0a0a0a',
             }}>{t}</button>
@@ -1718,7 +1718,7 @@ function AlertManager({ pos, price, alerts, addAlert, removeAlert }: {
         <button onClick={handleAdd} disabled={!parseFloat(value)} style={{
           background: parseFloat(value) ? '#0a1a0a' : '#0a0a0a',
           border: `1px solid ${parseFloat(value) ? '#1a3a1a' : '#2a2a2a'}`,
-          color: parseFloat(value) ? '#33ff66' : '#444',
+          color: parseFloat(value) ? '#33ff66' : '#aaaaaa',
           fontFamily: 'inherit', fontSize: 10, padding: '5px', cursor: parseFloat(value) ? 'pointer' : 'default',
           letterSpacing: '0.06em',
         }}>+ SET ALERT</button>
@@ -1787,7 +1787,7 @@ function PositionDetail({ pos, onClose, onEdit, alerts, addAlert, removeAlert }:
             <span style={{ fontSize: 8, color: typeColor, border: `1px solid ${typeColor}`, padding: '1px 5px' }}>{type.toUpperCase()}</span>
           </div>
           {profile?.name && <div style={{ color: '#e8e8e8', fontSize: 10 }}>{profile.name}</div>}
-          {profile?.finnhubIndustry && <div style={{ color: '#444', fontSize: 9, marginTop: 1 }}>{profile.finnhubIndustry}</div>}
+          {profile?.finnhubIndustry && <div style={{ color: '#aaaaaa', fontSize: 9, marginTop: 1 }}>{profile.finnhubIndustry}</div>}
         </div>
         <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
           <button onClick={() => onEdit(pos)} style={{ background: 'none', border: '1px solid #333', color: '#4d9fff', fontFamily: 'inherit', fontSize: 9, padding: '3px 8px', cursor: 'pointer' }}>EDIT</button>
@@ -1849,7 +1849,7 @@ function PositionDetail({ pos, onClose, onEdit, alerts, addAlert, removeAlert }:
             {metrics.week52High != null && metrics.week52Low != null && price != null && (
               <div style={{ marginTop: 8 }}>
                 <RangeGauge low={metrics.week52Low} high={metrics.week52High} current={price} />
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 3, fontSize: 9, color: '#444' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 3, fontSize: 9, color: '#aaaaaa' }}>
                   <span>{fmtVal(metrics.week52Low, pos.currency)}</span>
                   <span>{fmt(((price - metrics.week52Low) / (metrics.week52High - metrics.week52Low)) * 100, 0)}% of range</span>
                   <span>{fmtVal(metrics.week52High, pos.currency)}</span>
@@ -2007,17 +2007,17 @@ function EfficientFrontierView({ positions, fx, baseCcy }: {
   function fmtPct(v: number) { return (v * 100).toFixed(1) + '%' }
 
   if (tickers.length < 2) return (
-    <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#333', fontSize: 12 }}>
+    <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#888', fontSize: 12 }}>
       Add at least 2 positions to compute efficient frontier
     </div>
   )
   if (loading) return (
-    <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#444', fontSize: 12 }}>
+    <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#aaaaaa', fontSize: 12 }}>
       Loading historical data…
     </div>
   )
   if (!portfolios.length) return (
-    <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#333', fontSize: 12 }}>
+    <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#888', fontSize: 12 }}>
       Insufficient data for frontier calculation
     </div>
   )
@@ -2030,7 +2030,7 @@ function EfficientFrontierView({ positions, fx, baseCcy }: {
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
       {/* Controls */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '5px 10px', borderBottom: '1px solid #111', flexShrink: 0 }}>
-        <span style={{ color: '#444', fontSize: 10 }}>RANGE:</span>
+        <span style={{ color: '#aaaaaa', fontSize: 10 }}>RANGE:</span>
         {(['1mo','3mo','6mo','1y','2y','5y'] as RangeKey[]).map(r => (
           <button key={r} onClick={() => setRange(r)} style={{
             background: range === r ? '#0d1a0d' : 'none',
@@ -2039,7 +2039,7 @@ function EfficientFrontierView({ positions, fx, baseCcy }: {
             fontFamily: 'inherit', fontSize: 10, padding: '0 6px', cursor: 'pointer',
           }}>{r.toUpperCase()}</button>
         ))}
-        <span style={{ color: '#333', fontSize: 9, marginLeft: 'auto' }}>4,000 Monte Carlo simulations · rf = 4.5%</span>
+        <span style={{ color: '#888', fontSize: 9, marginLeft: 'auto' }}>4,000 Monte Carlo simulations · rf = 4.5%</span>
       </div>
 
       {/* Chart + stats */}
@@ -2130,9 +2130,9 @@ function EfficientFrontierView({ positions, fx, baseCcy }: {
               lineHeight: 1.8,
             }}>
               <div style={{ color: '#ffa028', fontWeight: 'bold', marginBottom: 2 }}>Portfolio</div>
-              <div><span style={{ color: '#555' }}>Return: </span><span style={{ color: '#33ff66' }}>{fmtPct(hovered.ret)}</span></div>
-              <div><span style={{ color: '#555' }}>Volatility: </span><span style={{ color: '#4d9fff' }}>{fmtPct(hovered.vol)}</span></div>
-              <div><span style={{ color: '#555' }}>Sharpe: </span><span style={{ color: hovered.sharpe >= 0 ? '#33ff66' : '#ff3b3b' }}>{hovered.sharpe.toFixed(2)}</span></div>
+              <div><span style={{ color: '#b0b0b0' }}>Return: </span><span style={{ color: '#33ff66' }}>{fmtPct(hovered.ret)}</span></div>
+              <div><span style={{ color: '#b0b0b0' }}>Volatility: </span><span style={{ color: '#4d9fff' }}>{fmtPct(hovered.vol)}</span></div>
+              <div><span style={{ color: '#b0b0b0' }}>Sharpe: </span><span style={{ color: hovered.sharpe >= 0 ? '#33ff66' : '#ff3b3b' }}>{hovered.sharpe.toFixed(2)}</span></div>
             </div>
           )}
         </div>
@@ -2148,7 +2148,7 @@ function EfficientFrontierView({ positions, fx, baseCcy }: {
               <div style={{ color, fontSize: 10, fontWeight: 'bold', letterSpacing: '0.08em', marginBottom: 6 }}>{label}</div>
               {[['Return', fmtPct(port.ret)], ['Volatility', fmtPct(port.vol)], ['Sharpe', port.sharpe.toFixed(2)]].map(([k, v]) => (
                 <div key={k} style={{ display: 'flex', justifyContent: 'space-between', fontSize: 10, padding: '1px 0', borderBottom: '1px solid #0d0d0d' }}>
-                  <span style={{ color: '#555' }}>{k}</span><span style={{ color: '#e8e8e8' }}>{v}</span>
+                  <span style={{ color: '#b0b0b0' }}>{k}</span><span style={{ color: '#e8e8e8' }}>{v}</span>
                 </div>
               ))}
               <div style={{ marginTop: 6 }}>
@@ -2164,7 +2164,7 @@ function EfficientFrontierView({ positions, fx, baseCcy }: {
 
           {/* Colour scale legend */}
           <div style={{ marginTop: 'auto' }}>
-            <div style={{ fontSize: 9, color: '#333', marginBottom: 4 }}>COLOUR = SHARPE RATIO</div>
+            <div style={{ fontSize: 9, color: '#888', marginBottom: 4 }}>COLOUR = SHARPE RATIO</div>
             <svg width={140} height={14}>
               <defs>
                 <linearGradient id="sharpe-grad" x1="0" x2="1" y1="0" y2="0">
@@ -2175,7 +2175,7 @@ function EfficientFrontierView({ positions, fx, baseCcy }: {
               </defs>
               <rect x={0} y={0} width={140} height={12} fill="url(#sharpe-grad)" rx={2} />
             </svg>
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 8, color: '#333', marginTop: 2 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 8, color: '#888', marginTop: 2 }}>
               <span>Low</span><span>High Sharpe</span>
             </div>
           </div>
@@ -2265,17 +2265,17 @@ function ScoutCard({
       onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 2 }}>
-        <span style={{ color: '#333', fontSize: 9, minWidth: 14 }}>{rank}.</span>
+        <span style={{ color: '#888', fontSize: 9, minWidth: 14 }}>{rank}.</span>
         <span style={{ color: '#e8e8e8', fontSize: 11, fontWeight: 'bold', letterSpacing: '0.04em', flex: 1 }}>
           {stock.symbol.replace('.AX', '')}
         </span>
         <span style={{ color: color, fontSize: 10, fontWeight: 'bold' }}>{score}</span>
       </div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 3 }}>
-        <span style={{ color: '#555', fontSize: 9, flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+        <span style={{ color: '#b0b0b0', fontSize: 9, flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
           {stock.name.length > 22 ? stock.name.slice(0, 22) + '…' : stock.name}
         </span>
-        <span style={{ color: primaryMetric === 'No Dividend' ? '#333' : '#ccc', fontSize: 9 }}>{primaryMetric}</span>
+        <span style={{ color: primaryMetric === 'No Dividend' ? '#888' : '#ccc', fontSize: 9 }}>{primaryMetric}</span>
       </div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
         <span style={{
@@ -2391,7 +2391,7 @@ function QuadrantTooltip({ stock, mx, my }: { stock: ScoutStock; mx: number; my:
              stock.sector.slice(0, 6).toUpperCase()}
           </span>
         </div>
-        <div style={{ color: '#555', fontSize: 9, marginBottom: 6 }}>
+        <div style={{ color: '#b0b0b0', fontSize: 9, marginBottom: 6 }}>
           {stock.name.length > 28 ? stock.name.slice(0, 28) + '…' : stock.name}
         </div>
         {/* Quadrant pill */}
@@ -2408,7 +2408,7 @@ function QuadrantTooltip({ stock, mx, my }: { stock: ScoutStock; mx: number; my:
       <div style={{ padding: '7px 10px', borderBottom: '1px solid #111' }}>
         {scores.map(([label, score, color]) => (
           <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
-            <span style={{ color: '#444', fontSize: 8, width: 26 }}>{label}</span>
+            <span style={{ color: '#aaaaaa', fontSize: 8, width: 26 }}>{label}</span>
             <div style={{ flex: 1, height: 4, background: '#111', borderRadius: 2, overflow: 'hidden' }}>
               <div style={{ height: '100%', width: `${score}%`, background: color, opacity: 0.8 }} />
             </div>
@@ -2423,7 +2423,7 @@ function QuadrantTooltip({ stock, mx, my }: { stock: ScoutStock; mx: number; my:
           <div style={{ color, fontSize: 8, letterSpacing: '0.08em', marginBottom: 4 }}>{group}</div>
           {rows.map(([label, value, highlight]) => (
             <div key={label} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 2 }}>
-              <span style={{ color: '#444', fontSize: 9 }}>{label}</span>
+              <span style={{ color: '#aaaaaa', fontSize: 9 }}>{label}</span>
               <span style={{ color: highlight ? color : '#666', fontSize: 9, fontWeight: highlight ? 'bold' : 'normal' }}>
                 {value}
                 {highlight && <span style={{ color, marginLeft: 3 }}>▲</span>}
@@ -2433,7 +2433,7 @@ function QuadrantTooltip({ stock, mx, my }: { stock: ScoutStock; mx: number; my:
         </div>
       ))}
 
-      <div style={{ padding: '4px 10px', color: '#333', fontSize: 8 }}>
+      <div style={{ padding: '4px 10px', color: '#888', fontSize: 8 }}>
         Click to open in GIP
       </div>
     </div>,
@@ -2562,9 +2562,9 @@ function ScoutView({ onNavigate }: { onNavigate: (ticker: string) => void }) {
   ]
 
   if (isLoading) return (
-    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 12, color: '#444' }}>
+    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 12, color: '#aaaaaa' }}>
       <div style={{ fontSize: 11 }}>Fetching fundamentals for {48} stocks…</div>
-      <div style={{ fontSize: 9, color: '#333' }}>First load may take 5–10 seconds</div>
+      <div style={{ fontSize: 9, color: '#888' }}>First load may take 5–10 seconds</div>
     </div>
   )
 
@@ -2582,24 +2582,24 @@ function ScoutView({ onNavigate }: { onNavigate: (ticker: string) => void }) {
         display: 'flex', alignItems: 'center', gap: 8, padding: '6px 12px',
         borderBottom: '1px solid #111', background: '#020202', flexShrink: 0,
       }}>
-        <span style={{ color: '#555', fontSize: 9 }}>UNIVERSE: {stocksArr.length} stocks</span>
+        <span style={{ color: '#b0b0b0', fontSize: 9 }}>UNIVERSE: {stocksArr.length} stocks</span>
         <span style={{ color: '#222', fontSize: 9 }}>|</span>
         {/* View mode toggle */}
         {(['LISTS','QUADRANT'] as const).map(m => (
           <button key={m} onClick={() => setViewMode(m)} style={{
             background: viewMode === m ? '#111' : 'none',
-            border: `1px solid ${viewMode === m ? '#333' : '#1a1a1a'}`,
-            color: viewMode === m ? '#ccc' : '#444',
+            border: `1px solid ${viewMode === m ? '#888' : '#1a1a1a'}`,
+            color: viewMode === m ? '#ccc' : '#aaaaaa',
             fontFamily: 'inherit', fontSize: 9, padding: '1px 8px', cursor: 'pointer', letterSpacing: '0.05em',
           }}>{m}</button>
         ))}
         <span style={{ flex: 1 }} />
-        <span style={{ color: '#333', fontSize: 8 }}>Scores ranked within universe · Source: Yahoo Finance</span>
+        <span style={{ color: '#888', fontSize: 8 }}>Scores ranked within universe · Source: Yahoo Finance</span>
       </div>
 
       {viewMode === 'QUADRANT' ? (
         <div style={{ flex: 1, overflow: 'auto', padding: 16 }}>
-          <div style={{ color: '#555', fontSize: 9, marginBottom: 8, letterSpacing: '0.06em' }}>
+          <div style={{ color: '#b0b0b0', fontSize: 9, marginBottom: 8, letterSpacing: '0.06em' }}>
             Color by sector · Click a stock to open GIP
           </div>
           <StyleQuadrant stocks={stocksArr} onNavigate={onNavigate} />
@@ -2608,7 +2608,7 @@ function ScoutView({ onNavigate }: { onNavigate: (ticker: string) => void }) {
             {Object.entries(SECTOR_COLOR).filter(([k]) => k !== 'Other').map(([sector, color]) => (
               <span key={sector} style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
                 <span style={{ width: 6, height: 6, borderRadius: '50%', background: color, display: 'inline-block' }} />
-                <span style={{ color: '#555', fontSize: 8 }}>{sector}</span>
+                <span style={{ color: '#b0b0b0', fontSize: 8 }}>{sector}</span>
               </span>
             ))}
           </div>
@@ -2635,7 +2635,7 @@ function ScoutView({ onNavigate }: { onNavigate: (ticker: string) => void }) {
                       {CATEGORY_ICON[cat.id]} {cat.label}
                     </span>
                   </div>
-                  <div style={{ color: '#444', fontSize: 8, lineHeight: 1.3 }}>{cat.desc}</div>
+                  <div style={{ color: '#aaaaaa', fontSize: 8, lineHeight: 1.3 }}>{cat.desc}</div>
                 </div>
                 {/* Cards */}
                 <div style={{ flex: 1, overflowY: 'auto' }}>
@@ -2738,7 +2738,7 @@ function CorrView({ positions }: { positions: Position[] }) {
   }, [matrix, n])
 
   if (positions.length === 0) return (
-    <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#444', fontSize: 11 }}>
+    <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#aaaaaa', fontSize: 11 }}>
       No positions — add holdings to view correlation
     </div>
   )
@@ -2747,19 +2747,19 @@ function CorrView({ positions }: { positions: Position[] }) {
     <div style={{ flex: 1, overflow: 'auto', display: 'flex', flexDirection: 'column' }}>
       {/* Controls */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 14px', borderBottom: '1px solid #111', flexShrink: 0 }}>
-        <span style={{ color: '#333', fontSize: 9, letterSpacing: '0.06em' }}>RANGE:</span>
+        <span style={{ color: '#888', fontSize: 9, letterSpacing: '0.06em' }}>RANGE:</span>
         {(['3mo','6mo','1y'] as CorrRange[]).map(r => (
           <button key={r} onClick={() => setRange(r)} style={{
             background: range === r ? '#0a1a0a' : 'none',
             border: `1px solid ${range === r ? '#ffa028' : '#222'}`,
-            color: range === r ? '#ffa028' : '#444',
+            color: range === r ? '#ffa028' : '#aaaaaa',
             fontFamily: 'inherit', fontSize: 8, padding: '1px 8px', cursor: 'pointer',
           }}>{r}</button>
         ))}
         {avgCorr != null && (
           <>
             <div style={{ width: 1, background: '#222', height: 10, marginLeft: 4 }} />
-            <span style={{ color: '#333', fontSize: 9 }}>AVG CORR:</span>
+            <span style={{ color: '#888', fontSize: 9 }}>AVG CORR:</span>
             <span style={{
               fontSize: 11, fontWeight: 'bold',
               color: avgCorr < 0.3 ? '#33ff66' : avgCorr < 0.6 ? '#ffa028' : '#ff3b3b',
@@ -2776,13 +2776,13 @@ function CorrView({ positions }: { positions: Position[] }) {
       </div>
 
       {loading && (
-        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#444' }}>
+        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#aaaaaa' }}>
           Loading price history…
         </div>
       )}
 
       {!loading && n < 2 && (
-        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#444', fontSize: 11 }}>
+        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#aaaaaa', fontSize: 11 }}>
           Need at least 2 positions with available price history
         </div>
       )}
@@ -2794,7 +2794,7 @@ function CorrView({ positions }: { positions: Position[] }) {
               <tr>
                 <th style={{ width: 60 }} />
                 {readyTickers.map(t => (
-                  <th key={t} style={{ color: '#555', fontSize: 8, fontWeight: 'normal', padding: '0 2px 8px', textAlign: 'center', width: 54 }}>
+                  <th key={t} style={{ color: '#b0b0b0', fontSize: 8, fontWeight: 'normal', padding: '0 2px 8px', textAlign: 'center', width: 54 }}>
                     <div style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)', height: 46, overflow: 'hidden', textOverflow: 'ellipsis', letterSpacing: '0.04em' }}>
                       {t}
                     </div>
@@ -2805,7 +2805,7 @@ function CorrView({ positions }: { positions: Position[] }) {
             <tbody>
               {readyTickers.map((ti, i) => (
                 <tr key={ti}>
-                  <td style={{ color: '#555', fontSize: 9, padding: '2px 10px 2px 0', textAlign: 'right', whiteSpace: 'nowrap' }}>{ti}</td>
+                  <td style={{ color: '#b0b0b0', fontSize: 9, padding: '2px 10px 2px 0', textAlign: 'right', whiteSpace: 'nowrap' }}>{ti}</td>
                   {readyTickers.map((_, j) => {
                     const r = matrix[i][j]
                     const diag = i === j
@@ -2824,11 +2824,11 @@ function CorrView({ positions }: { positions: Position[] }) {
 
           {/* Legend */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 16 }}>
-            <span style={{ color: '#333', fontSize: 8 }}>CORRELATION:</span>
+            <span style={{ color: '#888', fontSize: 8 }}>CORRELATION:</span>
             {([[-1,'#501010'],[-0.5,'#381818'],[0,'#141414'],[0.5,'#183818'],[1,'#105010']] as [number,string][]).map(([v,bg]) => (
               <div key={v} style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
                 <div style={{ width: 12, height: 12, background: bg }} />
-                <span style={{ color: '#333', fontSize: 8 }}>{v}</span>
+                <span style={{ color: '#888', fontSize: 8 }}>{v}</span>
               </div>
             ))}
             {tickers.length > n && (
@@ -2955,7 +2955,7 @@ export function PORT() {
             background: 'none', border: '1px solid #2a2a2a', color: '#ffa028',
             fontFamily: 'inherit', fontSize: 10, padding: '3px 10px', cursor: 'pointer', letterSpacing: '0.06em',
           }}>↑ IMPORT</button>
-          <span style={{ color: '#444', fontSize: 9 }}>BASE CCY:</span>
+          <span style={{ color: '#aaaaaa', fontSize: 9 }}>BASE CCY:</span>
           <select value={baseCcy} onChange={e => setBaseCcy(e.target.value as BaseCurrency)}
             style={{ background: '#0a0a0a', border: '1px solid #2a2a2a', color: '#ffa028', fontFamily: 'inherit', fontSize: 10, padding: '2px 6px', cursor: 'pointer' }}>
             {(['USD','AUD','GBP','EUR','JPY','CAD'] as BaseCurrency[]).map(c => <option key={c} value={c}>{c}</option>)}
