@@ -742,9 +742,9 @@ function RiskView({ positions, quotes, fx, baseCcy }: { positions: Position[]; q
   const betaColor = portBeta == null ? '#555' : portBeta > 1.5 ? '#ff3b3b' : portBeta > 1.0 ? '#ffa028' : '#33ff66'
 
   // Sharpe ratio (estimated)
-  // Using total return since inception vs risk-free rate of 5.25% annualised
+  // Using total return since inception vs risk-free rate annualised
   // Volatility estimated from cross-sectional dispersion of position returns (proxy)
-  const RISK_FREE_ANNUAL = 5.25
+  const RISK_FREE_ANNUAL = 4.35
   const { sharpe, portReturnPct, portfolioVol } = useMemo(() => {
     const totalCost = enriched.reduce((s, p) => s + p.shares * p.avgCost, 0)
     const totalMV2  = enriched.reduce((s, p) => s + p.mv, 0)
@@ -844,7 +844,7 @@ function RiskView({ positions, quotes, fx, baseCcy }: { positions: Position[]; q
         {metricRow('Est. Volatility', portfolioVol != null ? `${fmt(portfolioVol, 1)}%` : '—', '#888')}
         {metricRow('Risk-Free Rate', `${fmt(RISK_FREE_ANNUAL)}% (assumed)`, '#aaaaaa')}
         <div style={{ marginTop: 10, padding: '8px', background: '#080808', border: '1px solid #1a1a1a', fontSize: 10, color: '#e8e8e8', lineHeight: 1.6 }}>
-          {sharpe == null ? 'Sharpe ratio requires â‰¥2 positions with return data.' :
+          {sharpe == null ? 'Sharpe ratio requires 2+ positions with return data.' :
            sharpe > 2   ? 'Excellent risk-adjusted returns. Portfolio generating strong alpha per unit of risk.' :
            sharpe > 1   ? 'Good risk-adjusted returns. Above-average performance relative to risk taken.' :
            sharpe > 0   ? 'Acceptable but marginal. Returns above risk-free but risk compensation is thin.' :
