@@ -2841,7 +2841,339 @@ function CorrView({ positions }: { positions: Position[] }) {
   )
 }
 
-type SubView = 'HOLDINGS' | 'MAP' | 'HISTORY' | 'EF' | 'PERFORMANCE' | 'RISK' | 'ALLOCATION' | 'BLOTTER' | 'CORR' | 'SCOUT'
+// ── OPTIMIZER view ────────────────────────────────────────────────────────────
+function OptimizerView({ positions }: { positions: Position[] }) {
+  const portTickers = useMemo(() => Array.from(new Set(positions.map(p => p.ticker))), [positions])
+
+  const [tickerSource, setTickerSource] = useState<'portfolio' | 'custom'>('portfolio')
+  const [customInput,  setCustomInput]  = useState('')
+  const [submitted,    setSubmitted]    = useState<string[]>([])
+  const [simCount,     setSimCount]     = useState(20000)
+  const [rfRate,       setRfRate]       = useState(4.35)
+
+  // Determine active tickers
+  const activeTickers: string[] = useMemo(() => {
+    if (tickerSource === 'portfolio') return portTickers
+    return submitted
+  }, [tickerSource, portTickers, submitted])
+
+  const queries = useQueries({
+    queries: activeTickers.map(ticker => ({
+      queryKey: ['history', ticker, '2y'],
+      queryFn:  (): Promise<HistoryPoint[]> => fetch(`/api/history?symbol=${ticker}&range=2y`).then(r => r.json()),
+      staleTime: 30 * 60_000,
+    })),
+  })
+
+  const loading = activeTickers.length > 0 && queries.some(q => q.isLoading)
+
+  // Compute returns + covariance matrix
+  const { means, cov, labels, dataReady } = useMemo(() => {
+    const empty = { means: [] as number[], cov: [] as number[][], labels: [] as string[], dataReady: false }
+    if (loading || activeTickers.length < 2) return empty
+
+    const dateSets = queries.map(q => new Map((q.data as HistoryPoint[] ?? []).map(pt => [pt.t, pt.c])))
+    const allDates = Array.from(new Set(queries.flatMap(q => (q.data as HistoryPoint[] ?? []).map(pt => pt.t)))).sort()
+    const commonDates = allDates.filter(d => dateSets.every(ds => ds.has(d)))
+    if (commonDates.length < 40) return empty
+
+    const dailyReturns: number[][] = activeTickers.map((_, i) => {
+      const prices = commonDates.map(d => dateSets[i].get(d) ?? 0)
+      return prices.slice(1).map((p, t) => prices[t] > 0 ? Math.log(p / prices[t]) : 0)
+    })
+
+    const T = dailyReturns[0].length
+    const means = dailyReturns.map(r => (r.reduce((s, v) => s + v, 0) / T) * 252)
+    const covAnn = computeCovMatrix(dailyReturns).map(row => row.map(v => v * 252))
+
+    return { means, cov: covAnn, labels: activeTickers, dataReady: true }
+  }, [loading, activeTickers, queries])
+
+  // Monte Carlo
+  const { portfolios, maxSharpePort, minVolPort } = useMemo(() => {
+    const empty = { portfolios: [], maxSharpePort: null, minVolPort: null }
+    if (!dataReady || means.length < 2) return empty
+    const rf = rfRate / 100
+
+    const portfolios = Array.from({ length: simCount }, () => {
+      const w = randomPortfolio(means.length)
+      const ret = dot(w, means)
+      const vol = Math.sqrt(Math.max(0, quadForm(cov, w)))
+      return { ret, vol, sharpe: vol > 0 ? (ret - rf) / vol : 0, weights: w }
+    })
+    const maxSharpePort = portfolios.reduce((b, p) => p.sharpe > b.sharpe ? p : b)
+    const minVolPort    = portfolios.reduce((b, p) => p.vol    < b.vol    ? p : b)
+    return { portfolios, maxSharpePort, minVolPort }
+  }, [dataReady, means, cov, simCount, rfRate])
+
+  function handleRunCustom() {
+    const tickers = customInput
+      .split(/[\s,;]+/)
+      .map(s => s.trim().toUpperCase())
+      .filter(Boolean)
+    setSubmitted(tickers)
+  }
+
+  function fmtPct(v: number) { return (v * 100).toFixed(1) + '%' }
+  function fmtPctAnn(v: number) { return (v * 100).toFixed(1) + '%' }
+
+  // SVG scatter
+  const W = 560, H = 300, PAD = { top: 16, right: 16, bottom: 40, left: 52 }
+  const innerW = W - PAD.left - PAD.right
+  const innerH = H - PAD.top  - PAD.bottom
+
+  const allVols = portfolios.map(p => p.vol)
+  const allRets = portfolios.map(p => p.ret)
+  const minVol  = allVols.length ? Math.min(...allVols) * 0.9 : 0
+  const maxVol  = allVols.length ? Math.max(...allVols) * 1.1 : 1
+  const minRet  = allRets.length ? (Math.min(...allRets) < 0 ? Math.min(...allRets) * 1.1 : Math.min(...allRets) * 0.9) : 0
+  const maxRet  = allRets.length ? Math.max(...allRets) * 1.1 : 1
+
+  function toSVG(vol: number, ret: number) {
+    return {
+      x: PAD.left + ((vol - minVol) / ((maxVol - minVol) || 1)) * innerW,
+      y: PAD.top  + (1 - (ret - minRet) / ((maxRet - minRet) || 1)) * innerH,
+    }
+  }
+
+  const sharpeValues = portfolios.map(p => p.sharpe)
+  const maxS = Math.max(...sharpeValues, 0.01)
+  const minS = Math.min(...sharpeValues)
+  function sharpeColor(s: number) {
+    const t = Math.max(0, Math.min(1, (s - minS) / ((maxS - minS) || 1)))
+    if (t < 0.5) return `rgb(${Math.round(255 * t * 2)},${Math.round(80 + 60 * t * 2)},20)`
+    return `rgb(${Math.round(255 * (1 - (t - 0.5) * 2))},${Math.round(200 + 55 * (t - 0.5) * 2)},20)`
+  }
+
+  const maxSharpeSVG = maxSharpePort ? toSVG(maxSharpePort.vol, maxSharpePort.ret) : null
+  const minVolSVG    = minVolPort    ? toSVG(minVolPort.vol,    minVolPort.ret)    : null
+
+  const inputStyle: React.CSSProperties = {
+    background: '#0a0a0a', border: '1px solid #222', color: '#e8e8e8',
+    fontFamily: 'inherit', fontSize: 11, padding: '3px 8px', outline: 'none',
+  }
+
+  return (
+    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+
+      {/* Controls bar */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '5px 10px', borderBottom: '1px solid #111', flexShrink: 0, flexWrap: 'wrap' }}>
+        {/* Source toggle */}
+        <span style={{ color: '#aaaaaa', fontSize: 10 }}>SOURCE:</span>
+        {(['portfolio', 'custom'] as const).map(s => (
+          <button key={s} onClick={() => setTickerSource(s)} style={{
+            background: tickerSource === s ? '#0d1a0d' : 'none',
+            border: 'none', borderBottom: `2px solid ${tickerSource === s ? '#ffa028' : 'transparent'}`,
+            color: tickerSource === s ? '#ffa028' : '#555',
+            fontFamily: 'inherit', fontSize: 10, padding: '0 8px', cursor: 'pointer',
+          }}>{s === 'portfolio' ? 'PORT HOLDINGS' : 'CUSTOM'}</button>
+        ))}
+
+        {tickerSource === 'custom' && (
+          <>
+            <input
+              value={customInput}
+              onChange={e => setCustomInput(e.target.value)}
+              onKeyDown={e => e.key === 'Enter' && handleRunCustom()}
+              placeholder="AAPL, MSFT, BHP.AX …"
+              style={{ ...inputStyle, width: 220 }}
+            />
+            <button onClick={handleRunCustom} style={{
+              ...inputStyle, cursor: 'pointer', padding: '3px 10px',
+              borderColor: '#ffa028', color: '#ffa028',
+            }}>RUN</button>
+          </>
+        )}
+
+        <span style={{ color: '#888', fontSize: 9, marginLeft: 4 }}>SIM:</span>
+        {([5000, 10000, 20000] as const).map(n => (
+          <button key={n} onClick={() => setSimCount(n)} style={{
+            background: simCount === n ? '#111' : 'none', border: 'none',
+            color: simCount === n ? '#ffa028' : '#555',
+            fontFamily: 'inherit', fontSize: 9, padding: '0 5px', cursor: 'pointer',
+          }}>{(n / 1000).toFixed(0)}K</button>
+        ))}
+
+        <span style={{ color: '#888', fontSize: 9, marginLeft: 4 }}>RF:</span>
+        <input
+          type="number" step="0.05" min="0" max="20"
+          value={rfRate}
+          onChange={e => setRfRate(parseFloat(e.target.value) || 0)}
+          style={{ ...inputStyle, width: 52, textAlign: 'right' }}
+        />
+        <span style={{ color: '#666', fontSize: 9 }}>%</span>
+
+        <span style={{ color: '#555', fontSize: 9, marginLeft: 'auto' }}>
+          OBJECTIVE: MAX SHARPE · LONG ONLY · {simCount.toLocaleString()} SIMULATIONS
+        </span>
+      </div>
+
+      {/* Body */}
+      <div style={{ flex: 1, overflow: 'auto', padding: '10px' }}>
+
+        {activeTickers.length < 2 && (
+          <div style={{ color: '#555', fontSize: 12, padding: 20 }}>
+            {tickerSource === 'portfolio'
+              ? 'Add at least 2 positions to PORT to run the optimizer.'
+              : 'Enter at least 2 tickers above and click RUN.'}
+          </div>
+        )}
+
+        {activeTickers.length >= 2 && loading && (
+          <div style={{ color: '#aaaaaa', fontSize: 12, padding: 20 }}>Loading 2-year price history…</div>
+        )}
+
+        {activeTickers.length >= 2 && !loading && !dataReady && (
+          <div style={{ color: '#ff3b3b', fontSize: 11, padding: 20 }}>Insufficient common trading days (need ≥ 40). Check tickers.</div>
+        )}
+
+        {dataReady && portfolios.length > 0 && maxSharpePort && minVolPort && (
+          <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+
+            {/* Scatter plot */}
+            <div style={{ flexShrink: 0 }}>
+              <div style={{ color: '#666', fontSize: 9, marginBottom: 4, letterSpacing: '0.06em' }}>
+                EFFICIENT FRONTIER · {portfolios.length.toLocaleString()} SIMULATIONS · COLOR = SHARPE RATIO
+              </div>
+              <svg width={W} height={H} style={{ display: 'block', background: '#050505', border: '1px solid #111' }}>
+                {/* Grid lines */}
+                {[0.25, 0.5, 0.75].map(t => {
+                  const y = PAD.top + t * innerH
+                  const ret = maxRet - t * (maxRet - minRet)
+                  return (
+                    <g key={t}>
+                      <line x1={PAD.left} y1={y} x2={W - PAD.right} y2={y} stroke="#111" strokeWidth={0.5} />
+                      <text x={PAD.left - 4} y={y + 3} textAnchor="end" fill="#444" fontSize={8}>{fmtPctAnn(ret)}</text>
+                    </g>
+                  )
+                })}
+                {[0.25, 0.5, 0.75].map(t => {
+                  const x = PAD.left + t * innerW
+                  const vol = minVol + t * (maxVol - minVol)
+                  return (
+                    <g key={t}>
+                      <line x1={x} y1={PAD.top} x2={x} y2={H - PAD.bottom} stroke="#111" strokeWidth={0.5} />
+                      <text x={x} y={H - PAD.bottom + 12} textAnchor="middle" fill="#444" fontSize={8}>{fmtPctAnn(vol)}</text>
+                    </g>
+                  )
+                })}
+                {/* Axis labels */}
+                <text x={PAD.left - 4} y={PAD.top + innerH / 2} textAnchor="middle" fill="#555" fontSize={8}
+                  transform={`rotate(-90, ${PAD.left - 32}, ${PAD.top + innerH / 2})`}>RETURN (ann.)</text>
+                <text x={PAD.left + innerW / 2} y={H - 4} textAnchor="middle" fill="#555" fontSize={8}>VOLATILITY (ann.)</text>
+
+                {/* Dots */}
+                {portfolios.map((p, i) => {
+                  const { x, y } = toSVG(p.vol, p.ret)
+                  return <circle key={i} cx={x} cy={y} r={1.5} fill={sharpeColor(p.sharpe)} fillOpacity={0.5} />
+                })}
+
+                {/* Max Sharpe */}
+                {maxSharpeSVG && (
+                  <g>
+                    <circle cx={maxSharpeSVG.x} cy={maxSharpeSVG.y} r={6} fill="none" stroke="#ffa028" strokeWidth={1.5} />
+                    <circle cx={maxSharpeSVG.x} cy={maxSharpeSVG.y} r={2.5} fill="#ffa028" />
+                    <text x={maxSharpeSVG.x + 9} y={maxSharpeSVG.y + 4} fill="#ffa028" fontSize={8}>MAX SHARPE</text>
+                  </g>
+                )}
+
+                {/* Min Vol */}
+                {minVolSVG && (
+                  <g>
+                    <circle cx={minVolSVG.x} cy={minVolSVG.y} r={6} fill="none" stroke="#4d9fff" strokeWidth={1.5} />
+                    <circle cx={minVolSVG.x} cy={minVolSVG.y} r={2.5} fill="#4d9fff" />
+                    <text x={minVolSVG.x + 9} y={minVolSVG.y + 4} fill="#4d9fff" fontSize={8}>MIN VOL</text>
+                  </g>
+                )}
+              </svg>
+            </div>
+
+            {/* Allocation tables */}
+            <div style={{ flex: 1, minWidth: 300, display: 'flex', flexDirection: 'column', gap: 12 }}>
+
+              {/* Max Sharpe */}
+              <div>
+                <div style={{ color: '#ffa028', fontSize: 10, letterSpacing: '0.06em', marginBottom: 6, borderBottom: '1px solid #1a1a1a', paddingBottom: 4 }}>
+                  ★ MAX SHARPE PORTFOLIO
+                  <span style={{ color: '#555', fontWeight: 'normal', marginLeft: 8 }}>
+                    Ret {fmtPct(maxSharpePort.ret)} · Vol {fmtPct(maxSharpePort.vol)} · Sharpe {maxSharpePort.sharpe.toFixed(2)}
+                  </span>
+                </div>
+                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 11 }}>
+                  <thead>
+                    <tr>
+                      <th style={{ color: '#555', fontWeight: 'normal', textAlign: 'left', padding: '2px 6px', fontSize: 9 }}>TICKER</th>
+                      <th style={{ color: '#555', fontWeight: 'normal', textAlign: 'right', padding: '2px 6px', fontSize: 9 }}>WEIGHT</th>
+                      <th style={{ color: '#555', fontWeight: 'normal', padding: '2px 6px', fontSize: 9, width: 120 }}></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {labels.map((t, i) => {
+                      const w = maxSharpePort.weights[i]
+                      return (
+                        <tr key={t} style={{ borderBottom: '1px solid #0d0d0d' }}>
+                          <td style={{ padding: '3px 6px', color: '#e8e8e8', fontFamily: 'monospace' }}>{t}</td>
+                          <td style={{ padding: '3px 6px', color: '#ffa028', textAlign: 'right' }}>{fmtPct(w)}</td>
+                          <td style={{ padding: '3px 6px' }}>
+                            <div style={{ height: 6, background: '#111', borderRadius: 2, overflow: 'hidden' }}>
+                              <div style={{ height: '100%', width: fmtPct(w), background: '#ffa028', borderRadius: 2 }} />
+                            </div>
+                          </td>
+                        </tr>
+                      )
+                    })}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Min Vol */}
+              <div>
+                <div style={{ color: '#4d9fff', fontSize: 10, letterSpacing: '0.06em', marginBottom: 6, borderBottom: '1px solid #1a1a1a', paddingBottom: 4 }}>
+                  ◆ MIN VOLATILITY PORTFOLIO
+                  <span style={{ color: '#555', fontWeight: 'normal', marginLeft: 8 }}>
+                    Ret {fmtPct(minVolPort.ret)} · Vol {fmtPct(minVolPort.vol)} · Sharpe {minVolPort.sharpe.toFixed(2)}
+                  </span>
+                </div>
+                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 11 }}>
+                  <thead>
+                    <tr>
+                      <th style={{ color: '#555', fontWeight: 'normal', textAlign: 'left', padding: '2px 6px', fontSize: 9 }}>TICKER</th>
+                      <th style={{ color: '#555', fontWeight: 'normal', textAlign: 'right', padding: '2px 6px', fontSize: 9 }}>WEIGHT</th>
+                      <th style={{ color: '#555', fontWeight: 'normal', padding: '2px 6px', fontSize: 9, width: 120 }}></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {labels.map((t, i) => {
+                      const w = minVolPort.weights[i]
+                      return (
+                        <tr key={t} style={{ borderBottom: '1px solid #0d0d0d' }}>
+                          <td style={{ padding: '3px 6px', color: '#e8e8e8', fontFamily: 'monospace' }}>{t}</td>
+                          <td style={{ padding: '3px 6px', color: '#4d9fff', textAlign: 'right' }}>{fmtPct(w)}</td>
+                          <td style={{ padding: '3px 6px' }}>
+                            <div style={{ height: 6, background: '#111', borderRadius: 2, overflow: 'hidden' }}>
+                              <div style={{ height: '100%', width: fmtPct(w), background: '#4d9fff', borderRadius: 2 }} />
+                            </div>
+                          </td>
+                        </tr>
+                      )
+                    })}
+                  </tbody>
+                </table>
+              </div>
+
+              <div style={{ color: '#333', fontSize: 9, marginTop: 4, lineHeight: 1.6 }}>
+                Based on 2yr daily log returns · Long-only constraints · Risk-free rate {rfRate}%<br />
+                Monte Carlo: {simCount.toLocaleString()} random portfolios · Max Sharpe = highest (ret − rf) / vol
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
+type SubView = 'HOLDINGS' | 'MAP' | 'HISTORY' | 'EF' | 'OPTIMIZER' | 'PERFORMANCE' | 'RISK' | 'ALLOCATION' | 'BLOTTER' | 'CORR' | 'SCOUT'
 
 export function PORT() {
   const { positions, addPosition, updatePosition, removePosition, loadPortfolio, watchlist, alerts, addAlert, removeAlert, setActiveTicker, setActiveView } = useTerminalStore()
@@ -2904,7 +3236,7 @@ export function PORT() {
     return s + convertFX(p.shares * price, p.currency, baseCcy, fx)
   }, 0), [positions, quotes, fx, baseCcy])
 
-  const SUBVIEWS: SubView[] = ['HOLDINGS', 'MAP', 'HISTORY', 'EF', 'PERFORMANCE', 'RISK', 'ALLOCATION', 'CORR', 'BLOTTER', 'SCOUT']
+  const SUBVIEWS: SubView[] = ['HOLDINGS', 'MAP', 'HISTORY', 'EF', 'OPTIMIZER', 'PERFORMANCE', 'RISK', 'ALLOCATION', 'CORR', 'BLOTTER', 'SCOUT']
 
   return (
     <div className="panel" style={{ height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
@@ -2977,6 +3309,7 @@ export function PORT() {
           {subView === 'MAP'         && <HeatMapView     positions={positions} quotes={quotes} fx={fx} baseCcy={baseCcy} metrics={metrics} onSelect={p => { setDetailPos(detailPos?.id === p.id ? null : p); setSubView('HOLDINGS') }} />}
           {subView === 'HISTORY'     && <HistoryView            positions={positions} fx={fx} baseCcy={baseCcy} />}
           {subView === 'EF'          && <EfficientFrontierView positions={positions} fx={fx} baseCcy={baseCcy} />}
+          {subView === 'OPTIMIZER'   && <OptimizerView positions={positions} />}
           {subView === 'PERFORMANCE' && <PerformanceView positions={positions} quotes={quotes} fx={fx} baseCcy={baseCcy} />}
           {subView === 'RISK'        && <RiskView        positions={positions} quotes={quotes} fx={fx} baseCcy={baseCcy} />}
           {subView === 'ALLOCATION'  && <AllocationView  positions={positions} quotes={quotes} metrics={metrics} fx={fx} baseCcy={baseCcy} />}
