@@ -21,7 +21,7 @@ const FRED_RELEASES: {
   unit: string
   // Optional: FRED series ID to pull latest actual value
   seriesId?: string
-  transform?: 'level' | 'yoy' | 'mom' | 'change'
+  transform?: 'level' | 'yoy' | 'mom' | 'qoq' | 'change'
 }[] = [
   // US — high impact
   { id: 50,  event: 'Nonfarm Payrolls',          country: 'US', impact: 'high',   unit: 'K',  seriesId: 'PAYEMS',    transform: 'change' },
@@ -64,7 +64,7 @@ async function fetchFREDSeries(seriesId: string, limit: number): Promise<{ date:
 
 function applyTransform(
   raw: { date: string; value: number }[],
-  transform: 'level' | 'yoy' | 'mom' | 'change'
+  transform: 'level' | 'yoy' | 'mom' | 'qoq' | 'change'
 ): number | null {
   if (raw.length === 0) return null
   if (transform === 'level') return raw[raw.length - 1].value
