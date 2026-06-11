@@ -145,16 +145,89 @@ async function fetchAURetail(): Promise<{ date: string; value: number }[]> {
 }
 
 // ── Handler ───────────────────────────────────────────────────────────────────
-const CACHE_KEY = 'macro:fred2:v1'
+// ── ABS Housing / Construction fetchers ──────────────────────────────────────
+
+// Building Approvals: total residential dwelling units approved, Australia, monthly (original)
+async function fetchAUBuildingApprovals(): Promise<{ date: string; value: number }[]> {
+  const raw = await fetchABS('BA_GCCSA/1.1.9.TOT.100.10.AUS.M?startPeriod=2022-01&format=jsondata')
+  if (raw.length < 2) return []
+  return raw.slice(1).map((curr, i) => ({
+    date: curr.date,
+    value: parseFloat(((curr.value / raw[i].value - 1) * 100).toFixed(2)),
+  }))
+}
+
+// Dwellings under construction, total residential, Australia, quarterly (original)
+async function fetchAUDwellingsUnderConstruction(): Promise<{ date: string; value: number }[]> {
+  return fetchABS('BUILDING_ACTIVITY/M8.AUS.CUR.TOT.9.100.10.Q?startPeriod=2020-Q1&format=jsondata')
+}
+
+// Dwelling completions, total residential, Australia, quarterly (original)
+async function fetchAUDwellingCompletions(): Promise<{ date: string; value: number }[]> {
+  return fetchABS('BUILDING_ACTIVITY/M7.AUS.CUR.TOT.9.100.10.Q?startPeriod=2020-Q1&format=jsondata')
+}
+
+// New housing loan commitments value, total dwellings excl. refinancing, seasonally adjusted, quarterly ($M)
+async function fetchAUHousingFinance(): Promise<{ date: string; value: number }[]> {
+  const raw = await fetchABS('LEND_HOUSING/FIN_VAL.NEWCOMMITS..TOTDWELL.TOT.TOT.20.AUS.Q?startPeriod=2021-Q1&format=jsondata')
+  if (raw.length < 2) return []
+  return raw.slice(1).map((curr, i) => ({
+    date: curr.date,
+    value: parseFloat(((curr.value / raw[i].value - 1) * 100).toFixed(2)),
+  }))
+}
+
+// Sydney median established house transfer price, quarterly ($K)
+async function fetchAUSydneyMedianPrice(): Promise<{ date: string; value: number }[]> {
+  const raw = await fetchABS('RES_DWELL/3.1GSYD.Q?startPeriod=2020-Q1&format=jsondata')
+  if (raw.length < 5) return []
+  // YoY % change (step=4 quarters)
+  return raw.slice(4).map((curr, i) => ({
+    date: curr.date,
+    value: parseFloat(((curr.value / raw[i].value - 1) * 100).toFixed(2)),
+  }))
+}
+
+function makeAbsSeries(
+  id: string, label: string, category: string, unit: string,
+  description: string, higherIsBetter: boolean | null,
+  data: { date: string; value: number }[]
+): MacroSeries {
+  const series = data.slice(-10)
+  return {
+    id, label, category, countryCode: 'AU', unit, description,
+    higherIsBetter, estimate: null,
+    latest:     series.length > 0 ? series[series.length - 1].value : null,
+    previous:   series.length > 1 ? series[series.length - 2].value : null,
+    latestDate: series.length > 0 ? series[series.length - 1].date : '',
+    series,
+  }
+}
+
+const CACHE_KEY = 'macro:fred3:v1'
 
 export async function GET() {
   const hit = getCached(CACHE_KEY)
   if (hit) return NextResponse.json(hit)
 
-  const [fredResults, auEmployment, auRetail] = await Promise.all([
+  const [
+    fredResults,
+    auEmployment,
+    auRetail,
+    auBuildingApprovals,
+    auDwellingsUnderConst,
+    auDwellingCompletions,
+    auHousingFinance,
+    auSydneyMedianPrice,
+  ] = await Promise.all([
     Promise.all(FRED_SERIES.map(s => fetchFRED(s.fredId, s.fetchLimit))),
     fetchAUEmploymentChange(),
     fetchAURetail(),
+    fetchAUBuildingApprovals(),
+    fetchAUDwellingsUnderConstruction(),
+    fetchAUDwellingCompletions(),
+    fetchAUHousingFinance(),
+    fetchAUSydneyMedianPrice(),
   ])
 
   const fredOutput: MacroSeries[] = FRED_SERIES.map((ind, i) => {
@@ -189,6 +262,18 @@ export async function GET() {
       latestDate: auRetail.length > 0 ? auRetail[auRetail.length - 1].date : '',
       series: auRetail.slice(-12),
     },
+    makeAbsSeries('AU_BUILDING_APPROVALS', 'Building Approvals (MoM)', 'HOUSING',
+      '%', 'Australia monthly % change in residential dwelling approvals', true, auBuildingApprovals),
+    makeAbsSeries('AU_DWELLINGS_UNDER_CONST', 'Dwellings Under Construction', 'HOUSING',
+      'K', 'Australia total residential dwellings under construction (thousands, quarterly)', null,
+      auDwellingsUnderConst.map(d => ({ date: d.date, value: parseFloat((d.value / 1000).toFixed(1)) }))),
+    makeAbsSeries('AU_DWELLING_COMPLETIONS', 'Dwelling Completions', 'HOUSING',
+      'K', 'Australia residential dwellings completed per quarter (thousands)', true,
+      auDwellingCompletions.map(d => ({ date: d.date, value: parseFloat((d.value / 1000).toFixed(1)) }))),
+    makeAbsSeries('AU_HOUSING_FINANCE', 'Housing Finance (QoQ)', 'HOUSING',
+      '%', 'Australia new housing loan commitments, quarterly % change (seasonally adjusted)', true, auHousingFinance),
+    makeAbsSeries('AU_SYDNEY_HOUSE_PRICE', 'Sydney House Price (YoY)', 'HOUSING',
+      '%', 'Greater Sydney median established house price, year-over-year % change', null, auSydneyMedianPrice),
   ]
 
   const output = [...fredOutput, ...absOutput]
